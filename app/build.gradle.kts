@@ -50,6 +50,8 @@ dependencies {
     implementation("androidx.compose.material:material:1.0.2")
     implementation("androidx.compose.ui:ui-tooling:1.0.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-beta01")
+    implementation("com.google.android.material:compose-theme-adapter:1.0.2")
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha09")
 
     implementation("androidx.compose.compiler:compiler:1.1.0-alpha04")
     implementation("androidx.compose.runtime:runtime:1.1.0-alpha04")
