@@ -48,6 +48,8 @@ dependencies {
 
     implementation("androidx.activity:activity-compose:1.3.1")
     implementation("androidx.compose.material:material:1.0.2")
+    implementation("androidx.compose.material:material-icons-extended:1.1.0-alpha04")
+
     implementation("androidx.compose.ui:ui-tooling:1.0.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-beta01")
     implementation("com.google.android.material:compose-theme-adapter:1.0.2")

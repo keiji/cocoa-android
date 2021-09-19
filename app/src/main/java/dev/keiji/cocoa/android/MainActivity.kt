@@ -27,6 +27,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -90,6 +91,9 @@ fun AppBar(onClick: () -> Unit) {
             IconButton(onClick = { onClick() }) {
                 Icon(Icons.Filled.Settings, contentDescription = "Setting")
             }
+            IconButton(onClick = { onClick() }) {
+                Icon(Icons.Filled.Help, contentDescription = "Help")
+            }
         }
     )
 }
@@ -136,7 +140,7 @@ fun RiskLevel(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp, 0.dp),
+            .padding(12.dp, 0.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -146,7 +150,7 @@ fun RiskLevel(
         ) {
             Column(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(16.dp)
                     .defaultMinSize(140.dp, 0.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -208,7 +212,7 @@ fun SubmitDiagnosis(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp, 0.dp),
+            .padding(12.dp, 0.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -218,7 +222,7 @@ fun SubmitDiagnosis(
         ) {
             Column(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(16.dp)
                     .defaultMinSize(140.dp, 0.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -236,7 +240,7 @@ fun SubmitDiagnosis(
                         contentDescription = "",
                         modifier = Modifier.size(60.dp)
                     )
-                    Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(16.dp))
                     Text(
                         text = "陽性情報の登録する云々の説明をここに書くのですが、実際に文字で書いてみなさんちゃんと読むのでしょうかという疑問はありますね。",
                         style = MaterialTheme.typography.body2
@@ -257,25 +261,20 @@ fun SubmitDiagnosis(
 
 @Composable
 fun LegalInfos() {
-    Column() {
-        Text(
-            text = "法的情報",
-            style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier
-                .padding(8.dp, 0.dp)
-        )
-        Row(modifier = Modifier.
-        horizontalScroll(rememberScrollState())) {
-            Spacer(Modifier.width(8.dp))
-            InfoCard("利用規約") {}
-            Spacer(Modifier.width(8.dp))
-            InfoCard("プライバシーポリシー") {}
-            Spacer(Modifier.width(8.dp))
-            InfoCard("アクセシビリティ方針") {}
-            Spacer(Modifier.width(8.dp))
-            InfoCard("ライセンス") {}
-            Spacer(Modifier.width(8.dp))
-        }
+    Row(
+        modifier = Modifier.horizontalScroll(rememberScrollState())
+    ) {
+        Spacer(Modifier.width(8.dp))
+        InfoCard("お問い合わせ") {}
+        Spacer(Modifier.width(8.dp))
+        InfoCard("利用規約") {}
+        Spacer(Modifier.width(8.dp))
+        InfoCard("プライバシーポリシー") {}
+        Spacer(Modifier.width(8.dp))
+        InfoCard("アクセシビリティ方針") {}
+        Spacer(Modifier.width(8.dp))
+        InfoCard("ライセンス") {}
+        Spacer(Modifier.width(8.dp))
     }
 }
 
@@ -291,7 +290,7 @@ fun InfoCard(
     ) {
         Column(
             modifier = Modifier
-                .padding(8.dp)
+                .padding(12.dp)
                 .defaultMinSize(140.dp, 0.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
