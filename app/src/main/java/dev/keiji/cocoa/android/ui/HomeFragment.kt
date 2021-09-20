@@ -188,38 +188,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(Modifier.height(8.dp))
-                    Text(
-                        text = "注意",
-                        style = MaterialTheme.typography.h5,
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                    ) {
-                        Image(
-                            painter = painterResource(R.drawable.ic_launcher_background),
-                            contentDescription = "",
-                            modifier = Modifier.size(32.dp)
-                        )
-                        Spacer(Modifier.width(12.dp))
-                        Image(
-                            painter = painterResource(R.drawable.ic_launcher_background),
-                            contentDescription = "",
-                            modifier = Modifier.size(32.dp)
-                        )
-                        Spacer(Modifier.width(12.dp))
-                        Image(
-                            painter = painterResource(R.drawable.ic_launcher_background),
-                            contentDescription = "",
-                            modifier = Modifier.size(32.dp)
-                        )
-                    }
-                    Spacer(Modifier.height(16.dp))
-                    Text(
-                        text = "感染リスクが高い接触があります。日々の生活を見直してくださいとか書きたいけど、それが許されるのかとか、そもそも感染リスクという表記がOKなのかとか。",
-                        style = MaterialTheme.typography.body2
-                    )
+
+                    Signals()
+
                     Spacer(Modifier.height(16.dp))
                     Button(
                         onClick = { onClick() }
@@ -230,6 +201,42 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         }
+    }
+
+    private @Composable
+    fun Signals() {
+        Text(
+            text = "注意",
+            style = MaterialTheme.typography.h5,
+        )
+        Spacer(Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Image(
+                painter = painterResource(R.drawable.ic_launcher_background),
+                contentDescription = "",
+                modifier = Modifier.size(32.dp)
+            )
+            Spacer(Modifier.width(12.dp))
+            Image(
+                painter = painterResource(R.drawable.ic_launcher_background),
+                contentDescription = "",
+                modifier = Modifier.size(32.dp)
+            )
+            Spacer(Modifier.width(12.dp))
+            Image(
+                painter = painterResource(R.drawable.ic_launcher_background),
+                contentDescription = "",
+                modifier = Modifier.size(32.dp)
+            )
+        }
+        Spacer(Modifier.height(16.dp))
+        Text(
+            text = "感染リスクが高い接触があります。日々の生活を見直してくださいとか書きたいけど、それが許されるのかとか、そもそも感染リスクという表記がOKなのかとか。",
+            style = MaterialTheme.typography.body2
+        )
     }
 
     @Composable
