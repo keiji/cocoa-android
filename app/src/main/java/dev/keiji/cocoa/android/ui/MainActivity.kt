@@ -1,7 +1,8 @@
-package dev.keiji.cocoa.android
+package dev.keiji.cocoa.android.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import dev.keiji.cocoa.android.R
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 

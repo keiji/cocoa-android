@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android
+package dev.keiji.cocoa.android.ui
 
 import android.os.Bundle
 import android.view.View
@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.composethemeadapter.MdcTheme
+import dev.keiji.cocoa.android.R
 import dev.keiji.cocoa.android.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
