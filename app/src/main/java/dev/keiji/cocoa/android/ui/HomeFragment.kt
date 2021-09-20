@@ -200,7 +200,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         modifier = Modifier
                             .fillMaxWidth(),
                         onClick = { onClick() },
-                        colors = ButtonDefaults.outlinedButtonColors()
+                        colors = ButtonDefaults.buttonColors()
                     ) {
                         Text(text = "詳細")
                     }
@@ -258,7 +258,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         modifier = Modifier
                             .fillMaxWidth(),
                         onClick = { onClick() },
-                        colors = ButtonDefaults.outlinedButtonColors()
+                        colors = ButtonDefaults.buttonColors()
                     ) {
                         Text(text = "登録")
                     }

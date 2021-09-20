@@ -19,6 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -124,7 +125,12 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
 
                     Spacer(Modifier.height(32.dp))
 
-                    Button(onClick = { onClick() }) {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(),
+                        onClick = { onClick() }
+                    ) {
                         Text("同意")
                     }
                 }
@@ -218,7 +224,12 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
 
                     Spacer(Modifier.height(32.dp))
 
-                    Button(onClick = { onSubmit() }) {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(),
+                        onClick = { onSubmit() }
+                    ) {
                         Text("登録")
                     }
                 }
