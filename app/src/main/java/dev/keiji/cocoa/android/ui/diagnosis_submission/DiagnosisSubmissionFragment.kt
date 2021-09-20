@@ -246,8 +246,10 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
         Row() {
             Row() {
                 RadioButton(
-                    selected = false,
-                    onClick = { symptomState.value = true }
+                    selected = symptomState.value ?: false,
+                    onClick = {
+                        symptomState.value = true
+                    }
                 )
                 Text("ある")
             }
@@ -256,8 +258,10 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
 
             Row() {
                 RadioButton(
-                    selected = false,
-                    onClick = { symptomState.value = false }
+                    selected = !(symptomState.value ?: true),
+                    onClick = {
+                        symptomState.value = false
+                    }
                 )
                 Text("ない")
             }
