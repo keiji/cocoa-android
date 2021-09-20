@@ -10,9 +10,16 @@
         <action
             android:id="@+id/action_homeFragment_to_diagnosisSubmissionFragment"
             app:destination="@id/diagnosisSubmissionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_riskDetailFragment"
+            app:destination="@id/riskDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/diagnosisSubmissionFragment"
         android:name="dev.keiji.cocoa.android.ui.diagnosis_submission.DiagnosisSubmissionFragment"
         android:label="DiagnosisSubmissionFragment" />
+    <fragment
+        android:id="@+id/riskDetailFragment"
+        android:name="dev.keiji.cocoa.android.ui.risk_state.RiskDetailFragment"
+        android:label="RiskDetailFragment" />
 </navigation>

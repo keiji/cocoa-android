@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -31,6 +32,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -95,7 +97,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                 Spacer(Modifier.width(32.dp))
 
-                RiskLevel() {}
+                RiskLevel() {
+                    findNavController().navigate(R.id.action_homeFragment_to_riskDetailFragment)
+                }
 
                 Spacer(Modifier.width(32.dp))
 
@@ -193,7 +197,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                     Spacer(Modifier.height(16.dp))
                     Button(
-                        onClick = { onClick() }
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        onClick = { onClick() },
+                        colors = ButtonDefaults.outlinedButtonColors()
                     ) {
                         Text(text = "詳細")
                     }
@@ -201,42 +208,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         }
-    }
-
-    private @Composable
-    fun Signals() {
-        Text(
-            text = "注意",
-            style = MaterialTheme.typography.h5,
-        )
-        Spacer(Modifier.height(8.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-        ) {
-            Image(
-                painter = painterResource(R.drawable.ic_launcher_background),
-                contentDescription = "",
-                modifier = Modifier.size(32.dp)
-            )
-            Spacer(Modifier.width(12.dp))
-            Image(
-                painter = painterResource(R.drawable.ic_launcher_background),
-                contentDescription = "",
-                modifier = Modifier.size(32.dp)
-            )
-            Spacer(Modifier.width(12.dp))
-            Image(
-                painter = painterResource(R.drawable.ic_launcher_background),
-                contentDescription = "",
-                modifier = Modifier.size(32.dp)
-            )
-        }
-        Spacer(Modifier.height(16.dp))
-        Text(
-            text = "感染リスクが高い接触があります。日々の生活を見直してくださいとか書きたいけど、それが許されるのかとか、そもそも感染リスクという表記がOKなのかとか。",
-            style = MaterialTheme.typography.body2
-        )
     }
 
     @Composable
@@ -284,7 +255,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     Spacer(Modifier.height(16.dp))
 
                     Button(
-                        onClick = { onClick() }
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        onClick = { onClick() },
+                        colors = ButtonDefaults.outlinedButtonColors()
                     ) {
                         Text(text = "登録")
                     }
