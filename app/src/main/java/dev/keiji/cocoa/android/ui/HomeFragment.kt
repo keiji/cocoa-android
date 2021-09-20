@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.composethemeadapter.MdcTheme
 import dev.keiji.cocoa.android.R
 import dev.keiji.cocoa.android.databinding.FragmentHomeBinding
@@ -98,7 +99,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                 Spacer(Modifier.width(32.dp))
 
-                SubmitDiagnosis() {}
+                SubmitDiagnosis() {
+                    findNavController().navigate(R.id.action_homeFragment_to_diagnosisSubmissionFragment)
+                }
 
                 Spacer(Modifier.width(32.dp))
 

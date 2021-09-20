@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -61,6 +62,8 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.1.0-alpha04")
     implementation("androidx.compose.foundation:foundation:1.1.0-alpha04")
     implementation("androidx.compose.ui:ui:1.1.0-alpha04")
+
+    api("androidx.navigation:navigation-fragment-ktx:2.3.5")
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
