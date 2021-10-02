@@ -45,8 +45,6 @@ class DiagnosisSubmissionViewModel @Inject constructor(
     fun submit() {
         Timber.d("ProcessNumber ${processNumber.value ?: "null"}")
 
-
-
         val symptomState = symptomState.value
         if (symptomState == null) {
             Timber.w("SymptomState is not set.")
