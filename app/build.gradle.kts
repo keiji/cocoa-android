@@ -95,7 +95,7 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":exposure-notiffication")))
+    implementation(":exposure-notification")
 
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
