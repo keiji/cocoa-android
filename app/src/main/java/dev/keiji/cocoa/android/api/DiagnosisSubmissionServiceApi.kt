@@ -7,7 +7,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.AnonymousInterceptorOkHttpClient
 import dev.keiji.cocoa.android.BuildConfig
-import dev.keiji.cocoa.android.DefaultInterceptorOkHttpClient
 import dev.keiji.cocoa.android.entity.TemporaryExposureKey
 import dev.keiji.cocoa.android.toRFC3339Format
 import kotlinx.serialization.json.Json
