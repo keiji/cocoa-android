@@ -59,7 +59,32 @@ android {
     }
 
     buildTypes {
+
+        debug {
+
+            buildConfigField(
+                "Long",
+                "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",
+                "16L"
+            )
+            buildConfigField(
+                "Long",
+                "EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES",
+                "16L"
+            )
+        }
         release {
+            buildConfigField(
+                "Long",
+                "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",
+                "4 * 60L"
+            )
+            buildConfigField(
+                "Long",
+                "EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES",
+                "60L"
+            )
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -73,6 +98,8 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.work:work-runtime-ktx:2.6.0")
+
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.1")
 
@@ -99,6 +126,8 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
 
     implementation("com.google.dagger:hilt-android:2.38.1")
+    implementation("androidx.hilt:hilt-work:1.0.0")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

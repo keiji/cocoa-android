@@ -5,7 +5,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.keiji.cocoa.android.AnonymousInterceptorOkHttpClient
 import dev.keiji.cocoa.android.BuildConfig
+import dev.keiji.cocoa.android.DefaultInterceptorOkHttpClient
 import dev.keiji.cocoa.android.entity.TemporaryExposureKey
 import dev.keiji.cocoa.android.toRFC3339Format
 import kotlinx.serialization.json.Json
@@ -16,6 +18,7 @@ import retrofit2.http.Path
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import okhttp3.OkHttpClient
 import retrofit2.http.Body
 import java.util.*
 import javax.inject.Singleton
@@ -48,10 +51,12 @@ object DiagnosisSubmissionServiceApiModule {
     @Singleton
     @Provides
     fun provideDiagnosisSubmissionServiceApi(
+        @AnonymousInterceptorOkHttpClient okHttpClient: OkHttpClient
     ): DiagnosisSubmissionServiceApi {
         val contentType = MediaType.parse("application/json")!!
 
         return Retrofit.Builder()
+            .client(okHttpClient)
             .baseUrl(BuildConfig.DIAGNOSIS_SUBMISSION_API_ENDPOINT)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .build()
