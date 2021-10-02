@@ -39,7 +39,7 @@ class RiskEventRepository(applicationContext: Context) {
 object RiskEventRepositoryModule {
 
     @Provides
-    fun bindRiskEventRepository(
+    fun provideRiskEventRepository(
         @ApplicationContext applicationContext: Context
     ): RiskEventRepository {
         return RiskEventRepository(applicationContext);
