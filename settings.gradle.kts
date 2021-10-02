@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "COCOA"
 include(":app")
+include(":exposure-notiffication")
