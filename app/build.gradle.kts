@@ -33,13 +33,13 @@ android {
         versionName = "1.0"
 
         val props = loadProperties("api-settings.properties")
-        props?.getProperty("DIAGNOSIS_SUBMISSION_API_ENDPOINT")?.also { value ->
-            buildConfigField(
-                "String",
-                "DIAGNOSIS_SUBMISSION_API_ENDPOINT",
-                "$value"
-            )
-        }
+
+        val diagnosisSubmissionApiEndpoint = props?.getProperty("DIAGNOSIS_SUBMISSION_API_ENDPOINT") ?: ""
+        buildConfigField(
+            "String",
+            "DIAGNOSIS_SUBMISSION_API_ENDPOINT",
+            diagnosisSubmissionApiEndpoint
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
