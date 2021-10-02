@@ -7,7 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dev.keiji.cocoa.android.ToEnTimeWindow
+import dev.keiji.cocoa.android.toEnTimeWindow
 import dev.keiji.cocoa.android.entity.TemporaryExposureKey
 import java.util.*
 
@@ -39,7 +39,7 @@ private fun generateRandomKey(random: Random): String {
 private fun getRollingStartNumber(offsetDays: Int) =
     Calendar.getInstance(Locale.getDefault()).also {
         it.add(Calendar.DAY_OF_MONTH, offsetDays)
-    }.time.ToEnTimeWindow()
+    }.time.toEnTimeWindow()
 
 @Module
 @InstallIn(ViewModelComponent::class)
