@@ -3,8 +3,6 @@ package dev.keiji.cocoa.android.ui.diagnosis_submission
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,21 +29,18 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -69,6 +64,7 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
         }
     }
 
+    private val viewModel: DiagnosisSubmissionViewModel by viewModels()
     private var binding: FragmentDiagnosisSubmissionBinding? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -87,7 +83,7 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                     }
                     composable("submission") {
                         Submission() {
-
+                            viewModel.submit()
                         }
                     }
                 }
@@ -152,9 +148,8 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
         )
     }
 
-    @Preview()
     @Composable
-    fun Submission(onSubmit: () -> Unit = {}, onCheckedChange: () -> Unit = {}) {
+    fun Submission(onSubmit: () -> Unit = {}) {
         MdcTheme {
             Column(
                 modifier = Modifier
@@ -180,10 +175,10 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                         text = "SMSまたはメールで届いた処理番号を入力してください"
                     )
                     Column(Modifier.padding(16.dp, 8.dp)) {
-                        val textState = remember { mutableStateOf(TextFieldValue()) }
+                        val processNumber = viewModel.processNumber.observeAsState()
                         TextField(
-                            value = textState.value,
-                            onValueChange = { textState.value = it },
+                            value = processNumber.value ?: "",
+                            onValueChange = { viewModel.processNumber.value = it },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
                         Text("8桁の処理番号を入力してください")
@@ -241,8 +236,6 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
 
     private @Composable
     fun AskSymptom() {
-        val symptomState = remember { mutableStateOf<Boolean?>(null) }
-
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = "次のような症状がありますか？"
@@ -259,9 +252,9 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
         Row() {
             Row() {
                 RadioButton(
-                    selected = symptomState.value ?: false,
+                    selected = viewModel.symptomState.observeAsState().value ?: false,
                     onClick = {
-                        symptomState.value = true
+                        viewModel.setSymptomExist(true)
                     }
                 )
                 Text("ある")
@@ -271,16 +264,16 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
 
             Row() {
                 RadioButton(
-                    selected = !(symptomState.value ?: true),
+                    selected = !(viewModel.symptomState.observeAsState().value ?: true),
                     onClick = {
-                        symptomState.value = false
+                        viewModel.setSymptomExist(false)
                     }
                 )
                 Text("ない")
             }
         }
 
-        val hasSymptom = symptomState.value ?: return
+        val hasSymptom = viewModel.symptomState.observeAsState().value ?: return
         if (hasSymptom) {
             Spacer(Modifier.height(16.dp))
 
@@ -291,10 +284,9 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
     }
 
     private @Composable
-    fun SymptomCalendar() {
+    fun SymptomCalendar(
+    ) {
         val focusManager = LocalFocusManager.current
-
-        val textState = remember { mutableStateOf("2021/09/20") }
 
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -308,30 +300,36 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
         )
         Spacer(Modifier.height(8.dp))
         TextField(
-            value = textState.value,
-            onValueChange = { textState.value = it },
+            value = viewModel.symptomOnsetDate.observeAsState().value?.let { convertToString(it) } ?: "",
+            onValueChange = {},
             modifier = Modifier.onFocusChanged { focusState ->
                 if (focusState.isFocused) {
-                    showDatePicker(textState)
+                    showDatePicker()
                     focusManager.clearFocus()
                 }
             },
         )
     }
 
-    private fun showDatePicker(textState: MutableState<String>) {
+    private fun convertToString(calendar: Calendar): String {
+        return "${calendar.get(Calendar.YEAR)}" +
+                "/" +
+                "${calendar.get(Calendar.MONTH) + 1}" +
+                "/" +
+                "${calendar.get(Calendar.DAY_OF_MONTH)}"
+    }
+
+    private fun showDatePicker() {
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
                 .build()
         datePicker.addOnPositiveButtonClickListener {
             val ticks = datePicker.selection ?: return@addOnPositiveButtonClickListener
-            val calendar: Calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
+            val calendar: Calendar = Calendar.getInstance(TimeZone.getDefault()).apply {
                 timeInMillis = ticks
             }
-            textState.value = "${calendar.get(Calendar.YEAR)}/" +
-                    "${calendar.get(Calendar.MONTH) + 1}/" +
-                    "${calendar.get(Calendar.DAY_OF_MONTH)}"
+            viewModel.setSymptomOnsetDate(calendar)
         }
         datePicker.show(childFragmentManager, "DatePicker")
     }
