@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.ui
+package dev.keiji.cocoa.android.ui.home
 
 import android.os.Bundle
 import android.view.View
@@ -32,7 +32,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -40,11 +39,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.R
 import dev.keiji.cocoa.android.databinding.FragmentHomeBinding
+import dev.keiji.cocoa.android.ui.ExposureNotificationViewModel
+import dev.keiji.cocoa.android.ui.Signals
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -60,7 +63,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private var binding: FragmentHomeBinding? = null;
+    private val exposureNotificationViewModel: ExposureNotificationViewModel by activityViewModels()
+    private val viewModel: HomeViewModel by viewModels()
+
+    private var binding: FragmentHomeBinding? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -79,6 +85,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onDestroyView()
 
         binding?.unbind()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        exposureNotificationViewModel.start(requireActivity())
     }
 
     @Preview
