@@ -34,7 +34,8 @@ android {
 
         val props = loadProperties("api-settings.properties")
 
-        val diagnosisSubmissionApiEndpoint = props?.getProperty("DIAGNOSIS_SUBMISSION_API_ENDPOINT") ?: ""
+        val diagnosisSubmissionApiEndpoint =
+            props?.getProperty("DIAGNOSIS_SUBMISSION_API_ENDPOINT") ?: ""
         buildConfigField(
             "String",
             "DIAGNOSIS_SUBMISSION_API_ENDPOINT",
