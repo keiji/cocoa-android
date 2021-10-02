@@ -1,13 +1,15 @@
 package dev.keiji.cocoa.android.ui.risk_state
 
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.keiji.cocoa.android.entity.RiskEvent
 import dev.keiji.cocoa.android.repository.RiskEventRepository
+import javax.inject.Inject
 
-class RiskDetailViewModel(
+@HiltViewModel
+class RiskDetailViewModel @Inject constructor(
     private val riskEventRepository: RiskEventRepository
 ) : ViewModel() {
 

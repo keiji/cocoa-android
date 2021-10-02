@@ -1,11 +1,16 @@
 package dev.keiji.cocoa.android.repository
 
-import android.app.Application
+import android.content.Context
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.keiji.cocoa.android.entity.RiskEvent
 import dev.keiji.cocoa.android.entity.RiskLevel
 import java.util.*
 
-class RiskEventRepository(application: Application) {
+class RiskEventRepository(applicationContext: Context) {
 
     fun findAll(): List<RiskEvent> {
         return listOf(
@@ -26,5 +31,17 @@ class RiskEventRepository(application: Application) {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
         calendar.add(Calendar.DAY_OF_YEAR, dayOfOffset)
         return calendar.time
+    }
+}
+
+@Module
+@InstallIn(ViewModelComponent::class)
+object RiskEventRepositoryModule {
+
+    @Provides
+    fun bindRiskEventRepository(
+        @ApplicationContext applicationContext: Context
+    ): RiskEventRepository {
+        return RiskEventRepository(applicationContext);
     }
 }

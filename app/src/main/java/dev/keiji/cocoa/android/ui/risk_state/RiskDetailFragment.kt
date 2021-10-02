@@ -1,6 +1,5 @@
 package dev.keiji.cocoa.android.ui.risk_state
 
-import android.app.Application
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.Image
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,35 +35,21 @@ import androidx.compose.ui.unit.dp
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.material.composethemeadapter.MdcTheme
+import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.R
 import dev.keiji.cocoa.android.databinding.FragmentRiskDetailBinding
 import dev.keiji.cocoa.android.entity.RiskEvent
-import dev.keiji.cocoa.android.repository.RiskEventRepository
 import dev.keiji.cocoa.android.ui.Signals
 import java.text.DateFormat
 
+@AndroidEntryPoint
 class RiskDetailFragment : Fragment(R.layout.fragment_risk_detail) {
 
-    inner class RiskDetailViewModelProvider(
-        private val riskEventRepository: RiskEventRepository
-    ) : ViewModelProvider.NewInstanceFactory() {
-
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            @Suppress("UNCHECKED_CAST")
-            return RiskDetailViewModel(riskEventRepository) as T
-        }
-    }
-
-    private val viewModel by viewModels<RiskDetailViewModel> {
-        val application = requireContext().applicationContext as Application
-        RiskDetailViewModelProvider(RiskEventRepository(application))
-    }
+    private val viewModel: RiskDetailViewModel by viewModels()
 
     private var binding: FragmentRiskDetailBinding? = null
 

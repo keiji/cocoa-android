@@ -51,10 +51,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.datepicker.MaterialDatePicker
+import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.R
 import dev.keiji.cocoa.android.databinding.FragmentDiagnosisSubmissionBinding
 import java.util.*
 
+@AndroidEntryPoint
 class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submission) {
     companion object {
         fun newInstance(): DiagnosisSubmissionFragment {
