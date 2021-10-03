@@ -16,11 +16,11 @@ data class TemporaryExposureKey(
     @SerialName("rollingPeriod")
     val rollingPeriod: Int,
 
+    @SerialName("reportType")
+    val reportType: Int,
+
     @SerialName("transmissionRisk")
     val transmissionRisk: Int = -1,
-
-    @SerialName("reportType")
-    val reportType: Int = ReportType.UNKNOWN,
 
     @SerialName("daysSinceOnsetOfSymptoms")
     val daysSinceOnsetOfSymptoms: Int = -1,

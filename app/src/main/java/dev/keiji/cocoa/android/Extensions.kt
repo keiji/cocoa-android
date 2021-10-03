@@ -18,8 +18,10 @@ fun Date.toEnTimeWindow(): Long {
     return this.time / 1000 / TIME_WINDOW_INTERVAL
 }
 
-fun NativeTemporaryExposureKey.toEntity(): TemporaryExposureKey = TemporaryExposureKey(
-    key = com.google.common.io.BaseEncoding.base64().encode(keyData),
-    rollingStartNumber = rollingStartIntervalNumber,
-    rollingPeriod = rollingPeriod
-)
+fun NativeTemporaryExposureKey.toEntity(reportType: Int): TemporaryExposureKey =
+    TemporaryExposureKey(
+        key = BaseEncoding.base64().encode(keyData),
+        rollingStartNumber = rollingStartIntervalNumber,
+        rollingPeriod = rollingPeriod,
+        reportType = reportType
+    )

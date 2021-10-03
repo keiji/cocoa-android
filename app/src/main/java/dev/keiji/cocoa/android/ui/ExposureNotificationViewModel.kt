@@ -52,7 +52,7 @@ class ExposureNotificationViewModel @Inject constructor(
         viewModelScope.launch {
             _temporaryExposureKey.value =
                 exposureNotificationWrapper.getTemporaryExposureKeyHistory(activity)
-                    ?.map { it.toEntity() }
+                    ?.map { it.toEntity(reportType) }
         }
     }
 }
