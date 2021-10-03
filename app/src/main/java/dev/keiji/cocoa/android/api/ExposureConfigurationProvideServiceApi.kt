@@ -7,39 +7,42 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.BuildConfig
 import dev.keiji.cocoa.android.DefaultInterceptorOkHttpClient
-import dev.keiji.cocoa.android.entity.DiagnosisKeysEntry
+import dev.keiji.cocoa.android.entity.ExposureConfiguration
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.http.Path
 import retrofit2.http.GET
-
+import retrofit2.http.Path
 import javax.inject.Singleton
 
-interface DiagnosisKeyListProvideServiceApi {
-    @GET("diagnosis_keys/{clusterId}/list.json")
-    suspend fun getList(
-        @Path("clusterId") clusterId: String,
-    ): List<DiagnosisKeysEntry?>
+interface ExposureConfigurationProvideServiceApi {
+    @GET("exposure_configuration.json")
+    suspend fun getConfiguration(
+    ): ExposureConfiguration?
+
+    @GET("{slot}/exposure_configuration.json")
+    suspend fun getConfiguration(
+        @Path("slot") slot: String,
+    ): ExposureConfiguration?
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DiagnosisKeyListProvideServiceApiModule {
+object ExposureConfigurationProvideServiceApiModule {
 
     @Singleton
     @Provides
-    fun provideDiagnosisKeyListProvideServiceApi(
+    fun provideExposureConfigurationProvideServiceApi(
         @DefaultInterceptorOkHttpClient okHttpClient: OkHttpClient
-    ): DiagnosisKeyListProvideServiceApi {
+    ): ExposureConfigurationProvideServiceApi {
         val contentType = MediaType.parse("application/json")!!
 
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(BuildConfig.DIAGNOSIS_KEY_API_ENDPOINT)
+            .baseUrl(BuildConfig.EXPOSURE_CONFIGURATION_API_ENDPOINT)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .build()
-            .create(DiagnosisKeyListProvideServiceApi::class.java)
+            .create(ExposureConfigurationProvideServiceApi::class.java)
     }
 }

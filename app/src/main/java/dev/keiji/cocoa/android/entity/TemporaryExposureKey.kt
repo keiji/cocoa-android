@@ -1,5 +1,6 @@
 package dev.keiji.cocoa.android.entity
 
+import com.google.android.gms.nearby.exposurenotification.ReportType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -9,9 +10,6 @@ data class TemporaryExposureKey(
     @SerialName("key")
     val key: String,
 
-    @SerialName("reportType")
-    val reportType: Int,
-
     @SerialName("rollingStartNumber")
     val rollingStartNumber: Int,
 
@@ -20,6 +18,9 @@ data class TemporaryExposureKey(
 
     @SerialName("transmissionRisk")
     val transmissionRisk: Int = -1,
+
+    @SerialName("reportType")
+    val reportType: Int = ReportType.UNKNOWN,
 
     @SerialName("daysSinceOnsetOfSymptoms")
     val daysSinceOnsetOfSymptoms: Int = -1,

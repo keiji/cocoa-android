@@ -16,7 +16,7 @@ import com.google.android.gms.nearby.exposurenotification.ExposureNotificationSt
 import com.google.android.gms.nearby.exposurenotification.ExposureSummary
 import com.google.android.gms.nearby.exposurenotification.ExposureWindow
 import com.google.android.gms.nearby.exposurenotification.PackageConfiguration
-import com.google.android.gms.nearby.exposurenotification.TemporaryExposureKey
+import com.google.android.gms.nearby.exposurenotification.TemporaryExposureKey as NativeTemporaryExposureKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -102,7 +102,7 @@ class ExposureNotificationWrapper(applicationContext: Context) {
     suspend fun getExposureInformation(token: String): List<ExposureInformation> =
         exposureNotificationClient.getExposureInformation(token).await()
 
-    suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey>? {
+    suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<NativeTemporaryExposureKey>? {
         try {
             return exposureNotificationClient.temporaryExposureKeyHistory.await()
         } catch (exception: ApiException) {

@@ -42,6 +42,22 @@ android {
             diagnosisSubmissionApiEndpoint
         )
 
+        val diagnosisKeyApiEndpoint =
+            props?.getProperty("DIAGNOSIS_KEY_API_ENDPOINT") ?: "\"\""
+        buildConfigField(
+            "String",
+            "DIAGNOSIS_KEY_API_ENDPOINT",
+            diagnosisKeyApiEndpoint
+        )
+
+        val exposureConfigurationApiEndpoint =
+            props?.getProperty("EXPOSURE_CONFIGURATION_API_ENDPOINT") ?: "\"\""
+        buildConfigField(
+            "String",
+            "EXPOSURE_CONFIGURATION_API_ENDPOINT",
+            exposureConfigurationApiEndpoint
+        )
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -58,10 +74,28 @@ android {
         jvmTarget = "1.8"
     }
 
+    flavorDimensions.add("apiVersion")
+    productFlavors {
+        create("legacyV1") {
+            dimension = "apiVersion"
+            buildConfigField(
+                "Boolean",
+                "USE_EXPOSURE_WINDOW_MODE",
+                "false"
+            )
+        }
+        create("exposureWindow") {
+            dimension = "apiVersion"
+            buildConfigField(
+                "Boolean",
+                "USE_EXPOSURE_WINDOW_MODE",
+                "true"
+            )
+        }
+    }
+
     buildTypes {
-
         debug {
-
             buildConfigField(
                 "Long",
                 "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",
@@ -95,11 +129,15 @@ android {
 }
 
 dependencies {
-    implementation(fileTree(mapOf(
-        "dir" to "libs",
-        "include" to listOf("*.aar", "*.jar"),
-        "exclude" to listOf<String>()
-    )))
+    implementation(
+        fileTree(
+            mapOf(
+                "dir" to "libs",
+                "include" to listOf("*.aar", "*.jar"),
+                "exclude" to listOf<String>()
+            )
+        )
+    )
 
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
