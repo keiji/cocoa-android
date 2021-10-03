@@ -13,7 +13,7 @@ data class TemporaryExposureKey(
     val reportType: Int,
 
     @SerialName("rollingStartNumber")
-    val rollingStartNumber: Long,
+    val rollingStartNumber: Int,
 
     @SerialName("rollingPeriod")
     val rollingPeriod: Int,

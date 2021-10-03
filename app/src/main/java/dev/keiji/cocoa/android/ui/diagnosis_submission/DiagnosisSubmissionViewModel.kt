@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.keiji.cocoa.android.api.DiagnosisSubmissionRequest
 import dev.keiji.cocoa.android.api.DiagnosisSubmissionServiceApi
-import dev.keiji.cocoa.android.repository.TemporaryExposureKeyRepository
+import dev.keiji.cocoa.android.entity.TemporaryExposureKey
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
@@ -15,7 +15,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DiagnosisSubmissionViewModel @Inject constructor(
-    private val temporaryExposureKeyRepository: TemporaryExposureKeyRepository,
     private val diagnosisSubmissionServiceApi: DiagnosisSubmissionServiceApi,
 ) : ViewModel() {
     companion object {
@@ -42,7 +41,7 @@ class DiagnosisSubmissionViewModel @Inject constructor(
         _symptomOnsetDate.value = calendar
     }
 
-    fun submit() {
+    fun submit(temporaryExposureKeyList: List<TemporaryExposureKey>) {
         Timber.d("ProcessNumber ${processNumber.value ?: "null"}")
 
         val symptomState = symptomState.value
@@ -62,8 +61,7 @@ class DiagnosisSubmissionViewModel @Inject constructor(
             return
         }
 
-        val teks = temporaryExposureKeyRepository.getTemporaryExposureKeyList()
-        if (teks.isEmpty()) {
+        if (temporaryExposureKeyList.isEmpty()) {
             Timber.w("TemporaryExposureKeys is empty.")
         }
 
@@ -71,7 +69,7 @@ class DiagnosisSubmissionViewModel @Inject constructor(
         val request = DiagnosisSubmissionRequest(
             idempotencyKey,
             symptomOnsetDate.time,
-            teks
+            temporaryExposureKeyList
         )
 
         Timber.d(request.toString())

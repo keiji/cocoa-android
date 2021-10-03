@@ -95,7 +95,11 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":exposure-notification")))
+    implementation(fileTree(mapOf(
+        "dir" to "libs",
+        "include" to listOf("*.aar", "*.jar"),
+        "exclude" to listOf<String>()
+    )))
 
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
@@ -135,6 +139,9 @@ dependencies {
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
 
     implementation("com.google.guava:guava:31.0.1-android")
+
+    implementation("com.google.android.gms:play-services-base:17.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

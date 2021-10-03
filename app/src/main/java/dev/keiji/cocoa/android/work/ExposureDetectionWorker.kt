@@ -6,6 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import dev.keiji.cocoa.android.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.api.DiagnosisKeyFileProvideServiceApi
 import dev.keiji.cocoa.android.api.DiagnosisKeyListProvideServiceApi
 import timber.log.Timber

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.R
-import dev.keiji.cocoa.android.exposure_notiffication.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.ExposureNotificationWrapper
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -37,6 +37,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         when (requestCode) {
             ExposureNotificationWrapper.REQUEST_EXPOSURE_NOTIFICATION_START -> {
                 viewModel.start(this)
+            }
+            ExposureNotificationWrapper.REQUEST_TEMPORARY_EXPOSURE_KEY_HISTORY -> {
+                viewModel.getTemporaryExposureKeyHistory(this)
             }
         }
     }

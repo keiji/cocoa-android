@@ -40,15 +40,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.nearby.exposurenotification.ReportType
+import com.google.android.gms.nearby.exposurenotification.ReportType.*
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.R
 import dev.keiji.cocoa.android.databinding.FragmentDiagnosisSubmissionBinding
+import dev.keiji.cocoa.android.ui.ExposureNotificationViewModel
 import java.util.*
 
 @AndroidEntryPoint
@@ -64,6 +68,7 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
         }
     }
 
+    private val exposureNotificationViewModel: ExposureNotificationViewModel by activityViewModels()
     private val viewModel: DiagnosisSubmissionViewModel by viewModels()
     private var binding: FragmentDiagnosisSubmissionBinding? = null
 
@@ -83,11 +88,19 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                     }
                     composable("submission") {
                         Submission() {
-                            viewModel.submit()
+                            exposureNotificationViewModel.getTemporaryExposureKeyHistory(
+                                requireActivity(),
+                                CONFIRMED_TEST
+                            )
                         }
                     }
                 }
             }
+        }
+
+        exposureNotificationViewModel.temporaryExposureKey.observe(viewLifecycleOwner) {
+            it ?: return@observe
+            viewModel.submit(it)
         }
     }
 
@@ -300,7 +313,8 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
         )
         Spacer(Modifier.height(8.dp))
         TextField(
-            value = viewModel.symptomOnsetDate.observeAsState().value?.let { convertToString(it) } ?: "",
+            value = viewModel.symptomOnsetDate.observeAsState().value?.let { convertToString(it) }
+                ?: "",
             onValueChange = {},
             modifier = Modifier.onFocusChanged { focusState ->
                 if (focusState.isFocused) {
