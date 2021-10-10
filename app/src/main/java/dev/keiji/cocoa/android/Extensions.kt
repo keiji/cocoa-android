@@ -1,13 +1,14 @@
 package dev.keiji.cocoa.android
 
-import com.google.common.io.BaseEncoding
 import dev.keiji.cocoa.android.entity.TemporaryExposureKey
+import dev.keiji.util.Base64
 import java.text.SimpleDateFormat
 import java.util.*
 
 import com.google.android.gms.nearby.exposurenotification.TemporaryExposureKey as NativeTemporaryExposureKey
 
 private const val TIME_WINDOW_INTERVAL: Long = 60 * 10
+
 
 private const val RFC3339Format = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
 
@@ -20,7 +21,7 @@ fun Date.toEnTimeWindow(): Long {
 
 fun NativeTemporaryExposureKey.toEntity(reportType: Int): TemporaryExposureKey =
     TemporaryExposureKey(
-        key = BaseEncoding.base64().encode(keyData),
+        key = Base64.encode(keyData),
         rollingStartNumber = rollingStartIntervalNumber,
         rollingPeriod = rollingPeriod,
         reportType = reportType

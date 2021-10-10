@@ -176,10 +176,10 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
 
-    implementation("com.google.guava:guava:31.0.1-android")
-
     implementation("com.google.android.gms:play-services-base:17.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
+
+    implementation("dev.keiji.rfc4648:rfc4648:0.8.0")
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
