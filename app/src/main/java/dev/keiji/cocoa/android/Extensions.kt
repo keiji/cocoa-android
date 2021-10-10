@@ -9,7 +9,6 @@ import com.google.android.gms.nearby.exposurenotification.TemporaryExposureKey a
 
 private const val TIME_WINDOW_INTERVAL: Long = 60 * 10
 
-
 private const val RFC3339Format = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
 
 fun Date.toRFC3339Format(): String =
