@@ -1,8 +1,10 @@
 package dev.keiji.cocoa.android.entity
 
-import com.google.android.gms.nearby.exposurenotification.ReportType
+import dev.keiji.util.Base64
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
+import com.google.android.gms.nearby.exposurenotification.TemporaryExposureKey as NativeTemporaryExposureKey
 
 @Serializable
 data class TemporaryExposureKey(
@@ -27,4 +29,14 @@ data class TemporaryExposureKey(
 
     @SerialName("createdAt")
     val createdAt: Long = -1,
-)
+) {
+    constructor(
+        temporaryExposureKey: NativeTemporaryExposureKey,
+        reportType: Int,
+    ) : this(
+        key = Base64.encode(temporaryExposureKey.keyData),
+        rollingStartNumber = temporaryExposureKey.rollingStartIntervalNumber,
+        rollingPeriod = temporaryExposureKey.rollingPeriod,
+        reportType = reportType,
+    )
+}

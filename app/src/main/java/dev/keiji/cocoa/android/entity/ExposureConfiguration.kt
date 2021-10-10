@@ -5,6 +5,7 @@ import com.google.android.gms.nearby.exposurenotification.Infectiousness
 import com.google.android.gms.nearby.exposurenotification.ReportType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 import com.google.android.gms.nearby.exposurenotification.DailySummariesConfig as NativeDailySummariesConfig
 import com.google.android.gms.nearby.exposurenotification.ExposureConfiguration as NativeExposureConfiguration
 
@@ -18,6 +19,12 @@ data class ExposureConfiguration(
 
     @SerialName("google_daily_summaries_config")
     val dailySummaryConfig: DailySummariesConfig = DailySummariesConfig(),
+
+    @SerialName("apple_exposure_config_v1")
+    var appleExposureConfigV1: JsonObject? = null,
+
+    @SerialName("apple_exposure_config_v2")
+    var appleExposureConfigV2: JsonObject? = null,
 ) {
 
     @Serializable
@@ -129,35 +136,69 @@ data class ExposureConfiguration(
         val daysSinceExposureThreshold: Int = 0,
 
         @SerialName("infectiousness_weights")
-        val infectiousnessWeights: Map<Int, Double> = mapOf(
-            Infectiousness.HIGH to 1.0,
-            Infectiousness.STANDARD to 1.0,
+        val infectiousnessWeights: Map<String, Double> = mapOf(
+            getInfectiousnessName(Infectiousness.HIGH) to 1.0,
+            getInfectiousnessName(Infectiousness.STANDARD) to 1.0,
         ),
 
         @SerialName("minimum_window_score")
         val minimumWindowScore: Double = 0.0,
 
         @SerialName("report_type_weights")
-        val reportTypeWeights: Map<Int, Double> = mapOf(
-            ReportType.CONFIRMED_CLINICAL_DIAGNOSIS to 1.0,
-            ReportType.CONFIRMED_TEST to 1.0,
-            ReportType.SELF_REPORT to 1.0,
-            ReportType.RECURSIVE to 1.0,
+        val reportTypeWeights: Map<String, Double> = mapOf(
+            getReportTypeName(ReportType.CONFIRMED_CLINICAL_DIAGNOSIS) to 1.0,
+            getReportTypeName(ReportType.CONFIRMED_TEST) to 1.0,
+            getReportTypeName(ReportType.SELF_REPORT) to 1.0,
+            getReportTypeName(ReportType.RECURSIVE) to 1.0,
         ),
     ) {
+        companion object {
+            fun getReportTypeName(reportTypeValue: Int): String =
+                when (reportTypeValue) {
+                    ReportType.CONFIRMED_TEST -> "ConfirmedTest"
+                    ReportType.CONFIRMED_CLINICAL_DIAGNOSIS -> "ConfirmedClinicalDiagnosis"
+                    ReportType.SELF_REPORT -> "SelfReport"
+                    ReportType.RECURSIVE -> "Recursive"
+                    else -> "Unknown"
+                }
+
+            fun getReportTypeValue(reportTypeName: String): Int =
+                when (reportTypeName) {
+                    "ConfirmedTest" -> ReportType.CONFIRMED_TEST
+                    "ConfirmedClinicalDiagnosis" -> ReportType.CONFIRMED_CLINICAL_DIAGNOSIS
+                    "SelfReport" -> ReportType.SELF_REPORT
+                    "Recursive" -> ReportType.RECURSIVE
+                    else -> ReportType.UNKNOWN
+                }
+
+            fun getInfectiousnessName(infectiousnessValue: Int): String =
+                when (infectiousnessValue) {
+                    Infectiousness.HIGH -> "High"
+                    Infectiousness.STANDARD -> "Standard"
+                    else -> "None"
+                }
+
+            fun getInfectiousnessValue(infectiousnessName: String): Int =
+                when (infectiousnessName) {
+                    "High" -> Infectiousness.HIGH
+                    "Standard" -> Infectiousness.STANDARD
+                    else -> Infectiousness.NONE
+                }
+        }
+
         fun toNative(): NativeDailySummariesConfig {
             val builder = NativeDailySummariesConfig.DailySummariesConfigBuilder()
                 .setAttenuationBuckets(attenuationBacketThresholdDb, attenuationBucketWeights)
                 .setDaysSinceExposureThreshold(daysSinceExposureThreshold)
                 .setMinimumWindowScore(minimumWindowScore)
 
-            infectiousnessWeights.keys.forEach { infectiousness ->
-                val weight = infectiousnessWeights[infectiousness] ?: return@forEach
-                builder.setInfectiousnessWeight(infectiousness, weight)
+            infectiousnessWeights.keys.forEach { infectiousnessName ->
+                val weight = infectiousnessWeights[infectiousnessName] ?: return@forEach
+                builder.setInfectiousnessWeight(getInfectiousnessValue(infectiousnessName), weight)
             }
             reportTypeWeights.keys.forEach { reportType ->
                 val weight = reportTypeWeights[reportType] ?: return@forEach
-                builder.setReportTypeWeight(reportType, weight)
+                builder.setReportTypeWeight(getReportTypeValue(reportType), weight)
             }
 
             return builder.build()

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.keiji.cocoa.android.BuildConfig
 import dev.keiji.cocoa.android.api.DiagnosisSubmissionRequest
 import dev.keiji.cocoa.android.api.DiagnosisSubmissionServiceApi
 import dev.keiji.cocoa.android.entity.TemporaryExposureKey
@@ -17,10 +18,6 @@ import javax.inject.Inject
 class DiagnosisSubmissionViewModel @Inject constructor(
     private val diagnosisSubmissionServiceApi: DiagnosisSubmissionServiceApi,
 ) : ViewModel() {
-    companion object {
-        private const val CLUSTER_ID = "345678"
-    }
-
     val processNumber: MutableLiveData<String> = MutableLiveData()
 
     private val _symptomState: MutableLiveData<Boolean?> = MutableLiveData()
@@ -76,7 +73,7 @@ class DiagnosisSubmissionViewModel @Inject constructor(
 
         viewModelScope.launch {
             val resultTemporaryExposureKeyList = diagnosisSubmissionServiceApi.submitV3(
-                CLUSTER_ID,
+                BuildConfig.CLUSTER_ID,
                 request
             )
             resultTemporaryExposureKeyList.forEach { tek ->

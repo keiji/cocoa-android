@@ -34,6 +34,14 @@ android {
 
         val props = loadProperties("api-settings.properties")
 
+        val clusterId =
+            props?.getProperty("CLUSTER_ID") ?: "\"\""
+        buildConfigField(
+            "String",
+            "CLUSTER_ID",
+            clusterId
+        )
+
         val diagnosisSubmissionApiEndpoint =
             props?.getProperty("DIAGNOSIS_SUBMISSION_API_ENDPOINT") ?: "\"\""
         buildConfigField(
@@ -56,6 +64,14 @@ android {
             "String",
             "EXPOSURE_CONFIGURATION_URL",
             exposureConfigurationUrl
+        )
+
+        val exposureDataCollectionServiceApiEndpoint =
+            props?.getProperty("EXPOSURE_DATA_COLLECTION_SERVICE_API_ENDPOINT") ?: "\"\""
+        buildConfigField(
+            "String",
+            "EXPOSURE_DATA_COLLECTION_SERVICE_API_ENDPOINT",
+            exposureDataCollectionServiceApiEndpoint
         )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

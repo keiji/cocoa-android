@@ -27,8 +27,6 @@ class ExposureDetectionWorker @AssistedInject constructor(
     private val exposureNotificationWrapper: ExposureNotificationWrapper,
 ) : CoroutineWorker(appContext, workerParams) {
     companion object {
-        private const val CLUSTER_ID = "345678"
-
         private const val DIR_NAME = "diagnosis_keys"
     }
 
@@ -47,10 +45,10 @@ class ExposureDetectionWorker @AssistedInject constructor(
             return Result.failure()
         }
 
-        val outputDir = getOutputDir()
+        val outputDir = File(File(applicationContext.filesDir, DIR_NAME), BuildConfig.CLUSTER_ID)
 
         try {
-            val diagnosisKeyList = diagnosisKeyListProvideServiceApi.getList(CLUSTER_ID)
+            val diagnosisKeyList = diagnosisKeyListProvideServiceApi.getList(BuildConfig.CLUSTER_ID)
             val downloadedFiles = diagnosisKeyList.map { diagnosisKeyEntry ->
                 Timber.d(diagnosisKeyEntry.toString())
                 diagnosisKeyEntry ?: return@map null
@@ -79,8 +77,6 @@ class ExposureDetectionWorker @AssistedInject constructor(
             Timber.d("Starting finished.")
         }
     }
-
-    private fun getOutputDir(): File = File(File(applicationContext.filesDir, DIR_NAME), CLUSTER_ID)
 
     private suspend fun detectExposureExposureWindowMode(downloadedFiles: List<File>) {
         exposureNotificationWrapper.provideDiagnosisKeys(downloadedFiles)

@@ -9,7 +9,6 @@ import com.google.android.gms.nearby.exposurenotification.ReportType.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.keiji.cocoa.android.entity.TemporaryExposureKey
 import dev.keiji.cocoa.android.ExposureNotificationWrapper
-import dev.keiji.cocoa.android.toEntity
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -52,7 +51,7 @@ class ExposureNotificationViewModel @Inject constructor(
         viewModelScope.launch {
             _temporaryExposureKey.value =
                 exposureNotificationWrapper.getTemporaryExposureKeyHistory(activity)
-                    ?.map { it.toEntity(reportType) }
+                    ?.map { tek -> TemporaryExposureKey(tek, reportType) }
         }
     }
 }

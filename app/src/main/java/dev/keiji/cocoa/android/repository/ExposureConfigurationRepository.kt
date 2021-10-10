@@ -38,7 +38,10 @@ class ExposureConfigurationRepository(
 
         return withContext(Dispatchers.IO) {
             FileInputStream(outputFile).bufferedReader().use { reader ->
-                Json.decodeFromString<ExposureConfiguration>(reader.readText())
+                Json.decodeFromString<ExposureConfiguration>(reader.readText()).apply {
+                    appleExposureConfigV1 = null
+                    appleExposureConfigV2 = null
+                }
             }
         }
     }
