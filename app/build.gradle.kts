@@ -50,12 +50,12 @@ android {
             diagnosisKeyApiEndpoint
         )
 
-        val exposureConfigurationApiEndpoint =
-            props?.getProperty("EXPOSURE_CONFIGURATION_API_ENDPOINT") ?: "\"\""
+        val exposureConfigurationUrl =
+            props?.getProperty("EXPOSURE_CONFIGURATION_URL") ?: "\"\""
         buildConfigField(
             "String",
-            "EXPOSURE_CONFIGURATION_API_ENDPOINT",
-            exposureConfigurationApiEndpoint
+            "EXPOSURE_CONFIGURATION_URL",
+            exposureConfigurationUrl
         )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

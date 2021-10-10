@@ -12,15 +12,6 @@ import javax.inject.Singleton
 class ExposureConfigurationRepository(
     private val exposureConfigurationProvideServiceApi: ExposureConfigurationProvideServiceApi
 ) {
-    suspend fun getExposureConfiguration(slot: String): ExposureConfiguration {
-        val exposureConfiguration = exposureConfigurationProvideServiceApi.getConfiguration(slot)
-        if (exposureConfiguration == null) {
-            Timber.w("ExposureConfiguration is null")
-            return ExposureConfiguration()
-        }
-        return exposureConfiguration
-    }
-
     suspend fun getExposureConfiguration(): ExposureConfiguration {
         val exposureConfiguration = exposureConfigurationProvideServiceApi.getConfiguration()
         if (exposureConfiguration == null) {
