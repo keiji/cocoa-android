@@ -9,6 +9,8 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
+val hiltVersion: String by rootProject.extra
+
 fun loadProperties(filename: String): Properties? {
     val file = File(rootProject.rootDir, filename)
     if (!file.exists()) {
@@ -145,6 +147,8 @@ android {
 }
 
 dependencies {
+    val composeVersion = "1.1.0-alpha05"
+
     implementation(
         fileTree(
             mapOf(
@@ -174,18 +178,18 @@ dependencies {
     implementation("com.google.android.material:compose-theme-adapter:1.0.3")
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
 
-    implementation("androidx.compose.compiler:compiler:1.1.0-alpha05")
-    implementation("androidx.compose.runtime:runtime:1.1.0-alpha05")
-    implementation("androidx.compose.runtime:runtime-livedata:1.1.0-alpha05")
-    implementation("androidx.compose.foundation:foundation:1.1.0-alpha05")
-    implementation("androidx.compose.ui:ui:1.1.0-alpha05")
+    implementation("androidx.compose.compiler:compiler:$composeVersion")
+    implementation("androidx.compose.runtime:runtime:$composeVersion")
+    implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
+    implementation("androidx.compose.foundation:foundation:$composeVersion")
+    implementation("androidx.compose.ui:ui:$composeVersion")
 
     api("androidx.navigation:navigation-fragment-ktx:2.3.5")
 
     implementation("com.jakewharton.timber:timber:5.0.1")
 
-    implementation("com.google.dagger:hilt-android:2.38.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
     implementation("androidx.hilt:hilt-work:1.0.0")
     kapt("androidx.hilt:hilt-compiler:1.0.0")
 
