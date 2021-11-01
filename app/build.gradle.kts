@@ -159,7 +159,7 @@ dependencies {
         )
     )
 
-    implementation("androidx.core:core-ktx:1.6.0")
+    implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("androidx.work:work-runtime-ktx:2.7.0")
 
@@ -169,14 +169,14 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
-    implementation("androidx.activity:activity-compose:1.3.1")
+    implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.compose.material:material:1.0.4")
-    implementation("androidx.compose.material:material-icons-extended:1.1.0-alpha06")
+    implementation("androidx.compose.material:material-icons-extended:1.1.0-beta01")
 
     implementation("androidx.compose.ui:ui-tooling:1.0.4")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
     implementation("com.google.android.material:compose-theme-adapter:1.0.4")
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
+    implementation("androidx.navigation:navigation-compose:2.4.0-beta01")
 
     implementation("androidx.compose.compiler:compiler:$composeVersion")
     implementation("androidx.compose.runtime:runtime:$composeVersion")
