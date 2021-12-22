@@ -32,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
@@ -45,7 +46,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.android.gms.nearby.exposurenotification.ReportType
 import com.google.android.gms.nearby.exposurenotification.ReportType.*
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -87,7 +87,7 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                         }
                     }
                     composable("submission") {
-                        Submission() {
+                        Submission(viewModel) {
                             exposureNotificationViewModel.getTemporaryExposureKeyHistory(
                                 requireActivity(),
                                 CONFIRMED_TEST
@@ -110,7 +110,6 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
         binding?.unbind()
     }
 
-    @Preview()
     @Composable
     fun Agreement(onClick: () -> Unit = {}) {
         MdcTheme {
@@ -161,8 +160,14 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
         )
     }
 
+    private val defaultViewModel: DiagnosisSubmissionViewModel
+        get() = viewModel
+
     @Composable
-    fun Submission(onSubmit: () -> Unit = {}) {
+    fun Submission(
+        viewModel: DiagnosisSubmissionViewModel = defaultViewModel,
+        onSubmit: () -> Unit = {}
+    ) {
         MdcTheme {
             Column(
                 modifier = Modifier
@@ -179,7 +184,7 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    AskSymptom()
+                    AskSymptom(viewModel)
 
                     Spacer(Modifier.height(16.dp))
 
@@ -248,7 +253,9 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
     }
 
     private @Composable
-    fun AskSymptom() {
+    fun AskSymptom(
+        viewModel: DiagnosisSubmissionViewModel = defaultViewModel,
+    ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = "次のような症状がありますか？"
@@ -263,7 +270,9 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
         Spacer(Modifier.height(16.dp))
 
         Row() {
-            Row() {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 RadioButton(
                     selected = viewModel.symptomState.observeAsState().value ?: false,
                     onClick = {
@@ -275,7 +284,9 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
 
             Spacer(Modifier.width(16.dp))
 
-            Row() {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 RadioButton(
                     selected = !(viewModel.symptomState.observeAsState().value ?: true),
                     onClick = {
@@ -318,8 +329,7 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
             onValueChange = {},
             modifier = Modifier.onFocusChanged { focusState ->
                 if (focusState.isFocused) {
-                    showDatePicker()
-                    focusManager.clearFocus()
+                    showDatePicker(focusManager)
                 }
             },
         )
@@ -333,10 +343,11 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                 "${calendar.get(Calendar.DAY_OF_MONTH)}"
     }
 
-    private fun showDatePicker() {
+    private fun showDatePicker(focusManager: FocusManager) {
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
+                .setSelection(viewModel.symptomOnsetDate.value?.timeInMillis)
                 .build()
         datePicker.addOnPositiveButtonClickListener {
             val ticks = datePicker.selection ?: return@addOnPositiveButtonClickListener
@@ -344,6 +355,9 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                 timeInMillis = ticks
             }
             viewModel.setSymptomOnsetDate(calendar)
+        }
+        datePicker.addOnDismissListener {
+            focusManager.clearFocus()
         }
         datePicker.show(childFragmentManager, "DatePicker")
     }
