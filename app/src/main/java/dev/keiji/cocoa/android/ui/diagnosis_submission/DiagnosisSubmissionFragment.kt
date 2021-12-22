@@ -66,6 +66,14 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                 arguments = args
             }
         }
+
+        private fun convertToString(calendar: Calendar): String {
+            return "${calendar.get(Calendar.YEAR)}" +
+                    "/" +
+                    "${calendar.get(Calendar.MONTH) + 1}" +
+                    "/" +
+                    "${calendar.get(Calendar.DAY_OF_MONTH)}"
+        }
     }
 
     private val exposureNotificationViewModel: ExposureNotificationViewModel by activityViewModels()
@@ -333,14 +341,6 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                 }
             },
         )
-    }
-
-    private fun convertToString(calendar: Calendar): String {
-        return "${calendar.get(Calendar.YEAR)}" +
-                "/" +
-                "${calendar.get(Calendar.MONTH) + 1}" +
-                "/" +
-                "${calendar.get(Calendar.DAY_OF_MONTH)}"
     }
 
     private fun showDatePicker(focusManager: FocusManager) {
