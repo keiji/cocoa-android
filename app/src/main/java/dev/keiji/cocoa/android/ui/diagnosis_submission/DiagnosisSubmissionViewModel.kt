@@ -5,19 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.keiji.cocoa.android.BuildConfig
 import dev.keiji.cocoa.android.api.DiagnosisSubmissionRequest
 import dev.keiji.cocoa.android.api.DiagnosisSubmissionServiceApi
 import dev.keiji.cocoa.android.entity.TemporaryExposureKey
+import dev.keiji.cocoa.android.regions
+import dev.keiji.cocoa.android.subregions
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
-
-private fun regions(): List<String> {
-    return BuildConfig.REGION_IDs.split(",");
-}
 
 @HiltViewModel
 class DiagnosisSubmissionViewModel @Inject constructor(
@@ -73,6 +70,7 @@ class DiagnosisSubmissionViewModel @Inject constructor(
         val request = DiagnosisSubmissionRequest(
             idempotencyKey,
             regions(),
+            subregions(),
             symptomOnsetDate.time,
             temporaryExposureKeyList
         )

@@ -44,6 +44,14 @@ android {
             regionIds
         )
 
+        val subregionIds =
+            props?.getProperty("SUBREGION_IDs") ?: "\"\""
+        buildConfigField(
+            "String",
+            "SUBREGION_IDs",
+            subregionIds
+        )
+
         val diagnosisSubmissionApiEndpoint =
             props?.getProperty("DIAGNOSIS_SUBMISSION_API_ENDPOINT") ?: "\"\""
         buildConfigField(

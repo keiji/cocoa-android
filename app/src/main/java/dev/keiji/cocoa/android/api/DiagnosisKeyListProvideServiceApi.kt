@@ -22,6 +22,12 @@ interface DiagnosisKeyListProvideServiceApi {
     suspend fun getList(
         @Path("region") region: String,
     ): List<DiagnosisKeysEntry?>
+
+    @GET("diagnosis_keys/{region}/{subregion}/list.json")
+    suspend fun getList(
+        @Path("region") region: String,
+        @Path("subregion") subregion: String,
+    ): List<DiagnosisKeysEntry?>
 }
 
 @Module
