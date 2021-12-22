@@ -9,7 +9,7 @@ import com.google.android.gms.nearby.exposurenotification.TemporaryExposureKey a
 @Serializable
 data class TemporaryExposureKey(
 
-    @SerialName("key")
+    @SerialName("keyData")
     val key: String,
 
     @SerialName("rollingStartNumber")

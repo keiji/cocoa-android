@@ -34,7 +34,7 @@ data class DiagnosisSubmissionRequest constructor(
     @SerialName("idempotencyKey") val idempotencyKey: String,
     @SerialName("regions") val regions: List<String>,
     @SerialName("symptomOnsetDate") val symptomOnsetDate: String,
-    @SerialName("temporaryExposureKeys") val temporaryExposureKeys: List<TemporaryExposureKey>
+    @SerialName("keys") val temporaryExposureKeys: List<TemporaryExposureKey>
 ) {
     constructor(
         idempotencyKey: String,
