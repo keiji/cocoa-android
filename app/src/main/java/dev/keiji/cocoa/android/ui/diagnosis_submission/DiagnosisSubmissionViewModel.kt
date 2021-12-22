@@ -23,7 +23,10 @@ private fun regions(): List<String> {
 class DiagnosisSubmissionViewModel @Inject constructor(
     private val diagnosisSubmissionServiceApi: DiagnosisSubmissionServiceApi,
 ) : ViewModel() {
+
     val processNumber: MutableLiveData<String> = MutableLiveData()
+
+    private val idempotencyKey = UUID.randomUUID().toString()
 
     private val _symptomState: MutableLiveData<Boolean?> = MutableLiveData()
     val symptomState: LiveData<Boolean?>
@@ -67,7 +70,6 @@ class DiagnosisSubmissionViewModel @Inject constructor(
             Timber.w("TemporaryExposureKeys is empty.")
         }
 
-        val idempotencyKey = UUID.randomUUID().toString()
         val request = DiagnosisSubmissionRequest(
             idempotencyKey,
             regions(),
