@@ -10,11 +10,12 @@ import dev.keiji.cocoa.android.api.DiagnosisSubmissionRequest
 import dev.keiji.cocoa.android.api.DiagnosisSubmissionServiceApi
 import dev.keiji.cocoa.android.entity.TemporaryExposureKey
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-private fun regions() : List<String> {
+private fun regions(): List<String> {
     return BuildConfig.REGION_IDs.split(",");
 }
 
@@ -77,11 +78,15 @@ class DiagnosisSubmissionViewModel @Inject constructor(
         Timber.d(request.toString())
 
         viewModelScope.launch {
-            val resultTemporaryExposureKeyList = diagnosisSubmissionServiceApi.submitV3(
-                request
-            )
-            resultTemporaryExposureKeyList.forEach { tek ->
-                Timber.d(tek.toString())
+            try {
+                val resultTemporaryExposureKeyList = diagnosisSubmissionServiceApi.submitV3(
+                    request
+                )
+                resultTemporaryExposureKeyList.forEach { tek ->
+                    Timber.d(tek.toString())
+                }
+            } catch (exception: HttpException) {
+                Timber.e("HttpException occurred.", exception)
             }
         }
     }
