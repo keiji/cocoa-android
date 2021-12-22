@@ -85,7 +85,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0-alpha06"
+        kotlinCompilerExtensionVersion = "1.1.0-rc01"
     }
 
     kotlinOptions {
@@ -147,7 +147,7 @@ android {
 }
 
 dependencies {
-    val composeVersion = "1.1.0-rc02"
+    val composeVersion = "1.1.0-rc01"
 
     implementation(
         fileTree(
