@@ -23,9 +23,8 @@ import java.util.*
 import javax.inject.Singleton
 
 interface DiagnosisSubmissionServiceApi {
-    @PUT("diagnosis_keys/{clusterId}/diagnosis-keys.json")
+    @PUT("diagnosis_keys/diagnosis-keys.json")
     suspend fun submitV3(
-        @Path("clusterId") clusterId: String,
         @Body diagnosisSubmissionRequest: DiagnosisSubmissionRequest
     ): List<TemporaryExposureKey?>
 }
@@ -33,14 +32,16 @@ interface DiagnosisSubmissionServiceApi {
 @Serializable
 data class DiagnosisSubmissionRequest constructor(
     @SerialName("idempotencyKey") val idempotencyKey: String,
+    @SerialName("regions") val regions: List<String>,
     @SerialName("symptomOnsetDate") val symptomOnsetDate: String,
     @SerialName("temporaryExposureKeys") val temporaryExposureKeys: List<TemporaryExposureKey>
 ) {
     constructor(
         idempotencyKey: String,
+        regions: List<String>,
         symptomOnsetDate: Date,
         temporaryExposureKeys: List<TemporaryExposureKey>
-    ) : this(idempotencyKey, symptomOnsetDate.toRFC3339Format(), temporaryExposureKeys)
+    ) : this(idempotencyKey, regions, symptomOnsetDate.toRFC3339Format(), temporaryExposureKeys)
 }
 
 @Module

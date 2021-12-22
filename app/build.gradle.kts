@@ -36,12 +36,12 @@ android {
 
         val props = loadProperties("api-settings.properties")
 
-        val clusterId =
-            props?.getProperty("CLUSTER_ID") ?: "\"\""
+        val regionIds =
+            props?.getProperty("REGION_IDs") ?: "\"\""
         buildConfigField(
             "String",
-            "CLUSTER_ID",
-            clusterId
+            "REGION_IDs",
+            regionIds
         )
 
         val diagnosisSubmissionApiEndpoint =

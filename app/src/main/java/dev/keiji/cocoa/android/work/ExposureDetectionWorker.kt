@@ -17,6 +17,10 @@ import java.io.File
 import java.io.IOException
 import java.util.*
 
+private fun regions() : List<String> {
+    return BuildConfig.REGION_IDs.split(",");
+}
+
 @HiltWorker
 class ExposureDetectionWorker @AssistedInject constructor(
     @Assisted appContext: Context,
@@ -45,28 +49,11 @@ class ExposureDetectionWorker @AssistedInject constructor(
             return Result.failure()
         }
 
-        val outputDir = File(File(applicationContext.filesDir, DIR_NAME), BuildConfig.CLUSTER_ID)
-
         try {
-            val diagnosisKeyList = diagnosisKeyListProvideServiceApi.getList(BuildConfig.CLUSTER_ID)
-            val downloadedFiles = diagnosisKeyList.map { diagnosisKeyEntry ->
-                Timber.d(diagnosisKeyEntry.toString())
-                diagnosisKeyEntry ?: return@map null
-
-                return@map diagnosisKeyFileProvideServiceApi.getFile(diagnosisKeyEntry, outputDir)
-            }.filterNotNull()
-
-            if (BuildConfig.USE_EXPOSURE_WINDOW_MODE) {
-                detectExposureExposureWindowMode(downloadedFiles)
-            } else {
-                detectExposureLegacyV1(downloadedFiles)
+            regions().forEach { region ->
+                detectExposureExposure(region)
             }
-
-            downloadedFiles.forEach { file ->
-                file.delete()
-            }
-
-            return Result.success()
+            return Result.success();
         } catch (e: IOException) {
             Timber.e(e.javaClass.simpleName, e)
             return Result.retry()
@@ -75,6 +62,28 @@ class ExposureDetectionWorker @AssistedInject constructor(
             return Result.failure()
         } finally {
             Timber.d("Starting finished.")
+        }
+    }
+
+    private suspend fun detectExposureExposure(region: String) {
+        val outputDir = File(File(applicationContext.filesDir, DIR_NAME), region)
+
+        val diagnosisKeyList = diagnosisKeyListProvideServiceApi.getList(region)
+        val downloadedFiles = diagnosisKeyList.map { diagnosisKeyEntry ->
+            Timber.d(diagnosisKeyEntry.toString())
+            diagnosisKeyEntry ?: return@map null
+
+            return@map diagnosisKeyFileProvideServiceApi.getFile(diagnosisKeyEntry, outputDir)
+        }.filterNotNull()
+
+        if (BuildConfig.USE_EXPOSURE_WINDOW_MODE) {
+            detectExposureExposureWindowMode(downloadedFiles)
+        } else {
+            detectExposureLegacyV1(downloadedFiles)
+        }
+
+        downloadedFiles.forEach { file ->
+            file.delete()
         }
     }
 

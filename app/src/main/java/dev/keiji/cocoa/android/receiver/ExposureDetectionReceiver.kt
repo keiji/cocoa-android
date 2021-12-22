@@ -29,6 +29,10 @@ import dev.keiji.cocoa.android.entity.ExposureWindow
 import dev.keiji.cocoa.android.repository.ExposureConfigurationRepository
 import timber.log.Timber
 
+private fun regions() : List<String> {
+    return BuildConfig.REGION_IDs.split(",");
+}
+
 @AndroidEntryPoint
 class ExposureDetectionReceiver : BroadcastReceiver() {
 
@@ -99,18 +103,20 @@ class NoExposureDetectionWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         try {
             val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
-            exposureDataCollectionServiceApi.submit(
-                BuildConfig.CLUSTER_ID,
-                ExposureDataRequest(
-                    device = Build.MODEL,
-                    enVersion = exposureNotificationWrapper.getVersion().toString(),
-                    exposureConfiguration = exposureConfiguration,
-                    null,
-                    null,
-                    null,
-                    null
+            regions().forEach { region ->
+                exposureDataCollectionServiceApi.submit(
+                    region,
+                    ExposureDataRequest(
+                        device = Build.MODEL,
+                        enVersion = exposureNotificationWrapper.getVersion().toString(),
+                        exposureConfiguration = exposureConfiguration,
+                        null,
+                        null,
+                        null,
+                        null
+                    )
                 )
-            )
+            }
         } catch (exception: Exception) {
             Timber.e(exception)
         }
@@ -154,18 +160,20 @@ class ExposureDetectionV1Worker @AssistedInject constructor(
             val exposureInformationList = exposureNotificationWrapper.getExposureInformation(token)
                 .map { ei -> ExposureInformation(ei) }
 
-            exposureDataCollectionServiceApi.submit(
-                BuildConfig.CLUSTER_ID,
-                ExposureDataRequest(
-                    device = Build.MODEL,
-                    enVersion = exposureNotificationWrapper.getVersion().toString(),
-                    exposureConfiguration = exposureConfiguration,
-                    exposureSummary = ExposureSummary(exposureSummary),
-                    exposureInformationList = exposureInformationList,
-                    dailySummaryList = null,
-                    exposureWindowList = null
+            regions().forEach { region ->
+                exposureDataCollectionServiceApi.submit(
+                    region,
+                    ExposureDataRequest(
+                        device = Build.MODEL,
+                        enVersion = exposureNotificationWrapper.getVersion().toString(),
+                        exposureConfiguration = exposureConfiguration,
+                        exposureSummary = ExposureSummary(exposureSummary),
+                        exposureInformationList = exposureInformationList,
+                        dailySummaryList = null,
+                        exposureWindowList = null
+                    )
                 )
-            )
+            }
         } catch (exception: Exception) {
             Timber.e(exception)
         }
@@ -203,18 +211,20 @@ class ExposureDetectionV2Worker @AssistedInject constructor(
                 exposureNotificationWrapper.getExposureWindow()
                     .map { ew -> ExposureWindow(ew) }
 
-            exposureDataCollectionServiceApi.submit(
-                BuildConfig.CLUSTER_ID,
-                ExposureDataRequest(
-                    device = Build.MODEL,
-                    enVersion = exposureNotificationWrapper.getVersion().toString(),
-                    exposureConfiguration = exposureConfiguration,
-                    exposureSummary = null,
-                    exposureInformationList = null,
-                    dailySummaryList = dailySummary,
-                    exposureWindowList = exposureWindowList
+            regions().forEach { region ->
+                exposureDataCollectionServiceApi.submit(
+                    region,
+                    ExposureDataRequest(
+                        device = Build.MODEL,
+                        enVersion = exposureNotificationWrapper.getVersion().toString(),
+                        exposureConfiguration = exposureConfiguration,
+                        exposureSummary = null,
+                        exposureInformationList = null,
+                        dailySummaryList = dailySummary,
+                        exposureWindowList = exposureWindowList
+                    )
                 )
-            )
+            }
         } catch (exception: Exception) {
             Timber.e(exception)
         }

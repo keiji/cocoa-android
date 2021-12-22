@@ -25,9 +25,9 @@ import retrofit2.http.Body
 import javax.inject.Singleton
 
 interface ExposureDataCollectionServiceApi {
-    @PUT("exposure_data/{clusterId}")
+    @PUT("exposure_data/{region}")
     suspend fun submit(
-        @Path("clusterId") clusterId: String,
+        @Path("region") region: String,
         @Body exposureDataRequest: ExposureDataRequest
     ): ExposureDataResponse
 }

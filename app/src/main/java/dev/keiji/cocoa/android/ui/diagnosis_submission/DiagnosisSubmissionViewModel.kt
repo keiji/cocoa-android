@@ -14,6 +14,10 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
+private fun regions() : List<String> {
+    return BuildConfig.REGION_IDs.split(",");
+}
+
 @HiltViewModel
 class DiagnosisSubmissionViewModel @Inject constructor(
     private val diagnosisSubmissionServiceApi: DiagnosisSubmissionServiceApi,
@@ -65,6 +69,7 @@ class DiagnosisSubmissionViewModel @Inject constructor(
         val idempotencyKey = UUID.randomUUID().toString()
         val request = DiagnosisSubmissionRequest(
             idempotencyKey,
+            regions(),
             symptomOnsetDate.time,
             temporaryExposureKeyList
         )
@@ -73,7 +78,6 @@ class DiagnosisSubmissionViewModel @Inject constructor(
 
         viewModelScope.launch {
             val resultTemporaryExposureKeyList = diagnosisSubmissionServiceApi.submitV3(
-                BuildConfig.CLUSTER_ID,
                 request
             )
             resultTemporaryExposureKeyList.forEach { tek ->

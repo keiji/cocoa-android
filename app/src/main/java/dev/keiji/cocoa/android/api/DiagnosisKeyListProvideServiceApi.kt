@@ -18,9 +18,9 @@ import retrofit2.http.GET
 import javax.inject.Singleton
 
 interface DiagnosisKeyListProvideServiceApi {
-    @GET("diagnosis_keys/{clusterId}/list.json")
+    @GET("diagnosis_keys/{region}/list.json")
     suspend fun getList(
-        @Path("clusterId") clusterId: String,
+        @Path("region") region: String,
     ): List<DiagnosisKeysEntry?>
 }
 
