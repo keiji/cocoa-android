@@ -2,7 +2,6 @@ package dev.keiji.cocoa.android
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.nearby.Nearby
@@ -138,7 +137,7 @@ class ExposureNotificationWrapper(applicationContext: Context) {
         try {
             exposureNotificationClient.requestPreAuthorizedTemporaryExposureKeyHistory().await()
         } catch (exception: ApiException) {
-            Log.d(TAG, "${exception.status}")
+            Timber.d("${exception.status}")
 
             if (exception.status.statusCode == CommonStatusCodes.RESOLUTION_REQUIRED) {
                 exception.status.startResolutionForResult(
