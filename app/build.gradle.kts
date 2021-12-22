@@ -147,7 +147,7 @@ android {
 }
 
 dependencies {
-    val composeVersion = "1.1.0-alpha05"
+    val composeVersion = "1.1.0-rc02"
 
     implementation(
         fileTree(
@@ -160,23 +160,23 @@ dependencies {
     )
 
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.3.1")
-    implementation("androidx.work:work-runtime-ktx:2.7.0")
+    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
 
     implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("androidx.compose.material:material:1.0.4")
-    implementation("androidx.compose.material:material-icons-extended:1.1.0-beta01")
+    implementation("androidx.compose.material:material:1.0.5")
+    implementation("androidx.compose.material:material-icons-extended:1.1.0-rc01")
 
-    implementation("androidx.compose.ui:ui-tooling:1.0.4")
+    implementation("androidx.compose.ui:ui-tooling:1.0.5")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
-    implementation("com.google.android.material:compose-theme-adapter:1.0.4")
-    implementation("androidx.navigation:navigation-compose:2.4.0-beta01")
+    implementation("com.google.android.material:compose-theme-adapter:1.1.2")
+    implementation("androidx.navigation:navigation-compose:2.4.0-rc01")
 
     implementation("androidx.compose.compiler:compiler:$composeVersion")
     implementation("androidx.compose.runtime:runtime:$composeVersion")
@@ -196,7 +196,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
 
-    implementation("com.google.android.gms:play-services-base:17.6.0")
+    implementation("com.google.android.gms:play-services-base:18.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
 
     implementation("dev.keiji.rfc4648:rfc4648:1.0.0")
@@ -205,7 +205,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.4")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.5")
 }
 
 // Allow references to generated code
