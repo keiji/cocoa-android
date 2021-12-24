@@ -35,6 +35,7 @@ android {
         versionName = "1.0"
 
         val props = loadProperties("api-settings.properties")
+            ?: loadProperties("api-settings-sample.properties")
 
         val regionIds =
             props?.getProperty("REGION_IDs") ?: "\"\""
@@ -210,7 +211,8 @@ dependencies {
     implementation("dev.keiji.rfc4648:rfc4648:1.0.0")
 
     testImplementation("junit:junit:4.+")
-    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
