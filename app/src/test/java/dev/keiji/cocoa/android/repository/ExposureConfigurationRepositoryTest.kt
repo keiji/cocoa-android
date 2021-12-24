@@ -50,8 +50,7 @@ class ExposureConfigurationRepositoryTest {
     }
 
     @Test
-    fun readStringFromContext_LocalizedString() {
-
+    fun loadExposureConfiguration() {
         val mockExposureConfigurationProvideServiceApi =
             mock<ExposureConfigurationProvideServiceApi> {
                 onBlocking { getConfiguration(any(), any()) } doReturn exposureNotificationFile
