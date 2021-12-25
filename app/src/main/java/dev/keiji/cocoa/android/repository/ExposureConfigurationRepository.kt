@@ -29,33 +29,34 @@ class ExposureConfigurationRepositoryImpl(
         private const val FILENAME = "exposure_configuration.json"
     }
 
-    override suspend fun getExposureConfiguration(url: String): ExposureConfiguration {
-        val outputDir = pathProvider.exposureConfigurationDir()
-        if (!outputDir.exists()) {
-            outputDir.mkdirs()
-        }
-
-        val httpUrl = HttpUrl.parse(url)
-        val outputFile = File(outputDir, FILENAME)
-
-        if (httpUrl != null && !outputFile.exists()) {
-            exposureConfigurationProvideServiceApi.getConfiguration(
-                httpUrl,
-                outputFile
-            )
-        }
-
-        return if (outputFile.exists()) {
-            withContext(Dispatchers.IO) {
-                Json.decodeFromString<ExposureConfiguration>(outputFile.readText()).apply {
-                    appleExposureConfigV1 = null
-                    appleExposureConfigV2 = null
-                }
+    override suspend fun getExposureConfiguration(url: String): ExposureConfiguration =
+        withContext(Dispatchers.Main) {
+            val outputDir = pathProvider.exposureConfigurationDir()
+            if (!outputDir.exists()) {
+                outputDir.mkdirs()
             }
-        } else {
-            ExposureConfiguration()
+
+            val httpUrl = HttpUrl.parse(url)
+            val outputFile = File(outputDir, FILENAME)
+
+            if (httpUrl != null && !outputFile.exists()) {
+                exposureConfigurationProvideServiceApi.getConfiguration(
+                    httpUrl,
+                    outputFile
+                )
+            }
+
+            return@withContext if (outputFile.exists()) {
+                withContext(Dispatchers.IO) {
+                    Json.decodeFromString<ExposureConfiguration>(outputFile.readText()).apply {
+                        appleExposureConfigV1 = null
+                        appleExposureConfigV2 = null
+                    }
+                }
+            } else {
+                ExposureConfiguration()
+            }
         }
-    }
 }
 
 @Module
