@@ -18,9 +18,6 @@ data class TemporaryExposureKey(
     @SerialName("rollingPeriod")
     val rollingPeriod: Int,
 
-    @SerialName("reportType")
-    val reportType: Int,
-
     @SerialName("transmissionRisk")
     val transmissionRisk: Int = -1,
 
@@ -30,13 +27,14 @@ data class TemporaryExposureKey(
     @SerialName("createdAt")
     val createdAt: Long = -1,
 ) {
+    @SerialName("reportType")
+    var reportType: Int = ReportType.UNKNOWN.ordinal
+
     constructor(
-        temporaryExposureKey: NativeTemporaryExposureKey,
-        reportType: Int,
+        temporaryExposureKey: NativeTemporaryExposureKey
     ) : this(
         key = Base64.encode(temporaryExposureKey.keyData),
         rollingStartNumber = temporaryExposureKey.rollingStartIntervalNumber,
         rollingPeriod = temporaryExposureKey.rollingPeriod,
-        reportType = reportType,
     )
 }

@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android
+package dev.keiji.cocoa.android.exposure_notification
 
 import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig.REGION_IDs
 import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig.SUBREGION_IDs

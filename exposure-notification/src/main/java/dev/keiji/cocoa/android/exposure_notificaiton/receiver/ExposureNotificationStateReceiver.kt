@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.google.android.gms.nearby.exposurenotification.ExposureNotificationClient
 import dagger.hilt.android.AndroidEntryPoint
-import dev.keiji.cocoa.android.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.ExposureNotificationWrapper
 import timber.log.Timber
 import javax.inject.Inject
 

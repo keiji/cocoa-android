@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.nearby.exposurenotification.ReportType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.keiji.cocoa.android.exposure_notificaiton.entity.ReportType
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.TemporaryExposureKey
-import dev.keiji.cocoa.android.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.ExposureNotificationWrapper
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -38,7 +38,7 @@ class ExposureNotificationViewModel @Inject constructor(
     val temporaryExposureKey: LiveData<List<TemporaryExposureKey>?>
         get() = _temporaryExposureKey
 
-    private var reportType: Int = ReportType.CONFIRMED_TEST
+    private var reportType: Int = ReportType.CONFIRMED_TEST.ordinal
 
     fun getTemporaryExposureKeyHistory(activity: Activity) =
         getTemporaryExposureKeyHistory(activity, reportType)
@@ -51,7 +51,6 @@ class ExposureNotificationViewModel @Inject constructor(
         viewModelScope.launch {
             _temporaryExposureKey.value =
                 exposureNotificationWrapper.getTemporaryExposureKeyHistory(activity)
-                    ?.map { tek -> TemporaryExposureKey(tek, reportType) }
         }
     }
 }

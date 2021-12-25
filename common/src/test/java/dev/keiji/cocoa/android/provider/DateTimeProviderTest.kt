@@ -1,6 +1,5 @@
 package dev.keiji.cocoa.android.provider
 
-import dev.keiji.cocoa.android.repository.DateTimeProvider
 import dev.keiji.cocoa.android.toRFC3339Format
 import org.junit.After
 import org.junit.Assert.assertEquals

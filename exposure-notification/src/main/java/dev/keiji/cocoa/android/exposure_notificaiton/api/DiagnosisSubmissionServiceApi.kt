@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.api
+package dev.keiji.cocoa.android.exposure_notification.api
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module

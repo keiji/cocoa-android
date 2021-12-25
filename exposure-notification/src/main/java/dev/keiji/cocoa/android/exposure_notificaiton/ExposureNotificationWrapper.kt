@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android
+package dev.keiji.cocoa.android.exposure_notification
 
 import android.app.Activity
 import android.content.Context
@@ -21,6 +21,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.keiji.cocoa.android.exposure_notificaiton.entity.TemporaryExposureKey
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import java.io.File
@@ -101,9 +102,10 @@ class ExposureNotificationWrapper(applicationContext: Context) {
     suspend fun getExposureInformation(token: String): List<ExposureInformation> =
         exposureNotificationClient.getExposureInformation(token).await()
 
-    suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<NativeTemporaryExposureKey>? {
+    suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey>? {
         try {
             return exposureNotificationClient.temporaryExposureKeyHistory.await()
+                ?.map { tek -> TemporaryExposureKey(tek) }
         } catch (exception: ApiException) {
             Timber.d("ApiException", exception)
 

@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.api
+package dev.keiji.cocoa.android.exposure_notification.api
 
 import dagger.Module
 import dagger.Provides

@@ -135,7 +135,7 @@ dependencies {
 
     implementation(project(mapOf("path" to ":common")))
 
-    api(
+    compileOnly(
         fileTree(
             mapOf(
                 "dir" to "libs",

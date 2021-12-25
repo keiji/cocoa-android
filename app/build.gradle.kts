@@ -61,6 +61,16 @@ android {
 dependencies {
     val composeVersion = "1.1.0-rc01"
 
+    implementation(
+        fileTree(
+            mapOf(
+                "dir" to "../exposure-notification/libs/",
+                "include" to listOf("*.aar", "*.jar"),
+                "exclude" to listOf<String>()
+            )
+        )
+    )
+
     implementation(project(mapOf("path" to ":exposure-notification")))
     implementation(project(mapOf("path" to ":common")))
 

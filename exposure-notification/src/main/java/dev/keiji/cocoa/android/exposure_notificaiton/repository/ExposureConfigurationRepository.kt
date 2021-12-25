@@ -6,8 +6,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.keiji.cocoa.android.api.ExposureConfigurationProvideServiceApi
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.ExposureConfiguration
+import dev.keiji.cocoa.android.exposure_notification.api.ExposureConfigurationProvideServiceApi
+import dev.keiji.cocoa.android.provider.PathProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString

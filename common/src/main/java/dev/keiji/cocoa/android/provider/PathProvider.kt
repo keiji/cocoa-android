@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.repository
+package dev.keiji.cocoa.android.provider
 
 import android.content.Context
 import dagger.Module

@@ -18,15 +18,15 @@ import com.google.android.gms.nearby.exposurenotification.ExposureNotificationCl
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.AndroidEntryPoint
-import dev.keiji.cocoa.android.ExposureNotificationWrapper
-import dev.keiji.cocoa.android.api.ExposureDataCollectionServiceApi
-import dev.keiji.cocoa.android.api.ExposureDataRequest
 import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.DailySummary
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.ExposureInformation
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.ExposureSummary
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.ExposureWindow
-import dev.keiji.cocoa.android.regions
+import dev.keiji.cocoa.android.exposure_notification.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.api.ExposureDataCollectionServiceApi
+import dev.keiji.cocoa.android.exposure_notification.api.ExposureDataRequest
+import dev.keiji.cocoa.android.exposure_notification.regions
 import dev.keiji.cocoa.android.repository.ExposureConfigurationRepository
 import timber.log.Timber
 
