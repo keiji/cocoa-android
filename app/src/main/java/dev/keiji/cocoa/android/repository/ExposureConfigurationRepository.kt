@@ -12,39 +12,51 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import okhttp3.HttpUrl
 import java.io.File
-import java.io.FileInputStream
 import javax.inject.Singleton
 
-class ExposureConfigurationRepository(
+interface ExposureConfigurationRepository {
+    suspend fun getExposureConfiguration(url: String): ExposureConfiguration
+}
+
+class ExposureConfigurationRepositoryImpl(
     private val applicationContext: Context,
+    private val pathProvider: PathProvider,
     private val exposureConfigurationProvideServiceApi: ExposureConfigurationProvideServiceApi
-) {
+) : ExposureConfigurationRepository {
     companion object {
-        private const val DIR_NAME = "configuration"
         private const val FILENAME = "exposure_configuration.json"
     }
 
-    suspend fun getExposureConfiguration(): ExposureConfiguration {
-        val outputDir = File(applicationContext.filesDir, DIR_NAME)
-        if (!outputDir.exists()) {
-            outputDir.mkdirs()
-        }
+    override suspend fun getExposureConfiguration(url: String): ExposureConfiguration =
+        withContext(Dispatchers.Main) {
+            val outputDir = pathProvider.exposureConfigurationDir()
+            if (!outputDir.exists()) {
+                outputDir.mkdirs()
+            }
 
-        val outputFile = File(outputDir, FILENAME)
-        if (!outputFile.exists()) {
-            exposureConfigurationProvideServiceApi.getConfiguration(outputFile)
-        }
+            val httpUrl = HttpUrl.parse(url)
+            val outputFile = File(outputDir, FILENAME)
 
-        return withContext(Dispatchers.IO) {
-            FileInputStream(outputFile).bufferedReader().use { reader ->
-                Json.decodeFromString<ExposureConfiguration>(reader.readText()).apply {
-                    appleExposureConfigV1 = null
-                    appleExposureConfigV2 = null
+            if (httpUrl != null && !outputFile.exists()) {
+                exposureConfigurationProvideServiceApi.getConfiguration(
+                    httpUrl,
+                    outputFile
+                )
+            }
+
+            return@withContext if (outputFile.exists()) {
+                withContext(Dispatchers.IO) {
+                    Json.decodeFromString<ExposureConfiguration>(outputFile.readText()).apply {
+                        appleExposureConfigV1 = null
+                        appleExposureConfigV2 = null
+                    }
                 }
+            } else {
+                ExposureConfiguration()
             }
         }
-    }
 }
 
 @Module
@@ -55,10 +67,12 @@ object ExposureConfigurationRepositoryModule {
     @Provides
     fun provideExposureConfigurationRepository(
         @ApplicationContext applicationContext: Context,
-        exposureConfigurationProvideServiceApi: ExposureConfigurationProvideServiceApi
+        pathProvider: PathProvider,
+        exposureConfigurationProvideServiceApi: ExposureConfigurationProvideServiceApi,
     ): ExposureConfigurationRepository {
-        return ExposureConfigurationRepository(
+        return ExposureConfigurationRepositoryImpl(
             applicationContext,
+            pathProvider,
             exposureConfigurationProvideServiceApi
         )
     }

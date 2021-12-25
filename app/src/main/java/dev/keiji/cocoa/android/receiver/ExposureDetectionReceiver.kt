@@ -102,7 +102,7 @@ class NoExposureDetectionWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         try {
-            val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
+            val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration(BuildConfig.EXPOSURE_CONFIGURATION_URL)
             regions().forEach { region ->
                 exposureDataCollectionServiceApi.submit(
                     region,
@@ -155,7 +155,7 @@ class ExposureDetectionV1Worker @AssistedInject constructor(
         val token = inputData.getString(WORKER_PARAM_KEY_TOKEN) ?: return failure()
 
         try {
-            val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
+            val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration(BuildConfig.EXPOSURE_CONFIGURATION_URL)
             val exposureSummary = exposureNotificationWrapper.getExposureSummary(token)
             val exposureInformationList = exposureNotificationWrapper.getExposureInformation(token)
                 .map { ei -> ExposureInformation(ei) }
@@ -203,7 +203,7 @@ class ExposureDetectionV2Worker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         try {
-            val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
+            val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration(BuildConfig.EXPOSURE_CONFIGURATION_URL)
             val dailySummary =
                 exposureNotificationWrapper.getDailySummary(exposureConfiguration.dailySummaryConfig.toNative())
                     .map { ds -> DailySummary(ds) }

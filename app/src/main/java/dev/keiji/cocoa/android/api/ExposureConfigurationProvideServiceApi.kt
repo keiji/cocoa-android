@@ -4,7 +4,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.keiji.cocoa.android.BuildConfig
 import dev.keiji.cocoa.android.DefaultInterceptorOkHttpClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,21 +12,18 @@ import okhttp3.HttpUrl
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Singleton
 
-class ExposureConfigurationProvideServiceApi(
-    private val okHttpClient: OkHttpClient,
-) {
-    suspend fun getConfiguration(outputFile: File) = withContext(Dispatchers.Main) {
-        val url = HttpUrl.parse(BuildConfig.EXPOSURE_CONFIGURATION_URL)
-        if (url == null) {
-            Timber.i("url is null. ${BuildConfig.EXPOSURE_CONFIGURATION_URL}")
-            return@withContext
-        }
+interface ExposureConfigurationProvideServiceApi {
+    suspend fun getConfiguration(url: HttpUrl, outputFile: File): File
+}
 
+class ExposureConfigurationProvideServiceApiImpl(
+    private val okHttpClient: OkHttpClient,
+) : ExposureConfigurationProvideServiceApi {
+    override suspend fun getConfiguration(url: HttpUrl, outputFile: File) = withContext(Dispatchers.Main) {
         val request = Request.Builder()
             .url(url)
             .build()
@@ -41,6 +37,7 @@ class ExposureConfigurationProvideServiceApi(
                 }
             }
         }
+        return@withContext outputFile
     }
 }
 
@@ -53,7 +50,7 @@ object ExposureConfigurationProvideServiceApiModule {
     fun provideExposureConfigurationProvideServiceApi(
         @DefaultInterceptorOkHttpClient okHttpClient: OkHttpClient
     ): ExposureConfigurationProvideServiceApi {
-        return ExposureConfigurationProvideServiceApi(
+        return ExposureConfigurationProvideServiceApiImpl(
             okHttpClient,
         )
     }

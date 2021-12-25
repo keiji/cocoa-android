@@ -108,7 +108,7 @@ class ExposureDetectionWorker @AssistedInject constructor(
 
     private suspend fun detectExposureLegacyV1(downloadedFiles: List<File>) {
         val exposureConfiguration =
-            exposureConfigurationRepository.getExposureConfiguration()
+            exposureConfigurationRepository.getExposureConfiguration(BuildConfig.EXPOSURE_CONFIGURATION_URL)
         Timber.d(exposureConfiguration.toString())
 
         val token = UUID.randomUUID().toString()

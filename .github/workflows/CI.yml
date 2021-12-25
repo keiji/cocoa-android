@@ -19,13 +19,11 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
     strategy:
       matrix:
         flavor: ["ExposureWindow", "LegacyV1"]
         type: ["Debug", "Release"]
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: set up JDK 11
         uses: actions/setup-java@v2
@@ -40,3 +38,20 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build Debug
         run: ./gradlew assemble${{ matrix.flavor }}${{ matrix.type }}
+  test:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts*') }}
+          restore-keys: ${{ runner.os }}-gradle.kts-
+      - uses: actions/checkout@v2
+      - name: Unit Tests
+        run: ./gradlew test
