@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 private const val TIMEZONE_ID_UTC = "UTC"
 
-abstract class DateTimeRepository {
+abstract class DateTimeProvider {
     abstract fun utcNow(): Calendar
 
     fun epoch(): Long = utcNow().timeInMillis / 1000
@@ -26,7 +26,7 @@ abstract class DateTimeRepository {
     }
 }
 
-class DateTimeRepositoryImpl : DateTimeRepository() {
+class DateTimeProviderImpl : DateTimeProvider() {
     private val TIMEZONE_UTC = TimeZone.getTimeZone(TIMEZONE_ID_UTC)
 
     override fun utcNow(): Calendar = Calendar.getInstance(TIMEZONE_UTC)
@@ -34,10 +34,10 @@ class DateTimeRepositoryImpl : DateTimeRepository() {
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DateTimeRepositoryModule {
+object DateTimeProviderModule {
 
     @Singleton
     @Provides
-    fun provideDateTimeRepository(
-    ): DateTimeRepository = DateTimeRepositoryImpl()
+    fun provideDateTimeProvider(
+    ): DateTimeProvider = DateTimeProviderImpl()
 }

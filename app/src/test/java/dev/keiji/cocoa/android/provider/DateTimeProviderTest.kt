@@ -1,5 +1,6 @@
-package dev.keiji.cocoa.android.repository
+package dev.keiji.cocoa.android.provider
 
+import dev.keiji.cocoa.android.repository.DateTimeProvider
 import dev.keiji.cocoa.android.toRFC3339Format
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -14,7 +15,7 @@ import java.util.*
 private const val TIMEZONE_ID_UTC = "UTC"
 
 @RunWith(MockitoJUnitRunner::class)
-class DateTimeRepositoryTest {
+class DateTimeProviderTest {
     private val TIMEZONE_UTC = TimeZone.getTimeZone(TIMEZONE_ID_UTC)
 
     @Before
@@ -26,7 +27,7 @@ class DateTimeRepositoryTest {
     }
 
     @Test
-    fun readStringFromContext_LocalizedString() {
+    fun test() {
 
         val now = Calendar.getInstance(TIMEZONE_UTC).apply {
             set(2021, 12, 25, 1, 8, 17)
@@ -41,24 +42,24 @@ class DateTimeRepositoryTest {
             set(Calendar.MILLISECOND, 0)
         }
 
-        val mockDateTimeRepository =
-            mock<DateTimeRepository> {
+        val mockDateTimeProvider =
+            mock<DateTimeProvider> {
                 onBlocking { utcNow() } doReturn now
             }
 
         assertEquals(
             now.timeInMillis / 1000,
-            mockDateTimeRepository.epoch()
+            mockDateTimeProvider.epoch()
         )
 
         assertEquals(
             today.time.toRFC3339Format(),
-            mockDateTimeRepository.today().time.toRFC3339Format()
+            mockDateTimeProvider.today().time.toRFC3339Format()
         )
 
         assertEquals(
             yesterday.time.toRFC3339Format(),
-            mockDateTimeRepository.offsetDate(-1).time.toRFC3339Format()
+            mockDateTimeProvider.offsetDate(-1).time.toRFC3339Format()
         )
     }
 }
