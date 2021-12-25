@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.konan.properties.Properties
+import com.android.build.api.dsl.VariantDimension
 
 plugins {
     id("com.android.application")
@@ -24,6 +25,16 @@ fun loadProperties(filename: String): Properties? {
     }
 }
 
+fun VariantDimension.addBuildConfigStringField(
+    props: Properties?,
+    propertyName: String
+) {
+    props ?: return
+
+    val value = props.getProperty(propertyName) ?: "\"\""
+    buildConfigField("String", propertyName, value)
+}
+
 android {
     compileSdk = 31
 
@@ -37,53 +48,13 @@ android {
         val props = loadProperties("api-settings.properties")
             ?: loadProperties("api-settings-sample.properties")
 
-        val regionIds =
-            props?.getProperty("REGION_IDs") ?: "\"\""
-        buildConfigField(
-            "String",
-            "REGION_IDs",
-            regionIds
-        )
-
-        val subregionIds =
-            props?.getProperty("SUBREGION_IDs") ?: "\"\""
-        buildConfigField(
-            "String",
-            "SUBREGION_IDs",
-            subregionIds
-        )
-
-        val diagnosisSubmissionApiEndpoint =
-            props?.getProperty("DIAGNOSIS_SUBMISSION_API_ENDPOINT") ?: "\"\""
-        buildConfigField(
-            "String",
-            "DIAGNOSIS_SUBMISSION_API_ENDPOINT",
-            diagnosisSubmissionApiEndpoint
-        )
-
-        val diagnosisKeyApiEndpoint =
-            props?.getProperty("DIAGNOSIS_KEY_API_ENDPOINT") ?: "\"\""
-        buildConfigField(
-            "String",
-            "DIAGNOSIS_KEY_API_ENDPOINT",
-            diagnosisKeyApiEndpoint
-        )
-
-        val exposureConfigurationUrl =
-            props?.getProperty("EXPOSURE_CONFIGURATION_URL") ?: "\"\""
-        buildConfigField(
-            "String",
-            "EXPOSURE_CONFIGURATION_URL",
-            exposureConfigurationUrl
-        )
-
-        val exposureDataCollectionServiceApiEndpoint =
-            props?.getProperty("EXPOSURE_DATA_COLLECTION_SERVICE_API_ENDPOINT") ?: "\"\""
-        buildConfigField(
-            "String",
-            "EXPOSURE_DATA_COLLECTION_SERVICE_API_ENDPOINT",
-            exposureDataCollectionServiceApiEndpoint
-        )
+        addBuildConfigStringField(props, "REGION_IDs")
+        addBuildConfigStringField(props, "SUBREGION_IDs")
+        addBuildConfigStringField(props, "DIAGNOSIS_SUBMISSION_API_ENDPOINT")
+        addBuildConfigStringField(props, "DIAGNOSIS_KEY_API_ENDPOINT")
+        addBuildConfigStringField(props, "EXPOSURE_CONFIGURATION_URL")
+        addBuildConfigStringField(props, "EXPOSURE_DATA_COLLECTION_SERVICE_API_ENDPOINT")
+        addBuildConfigStringField(props, "EXPOSURE_CONFIGURATION_URL")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
