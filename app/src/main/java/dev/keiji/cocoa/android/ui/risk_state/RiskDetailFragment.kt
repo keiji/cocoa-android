@@ -42,7 +42,7 @@ import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.R
 import dev.keiji.cocoa.android.databinding.FragmentRiskDetailBinding
-import dev.keiji.cocoa.android.entity.RiskEvent
+import dev.keiji.cocoa.android.exposure_notificaiton.entity.RiskEvent
 import dev.keiji.cocoa.android.ui.Signals
 import java.text.DateFormat
 

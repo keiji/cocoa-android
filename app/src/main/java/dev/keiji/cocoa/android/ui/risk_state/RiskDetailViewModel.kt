@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.keiji.cocoa.android.entity.RiskEvent
+import dev.keiji.cocoa.android.exposure_notificaiton.entity.RiskEvent
 import dev.keiji.cocoa.android.repository.RiskEventRepository
 import javax.inject.Inject
 

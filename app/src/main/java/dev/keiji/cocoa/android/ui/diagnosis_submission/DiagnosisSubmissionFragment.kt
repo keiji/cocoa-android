@@ -45,7 +45,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.android.gms.nearby.exposurenotification.ReportType.*
+import com.google.android.gms.nearby.exposurenotification.ReportType
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -97,7 +97,7 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                         Submission(viewModel) {
                             exposureNotificationViewModel.getTemporaryExposureKeyHistory(
                                 requireActivity(),
-                                CONFIRMED_TEST
+                                ReportType.CONFIRMED_TEST
                             )
                         }
                     }
