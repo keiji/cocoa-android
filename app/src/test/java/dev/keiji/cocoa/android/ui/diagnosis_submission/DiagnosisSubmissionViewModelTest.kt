@@ -2,6 +2,7 @@ package dev.keiji.cocoa.android.ui.diagnosis_submission
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.SavedStateHandle
 import dev.keiji.cocoa.android.api.DiagnosisSubmissionServiceApi
 import dev.keiji.cocoa.android.entity.TemporaryExposureKey
 import junit.framework.Assert.assertFalse
@@ -67,6 +68,7 @@ class DiagnosisSubmissionViewModelTest {
             }
 
         val viewModel = DiagnosisSubmissionViewModel(
+            SavedStateHandle(),
             mockDiagnosisSubmissionServiceApi
         )
 

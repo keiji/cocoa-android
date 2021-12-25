@@ -2,6 +2,7 @@ package dev.keiji.cocoa.android.ui.diagnosis_submission
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,46 +20,57 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DiagnosisSubmissionViewModel @Inject constructor(
+    private val state: SavedStateHandle,
     private val diagnosisSubmissionServiceApi: DiagnosisSubmissionServiceApi,
 ) : ViewModel() {
+    companion object {
+        private const val KEY_STATE_PROCESS_NUMBER = "process_number"
+        private const val KEY_STATE_HAS_SYMPTOM = "has_symptom"
+        private const val KEY_STATE_SYMPTOM_ONSET_DATE = "symptom_onset_date"
+    }
 
-    val processNumber: MutableLiveData<String> = MutableLiveData()
+    private val _processNumber: MutableLiveData<String> =
+        state.getLiveData(KEY_STATE_PROCESS_NUMBER)
+
+    val processNumber: LiveData<String>
+        get() = _processNumber
 
     fun setProcessNumber(value: String) {
         if (value.length <= AppConstants.PROCESS_NUMBER_LENGTH) {
-            processNumber.value = value
+            state[KEY_STATE_PROCESS_NUMBER] = value
         }
     }
 
     fun clearProcessNumber() {
-        processNumber.value = ""
+        state[KEY_STATE_PROCESS_NUMBER] = ""
     }
 
     private val idempotencyKey = UUID.randomUUID().toString()
 
-    private val _hasSymptomState: MutableLiveData<Boolean?> = MutableLiveData()
+    private val _hasSymptomState: MutableLiveData<Boolean?> =
+        state.getLiveData(KEY_STATE_HAS_SYMPTOM)
     val hasSymptom: LiveData<Boolean?>
         get() = _hasSymptomState
 
     fun setHasSymptom(hasSymptom: Boolean) {
-        _hasSymptomState.value = hasSymptom
+        state[KEY_STATE_HAS_SYMPTOM] = hasSymptom
     }
 
     fun clearHasSymptom() {
-        _hasSymptomState.value = null
+        state[KEY_STATE_HAS_SYMPTOM] = null
     }
 
     val isShowCalendar: Boolean
         get() = hasSymptom.value != null
 
-    private val _symptomOnsetDate: MutableLiveData<Calendar> = MutableLiveData<Calendar>().also {
-        it.value = Calendar.getInstance(Locale.getDefault())
-    }
+    private val _symptomOnsetDate: MutableLiveData<Calendar> =
+        state.getLiveData(KEY_STATE_SYMPTOM_ONSET_DATE)
+
     val symptomOnsetDate: LiveData<Calendar>
         get() = _symptomOnsetDate
 
     fun setSymptomOnsetDate(calendar: Calendar) {
-        _symptomOnsetDate.value = calendar
+        state[KEY_STATE_SYMPTOM_ONSET_DATE] = calendar
     }
 
     fun submit(temporaryExposureKeyList: List<TemporaryExposureKey>) {
