@@ -24,15 +24,32 @@ class DiagnosisSubmissionViewModel @Inject constructor(
 
     val processNumber: MutableLiveData<String> = MutableLiveData()
 
+    fun setProcessNumber(value: String) {
+        if (value.length <= AppConstants.PROCESS_NUMBER_LENGTH) {
+            processNumber.value = value
+        }
+    }
+
+    fun clearProcessNumber() {
+        processNumber.value = ""
+    }
+
     private val idempotencyKey = UUID.randomUUID().toString()
 
     private val _hasSymptomState: MutableLiveData<Boolean?> = MutableLiveData()
     val hasSymptom: LiveData<Boolean?>
         get() = _hasSymptomState
 
-    fun setHasSymptomExist(hasSymptom: Boolean) {
+    fun setHasSymptom(hasSymptom: Boolean) {
         _hasSymptomState.value = hasSymptom
     }
+
+    fun clearHasSymptom() {
+        _hasSymptomState.value = null
+    }
+
+    val isShowCalendar: Boolean
+        get() = hasSymptom.value != null
 
     private val _symptomOnsetDate: MutableLiveData<Calendar> = MutableLiveData<Calendar>().also {
         it.value = Calendar.getInstance(Locale.getDefault())

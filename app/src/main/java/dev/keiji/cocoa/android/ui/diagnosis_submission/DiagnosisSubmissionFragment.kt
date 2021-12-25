@@ -49,7 +49,6 @@ import com.google.android.gms.nearby.exposurenotification.ReportType.*
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
-import dev.keiji.cocoa.android.AppConstants
 import dev.keiji.cocoa.android.R
 import dev.keiji.cocoa.android.databinding.FragmentDiagnosisSubmissionBinding
 import dev.keiji.cocoa.android.ui.ExposureNotificationViewModel
@@ -205,9 +204,7 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                         TextField(
                             value = processNumber.value ?: "",
                             onValueChange = {
-                                if (it.length <= AppConstants.PROCESS_NUMBER_LENGTH) {
-                                    viewModel.processNumber.value = it
-                                }
+                                viewModel.setProcessNumber(it)
                             },
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -290,7 +287,7 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                 RadioButton(
                     selected = viewModel.hasSymptom.observeAsState().value ?: false,
                     onClick = {
-                        viewModel.setHasSymptomExist(true)
+                        viewModel.setHasSymptom(true)
                     }
                 )
                 Text("ある")
@@ -304,32 +301,34 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                 RadioButton(
                     selected = !(viewModel.hasSymptom.observeAsState().value ?: true),
                     onClick = {
-                        viewModel.setHasSymptomExist(false)
+                        viewModel.setHasSymptom(false)
                     }
                 )
                 Text("ない")
             }
         }
 
-        val hasSymptom = viewModel.hasSymptom.observeAsState().value ?: return
+        if (viewModel.isShowCalendar) {
+            val hasSymptom = viewModel.hasSymptom.observeAsState().value ?: return
 
-        Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
-        if (hasSymptom) {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = "症状が始まった最初の日を選択してください。"
-            )
-        } else {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = "直近の新型コロナウイルス感染症の検査を受けた日を入力してください。"
-            )
+            if (hasSymptom) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "症状が始まった最初の日を選択してください。"
+                )
+            } else {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "直近の新型コロナウイルス感染症の検査を受けた日を入力してください。"
+                )
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            SymptomCalendar()
         }
-
-        Spacer(Modifier.height(8.dp))
-
-        SymptomCalendar()
 
         Spacer(Modifier.height(16.dp))
     }
