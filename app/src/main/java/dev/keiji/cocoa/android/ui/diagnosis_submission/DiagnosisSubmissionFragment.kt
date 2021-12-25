@@ -37,7 +37,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -50,6 +49,7 @@ import com.google.android.gms.nearby.exposurenotification.ReportType.*
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
+import dev.keiji.cocoa.android.AppConstants
 import dev.keiji.cocoa.android.R
 import dev.keiji.cocoa.android.databinding.FragmentDiagnosisSubmissionBinding
 import dev.keiji.cocoa.android.ui.ExposureNotificationViewModel
@@ -204,7 +204,12 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                         val processNumber = viewModel.processNumber.observeAsState()
                         TextField(
                             value = processNumber.value ?: "",
-                            onValueChange = { viewModel.processNumber.value = it },
+                            onValueChange = {
+                                if (it.length <= AppConstants.PROCESS_NUMBER_LENGTH) {
+                                    viewModel.processNumber.value = it
+                                }
+                            },
+                            singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
                         Text("8桁の処理番号を入力してください")
@@ -251,7 +256,8 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                         modifier = Modifier
                             .fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(),
-                        onClick = { onSubmit() }
+                        onClick = { onSubmit() },
+                        enabled = viewModel.isSubmittable()
                     ) {
                         Text("登録")
                     }
@@ -282,9 +288,9 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
-                    selected = viewModel.symptomState.observeAsState().value ?: false,
+                    selected = viewModel.hasSymptom.observeAsState().value ?: false,
                     onClick = {
-                        viewModel.setSymptomExist(true)
+                        viewModel.setHasSymptomExist(true)
                     }
                 )
                 Text("ある")
@@ -296,23 +302,36 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
-                    selected = !(viewModel.symptomState.observeAsState().value ?: true),
+                    selected = !(viewModel.hasSymptom.observeAsState().value ?: true),
                     onClick = {
-                        viewModel.setSymptomExist(false)
+                        viewModel.setHasSymptomExist(false)
                     }
                 )
                 Text("ない")
             }
         }
 
-        val hasSymptom = viewModel.symptomState.observeAsState().value ?: return
+        val hasSymptom = viewModel.hasSymptom.observeAsState().value ?: return
+
+        Spacer(Modifier.height(16.dp))
+
         if (hasSymptom) {
-            Spacer(Modifier.height(16.dp))
-
-            SymptomCalendar()
-
-            Spacer(Modifier.height(16.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "症状が始まった最初の日を選択してください。"
+            )
+        } else {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "直近の新型コロナウイルス感染症の検査を受けた日を入力してください。"
+            )
         }
+
+        Spacer(Modifier.height(8.dp))
+
+        SymptomCalendar()
+
+        Spacer(Modifier.height(16.dp))
     }
 
     private @Composable
@@ -320,11 +339,6 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
     ) {
         val focusManager = LocalFocusManager.current
 
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = "症状が始まった最初の日を選択してください。"
-        )
-        Spacer(Modifier.height(8.dp))
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = "覚えている範囲で一番古い日付を入力してください。入力した日付が誰かに知られることはありません。",

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.keiji.cocoa.android.AppConstants
 import dev.keiji.cocoa.android.api.DiagnosisSubmissionRequest
 import dev.keiji.cocoa.android.api.DiagnosisSubmissionServiceApi
 import dev.keiji.cocoa.android.entity.TemporaryExposureKey
@@ -25,12 +26,12 @@ class DiagnosisSubmissionViewModel @Inject constructor(
 
     private val idempotencyKey = UUID.randomUUID().toString()
 
-    private val _symptomState: MutableLiveData<Boolean?> = MutableLiveData()
-    val symptomState: LiveData<Boolean?>
-        get() = _symptomState
+    private val _hasSymptomState: MutableLiveData<Boolean?> = MutableLiveData()
+    val hasSymptom: LiveData<Boolean?>
+        get() = _hasSymptomState
 
-    fun setSymptomExist(isExist: Boolean) {
-        _symptomState.value = isExist
+    fun setHasSymptomExist(hasSymptom: Boolean) {
+        _hasSymptomState.value = hasSymptom
     }
 
     private val _symptomOnsetDate: MutableLiveData<Calendar> = MutableLiveData<Calendar>().also {
@@ -46,13 +47,13 @@ class DiagnosisSubmissionViewModel @Inject constructor(
     fun submit(temporaryExposureKeyList: List<TemporaryExposureKey>) {
         Timber.d("ProcessNumber ${processNumber.value ?: "null"}")
 
-        val symptomState = symptomState.value
-        if (symptomState == null) {
+        val hasSymptomSnapshot = hasSymptom.value
+        if (hasSymptomSnapshot == null) {
             Timber.w("SymptomState is not set.")
             return
         }
 
-        val symptomOnsetDate = if (!symptomState) {
+        val symptomOnsetDate = if (!hasSymptomSnapshot) {
             Calendar.getInstance(Locale.getDefault())
         } else {
             _symptomOnsetDate.value
@@ -89,5 +90,11 @@ class DiagnosisSubmissionViewModel @Inject constructor(
                 Timber.e("HttpException occurred.", exception)
             }
         }
+    }
+
+    fun isSubmittable(): Boolean {
+        hasSymptom.value ?: return false
+        val processNumberSnapshot = processNumber.value ?: return false
+        return processNumberSnapshot.length == AppConstants.PROCESS_NUMBER_LENGTH
     }
 }
