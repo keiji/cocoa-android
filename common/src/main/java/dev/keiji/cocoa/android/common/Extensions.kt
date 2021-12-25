@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android
+package dev.keiji.cocoa.android.common
 
 import java.text.SimpleDateFormat
 import java.util.*

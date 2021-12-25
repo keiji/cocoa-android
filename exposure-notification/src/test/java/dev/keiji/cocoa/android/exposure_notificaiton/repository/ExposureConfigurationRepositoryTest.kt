@@ -1,9 +1,9 @@
 package dev.keiji.cocoa.android.exposure_notificaiton.repository
 
 import android.content.Context
+import dev.keiji.cocoa.android.common.provider.PathProvider
 import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig.EXPOSURE_CONFIGURATION_URL
 import dev.keiji.cocoa.android.exposure_notification.api.ExposureConfigurationProvideServiceApi
-import dev.keiji.cocoa.android.provider.PathProvider
 import dev.keiji.cocoa.android.repository.ExposureConfigurationRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

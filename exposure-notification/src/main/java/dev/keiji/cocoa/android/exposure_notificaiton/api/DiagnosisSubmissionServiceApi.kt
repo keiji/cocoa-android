@@ -5,15 +5,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.keiji.cocoa.android.common.toRFC3339Format
 import dev.keiji.cocoa.android.exposure_notificaiton.AnonymousInterceptorOkHttpClient
 import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.TemporaryExposureKey
-import dev.keiji.cocoa.android.toRFC3339Format
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import retrofit2.Retrofit
 import retrofit2.http.PUT
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import okhttp3.OkHttpClient
