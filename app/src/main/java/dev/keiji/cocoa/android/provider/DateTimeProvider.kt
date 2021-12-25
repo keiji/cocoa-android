@@ -7,8 +7,6 @@ import dagger.hilt.components.SingletonComponent
 import java.util.*
 import javax.inject.Singleton
 
-private const val TIMEZONE_ID_UTC = "UTC"
-
 abstract class DateTimeProvider {
     abstract fun utcNow(): Calendar
 
@@ -27,6 +25,10 @@ abstract class DateTimeProvider {
 }
 
 class DateTimeProviderImpl : DateTimeProvider() {
+    companion object {
+        private const val TIMEZONE_ID_UTC = "UTC"
+    }
+
     private val TIMEZONE_UTC = TimeZone.getTimeZone(TIMEZONE_ID_UTC)
 
     override fun utcNow(): Calendar = Calendar.getInstance(TIMEZONE_UTC)

@@ -9,8 +9,6 @@ import dagger.hilt.components.SingletonComponent
 import java.io.File
 import javax.inject.Singleton
 
-private const val DIR_NAME = "configuration"
-
 interface PathProvider {
     fun exposureConfigurationDir(): File
 }
@@ -18,6 +16,9 @@ interface PathProvider {
 class PathProviderImpl(
     private val applicationContext: Context,
 ) : PathProvider {
+    companion object {
+        private const val DIR_NAME = "configuration"
+    }
 
     override fun exposureConfigurationDir() = File(applicationContext.filesDir, DIR_NAME)
 }
