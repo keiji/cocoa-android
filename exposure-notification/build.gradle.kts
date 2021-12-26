@@ -11,6 +11,7 @@ plugins {
 }
 
 val hiltVersion: String by rootProject.extra
+val composeVersion: String by rootProject.extra
 
 fun loadProperties(filename: String): Properties? {
     val file = File(rootProject.rootDir, filename)
@@ -60,13 +61,8 @@ android {
         compose = true
         dataBinding = true
     }
-
     composeOptions {
         kotlinCompilerExtensionVersion = "1.1.0-rc01"
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 
     flavorDimensions.add("apiVersion")
@@ -121,6 +117,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -131,8 +128,6 @@ android {
 }
 
 dependencies {
-    val composeVersion = "1.1.0-rc01"
-
     implementation(project(mapOf("path" to ":common")))
 
     compileOnly(
@@ -171,8 +166,6 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
-
-    implementation("com.jakewharton.timber:timber:5.0.1")
 
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")

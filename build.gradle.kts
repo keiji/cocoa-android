@@ -2,10 +2,12 @@
 buildscript {
     val kotlinVersion = "1.6.0"
     val hiltVersion = "2.40.5"
+    val composeVersion = "1.1.0-rc01"
 
     extra.apply {
         set("kotlinVersion", kotlinVersion)
         set("hiltVersion", hiltVersion)
+        set("composeVersion", composeVersion)
     }
 
     repositories {

@@ -23,16 +23,7 @@ android {
     }
 
     buildFeatures {
-        compose = true
         dataBinding = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0-rc01"
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 
     flavorDimensions.add("apiVersion")
@@ -56,11 +47,17 @@ android {
             )
         }
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
-    val composeVersion = "1.1.0-rc01"
-
     implementation(
         fileTree(
             mapOf(
@@ -84,24 +81,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
-    implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("androidx.compose.material:material:1.0.5")
-    implementation("androidx.compose.material:material-icons-extended:1.1.0-rc01")
-
-    implementation("androidx.compose.ui:ui-tooling:1.0.5")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
-    implementation("com.google.android.material:compose-theme-adapter:1.1.2")
-    implementation("androidx.navigation:navigation-compose:2.4.0-rc01")
-
-    implementation("androidx.compose.compiler:compiler:$composeVersion")
-    implementation("androidx.compose.runtime:runtime:$composeVersion")
-    implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.foundation:foundation:$composeVersion")
-    implementation("androidx.compose.ui:ui:$composeVersion")
-
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
-
-    implementation("com.jakewharton.timber:timber:5.0.1")
 
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
@@ -110,9 +90,6 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
-
-    implementation("com.google.android.gms:play-services-base:18.0.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
 
     testImplementation("junit:junit:4.+")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0")
