@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.keiji.cocoa.android.AppConstants
-import dev.keiji.cocoa.android.api.DiagnosisSubmissionRequest
-import dev.keiji.cocoa.android.api.DiagnosisSubmissionServiceApi
-import dev.keiji.cocoa.android.entity.TemporaryExposureKey
-import dev.keiji.cocoa.android.regions
-import dev.keiji.cocoa.android.subregions
+import dev.keiji.cocoa.android.exposure_notificaiton.entity.TemporaryExposureKey
+import dev.keiji.cocoa.android.exposure_notification.api.DiagnosisSubmissionRequest
+import dev.keiji.cocoa.android.exposure_notification.api.DiagnosisSubmissionServiceApi
+import dev.keiji.cocoa.android.exposure_notification.regions
+import dev.keiji.cocoa.android.exposure_notification.subregions
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber

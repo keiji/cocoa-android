@@ -3,8 +3,8 @@ package dev.keiji.cocoa.android.ui.diagnosis_submission
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import dev.keiji.cocoa.android.api.DiagnosisSubmissionServiceApi
-import dev.keiji.cocoa.android.entity.TemporaryExposureKey
+import dev.keiji.cocoa.android.exposure_notificaiton.entity.TemporaryExposureKey
+import dev.keiji.cocoa.android.exposure_notification.api.DiagnosisSubmissionServiceApi
 import junit.framework.Assert.assertFalse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

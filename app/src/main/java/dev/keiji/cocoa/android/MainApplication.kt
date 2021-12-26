@@ -10,7 +10,9 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
-import dev.keiji.cocoa.android.work.ExposureDetectionWorker
+import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig.EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES
+import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig.EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES
+import dev.keiji.cocoa.android.exposure_notificaiton.work.ExposureDetectionWorker
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -48,7 +50,7 @@ class MainApplication : Application(), Configuration.Provider {
     private fun createWorkRequest() = PeriodicWorkRequest
         .Builder(
             ExposureDetectionWorker::class.java,
-            BuildConfig.EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES,
+            EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES,
             TimeUnit.MINUTES
         )
         .setConstraints(Constraints.Builder().apply {
@@ -56,7 +58,7 @@ class MainApplication : Application(), Configuration.Provider {
         }.build())
         .setBackoffCriteria(
             BackoffPolicy.LINEAR,
-            BuildConfig.EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES,
+            EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES,
             TimeUnit.MINUTES
         )
         .build()

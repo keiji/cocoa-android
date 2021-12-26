@@ -20,25 +20,6 @@
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove" />
 
-        <receiver
-            android:name=".receiver.ExposureDetectionReceiver"
-            android:exported="true"
-            android:permission="com.google.android.gms.nearby.exposurenotification.EXPOSURE_CALLBACK">
-            <intent-filter>
-                <action android:name="com.google.android.gms.exposurenotification.ACTION_EXPOSURE_STATE_UPDATED" />
-                <action android:name="com.google.android.gms.exposurenotification.ACTION_EXPOSURE_NOT_FOUND" />
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name=".receiver.ExposureNotificationStateReceiver"
-            android:exported="true"
-            android:permission="com.google.android.gms.nearby.exposurenotification.EXPOSURE_CALLBACK">
-            <intent-filter>
-                <action android:name="com.google.android.gms.exposurenotification.ACTION_SERVICE_STATE_UPDATED" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

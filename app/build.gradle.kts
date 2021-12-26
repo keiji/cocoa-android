@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.konan.properties.Properties
-import com.android.build.api.dsl.VariantDimension
-
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -12,29 +9,6 @@ plugins {
 
 val hiltVersion: String by rootProject.extra
 
-fun loadProperties(filename: String): Properties? {
-    val file = File(rootProject.rootDir, filename)
-    if (!file.exists()) {
-        print("Properties file ${file.absolutePath} not found.")
-        return null
-    }
-    file.reader().use {
-        return Properties().apply {
-            load(it)
-        }
-    }
-}
-
-fun VariantDimension.addBuildConfigStringField(
-    props: Properties?,
-    propertyName: String
-) {
-    props ?: return
-
-    val value = props.getProperty(propertyName) ?: "\"\""
-    buildConfigField("String", propertyName, value)
-}
-
 android {
     compileSdk = 31
 
@@ -44,17 +18,6 @@ android {
         targetSdk = 31
         versionCode = 1
         versionName = "1.0"
-
-        val props = loadProperties("api-settings.properties")
-            ?: loadProperties("api-settings-sample.properties")
-
-        addBuildConfigStringField(props, "REGION_IDs")
-        addBuildConfigStringField(props, "SUBREGION_IDs")
-        addBuildConfigStringField(props, "DIAGNOSIS_SUBMISSION_API_ENDPOINT")
-        addBuildConfigStringField(props, "DIAGNOSIS_KEY_API_ENDPOINT")
-        addBuildConfigStringField(props, "EXPOSURE_CONFIGURATION_URL")
-        addBuildConfigStringField(props, "EXPOSURE_DATA_COLLECTION_SERVICE_API_ENDPOINT")
-        addBuildConfigStringField(props, "EXPOSURE_CONFIGURATION_URL")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -76,47 +39,16 @@ android {
     productFlavors {
         create("legacyV1") {
             dimension = "apiVersion"
-            buildConfigField(
-                "Boolean",
-                "USE_EXPOSURE_WINDOW_MODE",
-                "false"
-            )
         }
         create("exposureWindow") {
             dimension = "apiVersion"
-            buildConfigField(
-                "Boolean",
-                "USE_EXPOSURE_WINDOW_MODE",
-                "true"
-            )
         }
     }
 
     buildTypes {
         debug {
-            buildConfigField(
-                "Long",
-                "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",
-                "16L"
-            )
-            buildConfigField(
-                "Long",
-                "EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES",
-                "16L"
-            )
         }
         release {
-            buildConfigField(
-                "Long",
-                "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",
-                "4 * 60L"
-            )
-            buildConfigField(
-                "Long",
-                "EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES",
-                "60L"
-            )
-
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -132,12 +64,15 @@ dependencies {
     implementation(
         fileTree(
             mapOf(
-                "dir" to "libs",
+                "dir" to "../exposure-notification/libs/",
                 "include" to listOf("*.aar", "*.jar"),
                 "exclude" to listOf<String>()
             )
         )
     )
+
+    implementation(project(mapOf("path" to ":exposure-notification")))
+    implementation(project(mapOf("path" to ":common")))
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.0")
@@ -164,7 +99,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.ui:ui:$composeVersion")
 
-    api("androidx.navigation:navigation-fragment-ktx:2.3.5")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
 
     implementation("com.jakewharton.timber:timber:5.0.1")
 
@@ -178,8 +113,6 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-base:18.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
-
-    implementation("dev.keiji.rfc4648:rfc4648:1.0.0")
 
     testImplementation("junit:junit:4.+")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0")
