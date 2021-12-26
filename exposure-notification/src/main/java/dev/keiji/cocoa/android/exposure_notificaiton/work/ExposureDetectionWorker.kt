@@ -8,12 +8,12 @@ import com.google.android.gms.nearby.exposurenotification.ExposureNotificationSt
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig
+import dev.keiji.cocoa.android.exposure_notificaiton.repository.ExposureConfigurationRepository
 import dev.keiji.cocoa.android.exposure_notification.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.api.DiagnosisKeyFileProvideServiceApi
 import dev.keiji.cocoa.android.exposure_notification.api.DiagnosisKeyListProvideServiceApi
 import dev.keiji.cocoa.android.exposure_notification.regions
 import dev.keiji.cocoa.android.exposure_notification.subregions
-import dev.keiji.cocoa.android.repository.ExposureConfigurationRepository
 import timber.log.Timber
 import java.io.File
 import java.io.IOException

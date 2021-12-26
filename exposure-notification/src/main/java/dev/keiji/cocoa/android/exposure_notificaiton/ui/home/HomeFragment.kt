@@ -47,7 +47,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.exposure_notificaiton.R
 import dev.keiji.cocoa.android.exposure_notificaiton.databinding.FragmentHomeBinding
 import dev.keiji.cocoa.android.exposure_notificaiton.ui.ExposureNotificationViewModel
-import dev.keiji.cocoa.android.exposure_notificaiton.ui.Signals
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {

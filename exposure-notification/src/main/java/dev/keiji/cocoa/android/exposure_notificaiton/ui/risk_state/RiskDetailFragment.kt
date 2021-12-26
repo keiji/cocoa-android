@@ -43,7 +43,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.exposure_notificaiton.R
 import dev.keiji.cocoa.android.exposure_notificaiton.databinding.FragmentRiskDetailBinding
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.RiskEvent
-import dev.keiji.cocoa.android.exposure_notificaiton.ui.Signals
+import dev.keiji.cocoa.android.exposure_notificaiton.ui.home.Signals
 import java.text.DateFormat
 
 @AndroidEntryPoint

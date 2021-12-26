@@ -23,11 +23,11 @@ import dev.keiji.cocoa.android.exposure_notificaiton.entity.DailySummary
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.ExposureInformation
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.ExposureSummary
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.ExposureWindow
+import dev.keiji.cocoa.android.exposure_notificaiton.repository.ExposureConfigurationRepository
 import dev.keiji.cocoa.android.exposure_notification.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.api.ExposureDataCollectionServiceApi
 import dev.keiji.cocoa.android.exposure_notification.api.ExposureDataRequest
 import dev.keiji.cocoa.android.exposure_notification.regions
-import dev.keiji.cocoa.android.repository.ExposureConfigurationRepository
 import timber.log.Timber
 
 @AndroidEntryPoint

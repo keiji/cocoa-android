@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.repository
+package dev.keiji.cocoa.android.exposure_notificaiton.repository
 
 import android.content.Context
 import dagger.Module

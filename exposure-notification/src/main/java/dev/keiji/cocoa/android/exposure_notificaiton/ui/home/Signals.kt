@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.exposure_notificaiton.ui
+package dev.keiji.cocoa.android.exposure_notificaiton.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

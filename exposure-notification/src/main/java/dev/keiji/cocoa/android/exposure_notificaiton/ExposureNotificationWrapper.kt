@@ -15,7 +15,6 @@ import com.google.android.gms.nearby.exposurenotification.ExposureNotificationSt
 import com.google.android.gms.nearby.exposurenotification.ExposureSummary
 import com.google.android.gms.nearby.exposurenotification.ExposureWindow
 import com.google.android.gms.nearby.exposurenotification.PackageConfiguration
-import com.google.android.gms.nearby.exposurenotification.TemporaryExposureKey as NativeTemporaryExposureKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
