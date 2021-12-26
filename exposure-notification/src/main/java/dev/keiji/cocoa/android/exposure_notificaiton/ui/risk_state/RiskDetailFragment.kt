@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.ui.risk_state
+package dev.keiji.cocoa.android.exposure_notificaiton.ui.risk_state
 
 import android.os.Bundle
 import android.view.View
@@ -40,10 +40,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
-import dev.keiji.cocoa.android.R
-import dev.keiji.cocoa.android.databinding.FragmentRiskDetailBinding
+import dev.keiji.cocoa.android.exposure_notificaiton.R
+import dev.keiji.cocoa.android.exposure_notificaiton.databinding.FragmentRiskDetailBinding
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.RiskEvent
-import dev.keiji.cocoa.android.ui.Signals
+import dev.keiji.cocoa.android.exposure_notificaiton.ui.Signals
 import java.text.DateFormat
 
 @AndroidEntryPoint
@@ -86,7 +86,7 @@ class RiskDetailFragment : Fragment(R.layout.fragment_risk_detail) {
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .background(colorResource(R.color.grey100)),
+                    .background(colorResource(R.color.background_gray)),
                 verticalArrangement = Arrangement.Top
             ) {
                 AppBar() {}
@@ -131,7 +131,7 @@ class RiskDetailFragment : Fragment(R.layout.fragment_risk_detail) {
             Spacer(Modifier.width(12.dp))
 
             Image(
-                painter = painterResource(R.drawable.ic_launcher_background),
+                painter = painterResource(R.drawable.baseline_circle_24),
                 contentDescription = "",
                 modifier = Modifier.size(16.dp)
             )

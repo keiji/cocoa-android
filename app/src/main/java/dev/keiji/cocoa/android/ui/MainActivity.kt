@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.R
+import dev.keiji.cocoa.android.exposure_notificaiton.ui.ExposureNotificationViewModel
 import dev.keiji.cocoa.android.exposure_notification.ExposureNotificationWrapper
 
 @AndroidEntryPoint

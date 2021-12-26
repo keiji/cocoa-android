@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.ui.risk_state
+package dev.keiji.cocoa.android.exposure_notificaiton.ui.risk_state
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

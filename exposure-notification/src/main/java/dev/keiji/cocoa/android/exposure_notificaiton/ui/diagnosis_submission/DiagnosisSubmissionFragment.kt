@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.ui.diagnosis_submission
+package dev.keiji.cocoa.android.exposure_notificaiton.ui.diagnosis_submission
 
 import android.os.Bundle
 import android.view.View
@@ -48,10 +48,10 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
-import dev.keiji.cocoa.android.R
-import dev.keiji.cocoa.android.databinding.FragmentDiagnosisSubmissionBinding
+import dev.keiji.cocoa.android.exposure_notificaiton.R
+import dev.keiji.cocoa.android.exposure_notificaiton.databinding.FragmentDiagnosisSubmissionBinding
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.ReportType
-import dev.keiji.cocoa.android.ui.ExposureNotificationViewModel
+import dev.keiji.cocoa.android.exposure_notificaiton.ui.ExposureNotificationViewModel
 import java.util.*
 
 @AndroidEntryPoint
@@ -123,7 +123,7 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .background(colorResource(R.color.grey100)),
+                    .background(colorResource(R.color.background_gray)),
                 verticalArrangement = Arrangement.Top
             ) {
                 AppBarAgreement() {}
@@ -179,7 +179,7 @@ class DiagnosisSubmissionFragment : Fragment(R.layout.fragment_diagnosis_submiss
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .background(colorResource(R.color.grey100)),
+                    .background(colorResource(R.color.background_gray)),
                 verticalArrangement = Arrangement.Top
             ) {
                 AppBarSubmission() {}

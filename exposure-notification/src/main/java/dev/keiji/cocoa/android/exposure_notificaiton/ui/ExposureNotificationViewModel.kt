@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.ui
+package dev.keiji.cocoa.android.exposure_notificaiton.ui
 
 import android.app.Activity
 import androidx.lifecycle.LiveData

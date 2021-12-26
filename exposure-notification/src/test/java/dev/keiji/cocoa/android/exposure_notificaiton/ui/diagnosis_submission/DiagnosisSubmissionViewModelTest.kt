@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.ui.diagnosis_submission
+package dev.keiji.cocoa.android.exposure_notificaiton.ui.diagnosis_submission
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule

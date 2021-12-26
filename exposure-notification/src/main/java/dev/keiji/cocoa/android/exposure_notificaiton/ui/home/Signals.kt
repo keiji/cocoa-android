@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.ui
+package dev.keiji.cocoa.android.exposure_notificaiton.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import dev.keiji.cocoa.android.R
+import dev.keiji.cocoa.android.exposure_notificaiton.R
 
 @Composable
 fun Signals() {
@@ -28,19 +28,19 @@ fun Signals() {
         horizontalArrangement = Arrangement.Center,
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
+            painter = painterResource(R.drawable.baseline_circle_24),
             contentDescription = "",
             modifier = Modifier.size(32.dp)
         )
         Spacer(Modifier.width(12.dp))
         Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
+            painter = painterResource(R.drawable.baseline_circle_24),
             contentDescription = "",
             modifier = Modifier.size(32.dp)
         )
         Spacer(Modifier.width(12.dp))
         Image(
-            painter = painterResource(R.drawable.ic_launcher_background),
+            painter = painterResource(R.drawable.baseline_circle_24),
             contentDescription = "",
             modifier = Modifier.size(32.dp)
         )

@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.ui.home
+package dev.keiji.cocoa.android.exposure_notificaiton.ui.home
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

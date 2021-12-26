@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.ui.home
+package dev.keiji.cocoa.android.exposure_notificaiton.ui.home
 
 import android.os.Bundle
 import android.view.View
@@ -44,10 +44,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
-import dev.keiji.cocoa.android.R
-import dev.keiji.cocoa.android.databinding.FragmentHomeBinding
-import dev.keiji.cocoa.android.ui.ExposureNotificationViewModel
-import dev.keiji.cocoa.android.ui.Signals
+import dev.keiji.cocoa.android.exposure_notificaiton.R
+import dev.keiji.cocoa.android.exposure_notificaiton.databinding.FragmentHomeBinding
+import dev.keiji.cocoa.android.exposure_notificaiton.ui.ExposureNotificationViewModel
+import dev.keiji.cocoa.android.exposure_notificaiton.ui.Signals
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -98,7 +98,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     fun Main() {
         Column(
             modifier = Modifier
-                .background(colorResource(R.color.grey100))
+                .background(colorResource(R.color.background_gray))
         ) {
             AppBar() {}
 
@@ -158,7 +158,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(R.drawable.ic_launcher_background),
+                    painter = painterResource(R.drawable.baseline_circle_24),
                     contentDescription = "",
                     alignment = Alignment.Center,
                     contentScale = ContentScale.FillWidth,
@@ -255,7 +255,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     Row(
                     ) {
                         Image(
-                            painter = painterResource(R.drawable.ic_launcher_background),
+                            painter = painterResource(R.drawable.baseline_circle_24),
                             contentDescription = "",
                             modifier = Modifier.size(60.dp)
                         )
@@ -323,7 +323,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 )
                 Spacer(Modifier.height(8.dp))
                 Image(
-                    painter = painterResource(R.drawable.ic_launcher_background),
+                    painter = painterResource(R.drawable.baseline_circle_24),
                     contentDescription = "",
                     modifier = Modifier.size(60.dp)
                 )

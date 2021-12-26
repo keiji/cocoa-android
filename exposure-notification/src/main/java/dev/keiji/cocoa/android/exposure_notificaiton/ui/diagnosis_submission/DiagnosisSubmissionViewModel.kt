@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.ui.diagnosis_submission
+package dev.keiji.cocoa.android.exposure_notificaiton.ui.diagnosis_submission
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.keiji.cocoa.android.AppConstants
+import dev.keiji.cocoa.android.exposure_notificaiton.AppConstants
 import dev.keiji.cocoa.android.exposure_notificaiton.entity.TemporaryExposureKey
 import dev.keiji.cocoa.android.exposure_notification.api.DiagnosisSubmissionRequest
 import dev.keiji.cocoa.android.exposure_notification.api.DiagnosisSubmissionServiceApi

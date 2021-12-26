@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android
+package dev.keiji.cocoa.android.exposure_notificaiton
 
 class AppConstants {
     companion object {

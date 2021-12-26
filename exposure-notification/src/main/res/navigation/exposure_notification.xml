@@ -5,7 +5,7 @@
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/homeFragment"
-        android:name="dev.keiji.cocoa.android.ui.home.HomeFragment"
+        android:name="dev.keiji.cocoa.android.exposure_notificaiton.ui.home.HomeFragment"
         android:label="HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_diagnosisSubmissionFragment"
@@ -16,10 +16,10 @@
     </fragment>
     <fragment
         android:id="@+id/diagnosisSubmissionFragment"
-        android:name="dev.keiji.cocoa.android.ui.diagnosis_submission.DiagnosisSubmissionFragment"
+        android:name="dev.keiji.cocoa.android.exposure_notificaiton.ui.diagnosis_submission.DiagnosisSubmissionFragment"
         android:label="DiagnosisSubmissionFragment" />
     <fragment
         android:id="@+id/riskDetailFragment"
-        android:name="dev.keiji.cocoa.android.ui.risk_state.RiskDetailFragment"
+        android:name="dev.keiji.cocoa.android.exposure_notificaiton.ui.risk_state.RiskDetailFragment"
         android:label="RiskDetailFragment" />
 </navigation>
