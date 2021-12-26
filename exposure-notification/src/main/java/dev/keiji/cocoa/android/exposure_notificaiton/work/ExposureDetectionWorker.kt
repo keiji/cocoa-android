@@ -8,10 +8,10 @@ import com.google.android.gms.nearby.exposurenotification.ExposureNotificationSt
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig
+import dev.keiji.cocoa.android.exposure_notificaiton.entity.DiagnosisKeysFile
+import dev.keiji.cocoa.android.exposure_notificaiton.repository.DiagnosisKeysFileRepository
 import dev.keiji.cocoa.android.exposure_notificaiton.repository.ExposureConfigurationRepository
 import dev.keiji.cocoa.android.exposure_notification.ExposureNotificationWrapper
-import dev.keiji.cocoa.android.exposure_notification.api.DiagnosisKeyFileProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.api.DiagnosisKeyListProvideServiceApi
 import dev.keiji.cocoa.android.exposure_notification.regions
 import dev.keiji.cocoa.android.exposure_notification.subregions
 import timber.log.Timber
@@ -23,8 +23,7 @@ import java.util.*
 class ExposureDetectionWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val diagnosisKeyListProvideServiceApi: DiagnosisKeyListProvideServiceApi,
-    private val diagnosisKeyFileProvideServiceApi: DiagnosisKeyFileProvideServiceApi,
+    private val diagnosisKeysFileRepository: DiagnosisKeysFileRepository,
     private val exposureConfigurationRepository: ExposureConfigurationRepository,
     private val exposureNotificationWrapper: ExposureNotificationWrapper,
 ) : CoroutineWorker(appContext, workerParams) {
@@ -49,14 +48,17 @@ class ExposureDetectionWorker @AssistedInject constructor(
 
         try {
             regions().forEach { region ->
-                val diagnosisKeyFiles = downloadDiagnosisKeys(region, null)
-                detectExposure(diagnosisKeyFiles)
 
-                val subRegionDiagnosisKeyFiles = mutableListOf<File>()
+                // Sub-region
+                val subRegionDiagnosisKeyFiles = mutableListOf<DiagnosisKeysContainer>()
                 subregions().forEach { subregion ->
                     subRegionDiagnosisKeyFiles.addAll(downloadDiagnosisKeys(region, subregion))
                 }
                 detectExposure(subRegionDiagnosisKeyFiles)
+
+                // Region
+                val diagnosisKeyFiles = downloadDiagnosisKeys(region, null)
+                detectExposure(diagnosisKeyFiles)
             }
             return Result.success();
         } catch (e: IOException) {
@@ -70,43 +72,54 @@ class ExposureDetectionWorker @AssistedInject constructor(
         }
     }
 
-    private suspend fun detectExposure(diagnosisKeyFiles: List<File>) {
+    private suspend fun detectExposure(diagnosisKeys: List<DiagnosisKeysContainer>) {
         if (BuildConfig.USE_EXPOSURE_WINDOW_MODE) {
-            detectExposureExposureWindowMode(diagnosisKeyFiles)
+            detectExposureExposureWindowMode(diagnosisKeys)
         } else {
-            detectExposureLegacyV1(diagnosisKeyFiles)
+            detectExposureLegacyV1(diagnosisKeys)
         }
 
-        diagnosisKeyFiles.forEach { file ->
-            file.delete()
+        diagnosisKeys.forEach { container ->
+            container.file.delete()
         }
+        diagnosisKeysFileRepository.setIsProcessed(
+            diagnosisKeys.map { container -> container.diagnosisKeysFile }
+        )
     }
 
-    private suspend fun downloadDiagnosisKeys(region: String, subregion: String?): List<File> {
-        var outputDir = File(File(applicationContext.filesDir, DIR_NAME), region)
+    private suspend fun downloadDiagnosisKeys(
+        region: String,
+        subregion: String?
+    ): List<DiagnosisKeysContainer> {
+        val diagnosisKeyList =
+            diagnosisKeysFileRepository.getDiagnosisKeysFileList(region, subregion)
 
-        val diagnosisKeyList = if (subregion != null) {
-            outputDir = File(outputDir, subregion)
-            diagnosisKeyListProvideServiceApi.getList(region, subregion)
-        } else {
-            diagnosisKeyListProvideServiceApi.getList(region)
-        }
+        val diagnosisKeysContainers: MutableList<DiagnosisKeysContainer> = mutableListOf()
 
-        val downloadedFiles = diagnosisKeyList.map { diagnosisKeyEntry ->
+        diagnosisKeyList.forEach { diagnosisKeyEntry ->
             Timber.d(diagnosisKeyEntry.toString())
-            diagnosisKeyEntry ?: return@map null
+            val downloadedFile =
+                diagnosisKeysFileRepository.getDiagnosisKeysFile(diagnosisKeyEntry)
+                    ?: return@forEach
 
-            return@map diagnosisKeyFileProvideServiceApi.getFile(diagnosisKeyEntry, outputDir)
-        }.filterNotNull()
+            diagnosisKeysContainers.add(
+                DiagnosisKeysContainer(
+                    diagnosisKeyEntry,
+                    downloadedFile
+                )
+            )
+        }
 
-        return downloadedFiles
+        return diagnosisKeysContainers
     }
 
-    private suspend fun detectExposureExposureWindowMode(downloadedFiles: List<File>) {
-        exposureNotificationWrapper.provideDiagnosisKeys(downloadedFiles)
+    private suspend fun detectExposureExposureWindowMode(diagnosisKeys: List<DiagnosisKeysContainer>) {
+        exposureNotificationWrapper.provideDiagnosisKeys(
+            diagnosisKeys.map { container -> container.file }
+        )
     }
 
-    private suspend fun detectExposureLegacyV1(downloadedFiles: List<File>) {
+    private suspend fun detectExposureLegacyV1(diagnosisKeys: List<DiagnosisKeysContainer>) {
         val exposureConfiguration =
             exposureConfigurationRepository.getExposureConfiguration(BuildConfig.EXPOSURE_CONFIGURATION_URL)
         Timber.d(exposureConfiguration.toString())
@@ -114,9 +127,14 @@ class ExposureDetectionWorker @AssistedInject constructor(
         val token = UUID.randomUUID().toString()
 
         exposureNotificationWrapper.provideDiagnosisKeys(
-            downloadedFiles,
+            diagnosisKeys.map { container -> container.file },
             exposureConfiguration.v1Config.toNative(),
             token
         )
     }
+
+    private data class DiagnosisKeysContainer(
+        val diagnosisKeysFile: DiagnosisKeysFile,
+        val file: File,
+    )
 }

@@ -12,6 +12,7 @@ plugins {
 
 val hiltVersion: String by rootProject.extra
 val composeVersion: String by rootProject.extra
+val roomVersion: String by rootProject.extra
 
 fun loadProperties(filename: String): Properties? {
     val file = File(rootProject.rootDir, filename)
@@ -177,6 +178,11 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-base:18.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
+
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    testImplementation("androidx.room:room-testing:$roomVersion")
 
     implementation("dev.keiji.rfc4648:rfc4648:1.0.0")
 

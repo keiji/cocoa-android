@@ -18,73 +18,20 @@ import javax.inject.Singleton
 import kotlin.collections.HashMap
 
 interface UserDataRepository {
-    fun getProcessedDiagnosisKeyFileTimestamp(region: String, subregion: String?): Long
-    fun setProcessedDiagnosisKeyFileTimestamp(region: String, subregion: String?, timestamp: Long)
 }
 
 class UserDataRepositoryImpl(
     applicationContext: Context,
     private val dateTimeProvider: DateTimeProvider,
     private val preferences: SharedPreferences,
+    private val diagnosisKeysFileDao: DiagnosisKeysFileDao
 ) : UserDataRepository {
-
-    companion object {
-        internal const val PREFERENCE_NAME = "pref.xml"
-
-        internal const val PREFERENCE_KEY_PROCESSED_DIAGNOSIS_KEY_FILE_TIMESTAMP_DICT =
-            "processed_diagnosis_keys_file_timestamp_dict"
-
-        private const val BLANK_DICTIONARY = "{}"
-        private const val BLANK_LIST = "[]"
-
-        private fun createKey(region: String, subregion: String?): String {
-            return if (subregion == null) {
-                region
-            } else {
-                "${region}-${subregion}"
-            }
-        }
-    }
-
-    override fun getProcessedDiagnosisKeyFileTimestamp(region: String, subregion: String?): Long {
-        val keyTimestampDictStr = preferences.getString(
-            PREFERENCE_KEY_PROCESSED_DIAGNOSIS_KEY_FILE_TIMESTAMP_DICT,
-            null
-        ) ?: BLANK_DICTIONARY
-        val dict = Json.decodeFromString<HashMap<String, Long>>(keyTimestampDictStr)
-
-        val key = createKey(region, subregion)
-        return dict[key] ?: 0L
-    }
-
-    override fun setProcessedDiagnosisKeyFileTimestamp(
-        region: String,
-        subregion: String?,
-        timestamp: Long
-    ) {
-        val keyTimestampDictStr = preferences.getString(
-            PREFERENCE_KEY_PROCESSED_DIAGNOSIS_KEY_FILE_TIMESTAMP_DICT,
-            null
-        ) ?: BLANK_DICTIONARY
-        val dict = Json.decodeFromString<HashMap<String, Long>>(keyTimestampDictStr)
-
-        val key = createKey(region, subregion)
-        dict[key] = timestamp
-
-        val newKeyTimestampDictStr = Json.encodeToString(dict)
-
-        val editor  = preferences.edit()
-        editor.putString(
-            PREFERENCE_KEY_PROCESSED_DIAGNOSIS_KEY_FILE_TIMESTAMP_DICT,
-            newKeyTimestampDictStr
-        )
-        editor.commit()
-    }
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
 object UserDataRepositoryModule {
+    private const val PREFERENCE_NAME = "pref.xml"
 
     @Singleton
     @Provides
@@ -96,8 +43,8 @@ object UserDataRepositoryModule {
         return UserDataRepositoryImpl(
             applicationContext,
             dateTimeProvider,
-            applicationContext.getSharedPreferences(UserDataRepositoryImpl.PREFERENCE_NAME, MODE_PRIVATE,
-            )
+            applicationContext.getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE),
+            databaseProvider.dbInstance().diagnosisKeyFileDao()
         )
     }
 }

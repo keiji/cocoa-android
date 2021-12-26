@@ -11,16 +11,22 @@ import javax.inject.Singleton
 
 interface PathProvider {
     fun exposureConfigurationDir(): File
+    fun diagnosisKeysFileDir(): File
 }
 
 class PathProviderImpl(
     private val applicationContext: Context,
 ) : PathProvider {
     companion object {
-        private const val DIR_NAME = "configuration"
+        private const val DIR_NAME_CONFIGURATION = "configuration"
+        private const val DIR_NAME_DIAGNOSIS_KEYS = "diagnosis_keys"
     }
 
-    override fun exposureConfigurationDir() = File(applicationContext.filesDir, DIR_NAME)
+    override fun exposureConfigurationDir() =
+        File(applicationContext.filesDir, DIR_NAME_CONFIGURATION)
+
+    override fun diagnosisKeysFileDir(): File =
+        File(applicationContext.filesDir, DIR_NAME_DIAGNOSIS_KEYS)
 }
 
 @Module

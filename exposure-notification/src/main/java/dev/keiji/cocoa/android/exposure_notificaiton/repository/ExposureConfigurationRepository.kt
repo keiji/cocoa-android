@@ -31,7 +31,7 @@ class ExposureConfigurationRepositoryImpl(
     }
 
     override suspend fun getExposureConfiguration(url: String): ExposureConfiguration =
-        withContext(Dispatchers.Main) {
+        withContext(Dispatchers.IO) {
             val outputDir = pathProvider.exposureConfigurationDir()
             if (!outputDir.exists()) {
                 outputDir.mkdirs()

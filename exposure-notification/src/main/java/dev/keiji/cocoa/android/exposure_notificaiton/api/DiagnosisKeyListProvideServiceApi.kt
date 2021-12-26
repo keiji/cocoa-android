@@ -7,7 +7,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig
 import dev.keiji.cocoa.android.exposure_notificaiton.DefaultInterceptorOkHttpClient
-import dev.keiji.cocoa.android.exposure_notificaiton.entity.DiagnosisKeysEntry
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
@@ -21,13 +22,20 @@ interface DiagnosisKeyListProvideServiceApi {
     @GET("diagnosis_keys/{region}/list.json")
     suspend fun getList(
         @Path("region") region: String,
-    ): List<DiagnosisKeysEntry?>
+    ): List<Entry?>
 
     @GET("diagnosis_keys/{region}/{subregion}/list.json")
     suspend fun getList(
         @Path("region") region: String,
         @Path("subregion") subregion: String,
-    ): List<DiagnosisKeysEntry?>
+    ): List<Entry?>
+
+    @Serializable
+    data class Entry constructor(
+        @SerialName("region") val region: Int,
+        @SerialName("url") val url: String,
+        @SerialName("created") val created: Long,
+    )
 }
 
 @Module

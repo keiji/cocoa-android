@@ -5,9 +5,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.exposure_notificaiton.DefaultInterceptorOkHttpClient
-import dev.keiji.cocoa.android.exposure_notificaiton.entity.DiagnosisKeysEntry
+import dev.keiji.cocoa.android.exposure_notificaiton.entity.DiagnosisKeysFile
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
@@ -17,39 +16,51 @@ import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Singleton
 
-class DiagnosisKeyFileProvideServiceApi(
+interface DiagnosisKeyFileProvideServiceApi {
+    suspend fun downloadFile(diagnosisKeysFile: DiagnosisKeysFile, outputDir: File): File?
+}
+
+class DiagnosisKeyFileProvideServiceApiImpl(
     private val okHttpClient: OkHttpClient
-) {
-    suspend fun getFile(diagnosisKeysEntry: DiagnosisKeysEntry, outputDir: File): File? =
+) : DiagnosisKeyFileProvideServiceApi {
+
+    override suspend fun downloadFile(
+        diagnosisKeysFile: DiagnosisKeysFile,
+        outputDir: File
+    ): File? =
         withContext(Dispatchers.Main) {
             if (!outputDir.exists()) {
                 outputDir.mkdirs()
             }
 
-            val url = HttpUrl.parse(diagnosisKeysEntry.url)
+            val url = HttpUrl.parse(diagnosisKeysFile.url)
             if (url == null) {
                 Timber.w("DiagnosisKeysEntry.url is null")
                 return@withContext null
             }
 
             val outputFile = File(outputDir, url.encodedPath().split("/").last())
-            Timber.d("outputFile path ${outputFile.absolutePath}")
+            Timber.d("OutputFile path ${outputFile.absolutePath}")
 
             val request = Request.Builder()
                 .url(url)
                 .build()
             val call = okHttpClient.newCall(request)
 
-            launch(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 val response = call.execute()
 
-                response.body()?.byteStream()?.use { inputStream ->
-                    FileOutputStream(outputFile).use { outputStream ->
-                        inputStream.copyTo(outputStream)
+                if (response.isSuccessful) {
+                    response.body()?.byteStream()?.use { inputStream ->
+                        FileOutputStream(outputFile).use { outputStream ->
+                            inputStream.copyTo(outputStream)
+                        }
                     }
+                    Timber.d("Download completed. From:${diagnosisKeysFile.url} To:${outputFile.absolutePath}")
+                } else {
+                    Timber.d("Download failed. From:${diagnosisKeysFile.url} StatusCode:${response.code()}")
                 }
             }
-            Timber.d("download completed. From:${diagnosisKeysEntry.url} To:${outputFile.absolutePath}")
 
             return@withContext outputFile
         }
@@ -64,7 +75,7 @@ object DiagnosisKeyFileProvideServiceApiModule {
     fun provideDiagnosisKeyFileProvideServiceApi(
         @DefaultInterceptorOkHttpClient okHttpClient: OkHttpClient
     ): DiagnosisKeyFileProvideServiceApi {
-        return DiagnosisKeyFileProvideServiceApi(
+        return DiagnosisKeyFileProvideServiceApiImpl(
             okHttpClient
         )
     }
