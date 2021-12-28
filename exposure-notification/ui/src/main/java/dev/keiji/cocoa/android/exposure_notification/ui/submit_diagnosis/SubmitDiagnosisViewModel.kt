@@ -6,7 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.AppConstants
+import dev.keiji.cocoa.android.exposure_notification.ui.AppConstants
 import dev.keiji.cocoa.android.exposure_notification.core.entity.TemporaryExposureKey
 import dev.keiji.cocoa.android.exposure_notification.api.DiagnosisSubmissionRequest
 import dev.keiji.cocoa.android.exposure_notification.api.SubmitDiagnosisServiceApi

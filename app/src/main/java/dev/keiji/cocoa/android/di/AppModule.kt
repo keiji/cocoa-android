@@ -32,6 +32,7 @@ class ConfigurationSourceModule {
     @Singleton
     @Provides
     fun provideConfigurationSource(): ConfigurationSource = ConfigurationSourceImpl(
+        BuildConfig.USE_EXPOSURE_WINDOW_MODE,
         BuildConfig.REGION_IDs,
         BuildConfig.SUBREGION_IDs,
         BuildConfig.SUBMIT_DIAGNOSIS_API_ENDPOINT,

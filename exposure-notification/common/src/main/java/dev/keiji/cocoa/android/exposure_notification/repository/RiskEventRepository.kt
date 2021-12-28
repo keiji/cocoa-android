@@ -1,11 +1,6 @@
 package dev.keiji.cocoa.android.exposure_notification.repository
 
 import android.content.Context
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.keiji.cocoa.android.exposure_notification.core.entity.RiskEvent
 import dev.keiji.cocoa.android.exposure_notification.core.entity.RiskLevel
 import java.util.*

@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api
+package dev.keiji.cocoa.android.exposure_notification.detect_exposure.api
 
 import dev.keiji.cocoa.android.exposure_notification.core.entity.DailySummary
 import dev.keiji.cocoa.android.exposure_notification.core.entity.ExposureConfiguration

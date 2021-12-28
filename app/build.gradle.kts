@@ -77,9 +77,19 @@ android {
     productFlavors {
         create("legacyV1") {
             dimension = "apiVersion"
+            buildConfigField(
+                "Boolean",
+                "USE_EXPOSURE_WINDOW_MODE",
+                "false"
+            )
         }
         create("exposureWindow") {
             dimension = "apiVersion"
+            buildConfigField(
+                "Boolean",
+                "USE_EXPOSURE_WINDOW_MODE",
+                "true"
+            )
         }
     }
 

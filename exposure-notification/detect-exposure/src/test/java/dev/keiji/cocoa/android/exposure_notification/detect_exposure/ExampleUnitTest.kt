@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.exposure_notification.submit_diagnosis
+package dev.keiji.cocoa.android.exposure_notification.detect_exposure
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api
+package dev.keiji.cocoa.android.exposure_notification.detect_exposure.api
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.work
+package dev.keiji.cocoa.android.exposure_notification.detect_exposure.work
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
@@ -6,13 +6,12 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import dev.keiji.cocoa.android.exposure_notification.BuildConfig
 import dev.keiji.cocoa.android.exposure_notification.entity.DiagnosisKeysFile
 import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.core.entity.ExposureNotificationStatus
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
-import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.repository.DiagnosisKeysFileRepository
-import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.repository.ExposureConfigurationRepository
+import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.DiagnosisKeysFileRepository
+import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.ExposureConfigurationRepository
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -73,7 +72,7 @@ class ExposureDetectionWorker @AssistedInject constructor(
     }
 
     private suspend fun detectExposure(diagnosisKeys: List<DiagnosisKeysContainer>) {
-        if (BuildConfig.USE_EXPOSURE_WINDOW_MODE) {
+        if (configurationSource.isEnabledExposureWindowMode()) {
             detectExposureExposureWindowMode(diagnosisKeys)
         } else {
             detectExposureLegacyV1(diagnosisKeys)

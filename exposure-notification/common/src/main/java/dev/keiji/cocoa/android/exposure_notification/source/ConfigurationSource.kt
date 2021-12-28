@@ -2,6 +2,8 @@ package dev.keiji.cocoa.android.exposure_notification.source
 
 
 interface ConfigurationSource {
+    fun isEnabledExposureWindowMode(): Boolean
+
     fun regions(): List<String>
     fun subregions(): List<String>
 
@@ -13,6 +15,7 @@ interface ConfigurationSource {
 }
 
 class ConfigurationSourceImpl(
+    private val isEnabledExposureWindowMode: Boolean,
     regionsStr: String,
     subregionsStr: String,
     private val submitDiagnosisApiEndpoint: String,
@@ -30,6 +33,8 @@ class ConfigurationSourceImpl(
         .replace(" ", "")
         .split(",")
         .filter { it.isNotEmpty() }
+
+    override fun isEnabledExposureWindowMode(): Boolean = isEnabledExposureWindowMode
 
     override fun regions(): List<String> = regions
 

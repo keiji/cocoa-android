@@ -1,12 +1,12 @@
-package dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.repository
+package dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository
 
 import android.content.Context
 import dev.keiji.cocoa.android.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.dao.DiagnosisKeysFileDao
 import dev.keiji.cocoa.android.exposure_notification.entity.DiagnosisKeysFile
-import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api.DiagnosisKeyFileProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api.DiagnosisKeyListProvideServiceApi
+import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.DiagnosisKeyFileProvideServiceApi
+import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.DiagnosisKeyListProvideServiceApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -95,9 +95,10 @@ class DiagnosisKeysFileRepositoryImpl(
     override suspend fun getDiagnosisKeysFile(diagnosisKeyFile: DiagnosisKeysFile): File? =
         withContext(Dispatchers.IO) {
             val regionDir = File(pathSource.diagnosisKeysFileDir(), diagnosisKeyFile.region)
+            val subregion = diagnosisKeyFile.subregion
 
-            val outputDir = if (diagnosisKeyFile.subregion != null) {
-                File(regionDir, diagnosisKeyFile.subregion)
+            val outputDir = if (subregion != null) {
+                File(regionDir, subregion)
             } else {
                 regionDir
             }

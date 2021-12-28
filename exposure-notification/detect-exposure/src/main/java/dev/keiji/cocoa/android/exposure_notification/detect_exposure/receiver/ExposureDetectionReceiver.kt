@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.receiver
+package dev.keiji.cocoa.android.exposure_notification.detect_exposure.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -19,9 +19,9 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
-import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api.ExposureDataCollectionServiceApi
-import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api.ExposureDataRequest
-import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.repository.ExposureConfigurationRepository
+import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureDataCollectionServiceApi
+import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureDataRequest
+import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.ExposureConfigurationRepository
 import timber.log.Timber
 
 @AndroidEntryPoint

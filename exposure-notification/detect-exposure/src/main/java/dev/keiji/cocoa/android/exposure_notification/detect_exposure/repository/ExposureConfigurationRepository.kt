@@ -1,10 +1,10 @@
-package dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.repository
+package dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository
 
 import android.content.Context
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.core.entity.ExposureConfiguration
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
-import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api.ExposureConfigurationProvideServiceApi
+import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureConfigurationProvideServiceApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
