@@ -10,19 +10,22 @@ import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.BuildConfig
 import dev.keiji.cocoa.android.exposure_notification.AnonymousInterceptorOkHttpClient
 import dev.keiji.cocoa.android.exposure_notification.DefaultInterceptorOkHttpClient
+import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionServiceImpl
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.DiagnosisKeyFileProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.DiagnosisKeyListProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureConfigurationProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureConfigurationProvideServiceApiImpl
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureDataCollectionServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.DiagnosisKeysFileRepository
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.DiagnosisKeysFileRepositoryImpl
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.ExposureConfigurationRepository
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.ExposureConfigurationRepositoryImpl
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApi
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyListApi
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureConfigurationApi
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureConfigurationApiImpl
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureDataCollectionApi
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.DiagnosisKeysFileRepository
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.DiagnosisKeysFileRepositoryImpl
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.ExposureConfigurationRepository
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.ExposureConfigurationRepositoryImpl
 import dev.keiji.cocoa.android.exposure_notification.source.DatabaseSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.DiagnosisKeyFileProvideServiceApiImpl
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApiImpl
 import dev.keiji.cocoa.android.source.DateTimeSource
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
@@ -30,16 +33,38 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
+
 @Module
 @InstallIn(SingletonComponent::class)
-object DiagnosisKeyFileProvideServiceApiModule {
+object ExposureDetectionServiceModule {
 
     @Singleton
     @Provides
     fun provideDiagnosisKeyFileProvideServiceApi(
+        exposureConfigurationRepository: ExposureConfigurationRepository,
+        exposureDataCollectionApi: ExposureDataCollectionApi,
+        exposureNotificationWrapper: ExposureNotificationWrapper,
+        configurationSource: ConfigurationSource,
+    ): ExposureDetectionService {
+        return ExposureDetectionServiceImpl(
+            exposureConfigurationRepository,
+            exposureDataCollectionApi,
+            exposureNotificationWrapper,
+            configurationSource
+        )
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object DiagnosisKeyFileProvideApiModule {
+
+    @Singleton
+    @Provides
+    fun provideDiagnosisKeyFileProvideApi(
         @DefaultInterceptorOkHttpClient okHttpClient: OkHttpClient
-    ): DiagnosisKeyFileProvideServiceApi {
-        return DiagnosisKeyFileProvideServiceApiImpl(
+    ): DiagnosisKeyFileApi {
+        return DiagnosisKeyFileApiImpl(
             okHttpClient
         )
     }
@@ -47,13 +72,13 @@ object DiagnosisKeyFileProvideServiceApiModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DiagnosisKeyListProvideServiceApiModule {
+object DiagnosisKeyListProvideApiModule {
 
     @Singleton
     @Provides
-    fun provideDiagnosisKeyListProvideServiceApi(
+    fun provideDiagnosisKeyListProvideApi(
         @DefaultInterceptorOkHttpClient okHttpClient: OkHttpClient
-    ): DiagnosisKeyListProvideServiceApi {
+    ): DiagnosisKeyListApi {
         val contentType = MediaType.parse("application/json")!!
 
         return Retrofit.Builder()
@@ -61,20 +86,20 @@ object DiagnosisKeyListProvideServiceApiModule {
             .baseUrl(BuildConfig.DIAGNOSIS_KEY_API_ENDPOINT)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .build()
-            .create(DiagnosisKeyListProvideServiceApi::class.java)
+            .create(DiagnosisKeyListApi::class.java)
     }
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ExposureConfigurationProvideServiceApiModule {
+object ExposureConfigurationProvideApiModule {
 
     @Singleton
     @Provides
-    fun provideExposureConfigurationProvideServiceApi(
+    fun provideExposureConfigurationProvideApi(
         @DefaultInterceptorOkHttpClient okHttpClient: OkHttpClient
-    ): ExposureConfigurationProvideServiceApi {
-        return ExposureConfigurationProvideServiceApiImpl(
+    ): ExposureConfigurationApi {
+        return ExposureConfigurationApiImpl(
             okHttpClient,
         )
     }
@@ -91,8 +116,8 @@ object DiagnosisKeysFileRepositoryModule {
         pathSource: PathSource,
         dateTimeSource: DateTimeSource,
         databaseSource: DatabaseSource,
-        diagnosisKeyListProvideServiceApi: DiagnosisKeyListProvideServiceApi,
-        diagnosisKeyFileProvideServiceApi: DiagnosisKeyFileProvideServiceApi,
+        diagnosisKeyListApi: DiagnosisKeyListApi,
+        diagnosisKeyFileApi: DiagnosisKeyFileApi,
 
         ): DiagnosisKeysFileRepository {
         return DiagnosisKeysFileRepositoryImpl(
@@ -100,8 +125,8 @@ object DiagnosisKeysFileRepositoryModule {
             pathSource,
             dateTimeSource,
             databaseSource.dbInstance().diagnosisKeyFileDao(),
-            diagnosisKeyListProvideServiceApi,
-            diagnosisKeyFileProvideServiceApi
+            diagnosisKeyListApi,
+            diagnosisKeyFileApi
         )
     }
 }
@@ -116,12 +141,12 @@ object ExposureConfigurationRepositoryModule {
         @ApplicationContext applicationContext: Context,
         pathSource: PathSource,
         configurationSource: ConfigurationSource,
-        exposureConfigurationProvideServiceApi: ExposureConfigurationProvideServiceApi,
+        exposureConfigurationApi: ExposureConfigurationApi,
     ): ExposureConfigurationRepository {
         return ExposureConfigurationRepositoryImpl(
             applicationContext,
             pathSource,
-            exposureConfigurationProvideServiceApi,
+            exposureConfigurationApi,
             configurationSource,
         )
     }
@@ -129,14 +154,14 @@ object ExposureConfigurationRepositoryModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ExposureDataCollectionServiceApiModule {
+object ExposureDataCollectionApiModule {
 
     @Singleton
     @Provides
-    fun provideExposureDataCollectionServiceApi(
+    fun provideExposureDataCollectionApi(
         @AnonymousInterceptorOkHttpClient okHttpClient: OkHttpClient,
         configurationSource: ConfigurationSource,
-        ): ExposureDataCollectionServiceApi {
+        ): ExposureDataCollectionApi {
         val contentType = MediaType.parse("application/json")!!
 
         val json = Json {
@@ -150,6 +175,6 @@ object ExposureDataCollectionServiceApiModule {
             .baseUrl(configurationSource.exposureDataCollectionApiEndpoint())
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
-            .create(ExposureDataCollectionServiceApi::class.java)
+            .create(ExposureDataCollectionApi::class.java)
     }
 }

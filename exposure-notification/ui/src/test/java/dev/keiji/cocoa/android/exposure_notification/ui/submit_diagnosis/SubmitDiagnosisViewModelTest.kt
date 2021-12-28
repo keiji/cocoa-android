@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import dev.keiji.cocoa.android.exposure_notification.core.entity.TemporaryExposureKey
-import dev.keiji.cocoa.android.exposure_notification.api.SubmitDiagnosisServiceApi
+import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.SubmitDiagnosisServiceApi
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import junit.framework.Assert.assertFalse
 import kotlinx.coroutines.Dispatchers

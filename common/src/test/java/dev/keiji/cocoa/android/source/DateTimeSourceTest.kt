@@ -1,6 +1,5 @@
 package dev.keiji.cocoa.android.source
 
-import dev.keiji.cocoa.android.toRFC3339Format
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -52,13 +51,13 @@ class DateTimeSourceTest {
         )
 
         assertEquals(
-            today.time.toRFC3339Format(),
-            mockDateTimeProvider.today().time.toRFC3339Format()
+            today.time,
+            mockDateTimeProvider.today().time
         )
 
         assertEquals(
-            yesterday.time.toRFC3339Format(),
-            mockDateTimeProvider.offsetDate(-1).time.toRFC3339Format()
+            yesterday.time,
+            mockDateTimeProvider.offsetDate(-1).time
         )
     }
 }

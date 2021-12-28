@@ -13,7 +13,6 @@ val targetVersion: Int by rootProject.extra
 
 val hiltVersion: String by rootProject.extra
 val composeVersion: String by rootProject.extra
-val roomVersion: String by rootProject.extra
 
 android {
     compileSdk = sdkVersion
@@ -67,8 +66,8 @@ dependencies {
 
     implementation(project(mapOf("path" to ":exposure-notification:core")))
     implementation(project(mapOf("path" to ":exposure-notification:common")))
-    implementation(project(mapOf("path" to ":exposure-notification:submit-diagnosis")))
-    implementation(project(mapOf("path" to ":exposure-notification:detect-exposure")))
+    implementation(project(mapOf("path" to ":exposure-notification:diagnosis-submission")))
+    implementation(project(mapOf("path" to ":exposure-notification:exposure-detection")))
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.0")
@@ -104,14 +103,6 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
-
-    implementation("com.google.android.gms:play-services-base:18.0.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
-
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-    testImplementation("androidx.room:room-testing:$roomVersion")
 
     testImplementation("junit:junit:4.+")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0")

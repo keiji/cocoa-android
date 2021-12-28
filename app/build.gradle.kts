@@ -139,8 +139,8 @@ dependencies {
     implementation(project(mapOf("path" to ":common")))
 
     implementation(project(mapOf("path" to ":exposure-notification:common")))
-    implementation(project(mapOf("path" to ":exposure-notification:submit-diagnosis")))
-    implementation(project(mapOf("path" to ":exposure-notification:detect-exposure")))
+    implementation(project(mapOf("path" to ":exposure-notification:diagnosis-submission")))
+    implementation(project(mapOf("path" to ":exposure-notification:exposure-detection")))
     implementation(project(mapOf("path" to ":exposure-notification:ui")))
     implementation(
         fileTree(
