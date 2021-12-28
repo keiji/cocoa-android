@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android
+package dev.keiji.cocoa.android.exposure_notification
 
 import java.text.SimpleDateFormat
 import java.util.*

@@ -1,6 +1,6 @@
 package dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api
 
-import dev.keiji.cocoa.android.toRFC3339Format
+import dev.keiji.cocoa.android.exposure_notification.toRFC3339Format
 import dev.keiji.cocoa.android.exposure_notification.core.entity.TemporaryExposureKey
 import retrofit2.http.PUT
 import kotlinx.serialization.SerialName
