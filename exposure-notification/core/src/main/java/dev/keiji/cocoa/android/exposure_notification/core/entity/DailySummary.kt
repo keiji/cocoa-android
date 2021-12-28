@@ -10,11 +10,11 @@ import com.google.android.gms.nearby.exposurenotification.DailySummary.ExposureS
 @Serializable
 class DailySummary(
     @SerialName("DateMillisSinceEpoch") val dateMillisSinceEpoch: Long,
-    @SerialName("DaySummary") val summaryData: ExposureSummaryData,
-    @SerialName("ConfirmedClinicalDiagnosisSummary") val confirmedClinicalDiagnosisSummary: ExposureSummaryData,
-    @SerialName("ConfirmedTestSummary") val confirmedTestSummary: ExposureSummaryData,
-    @SerialName("RecursiveSummary") val recursiveSummary: ExposureSummaryData,
-    @SerialName("SelfReportedSummary") val selfReportedSummary: ExposureSummaryData,
+    @SerialName("DaySummary") val summaryData: ExposureSummaryData?,
+    @SerialName("ConfirmedClinicalDiagnosisSummary") val confirmedClinicalDiagnosisSummary: ExposureSummaryData?,
+    @SerialName("ConfirmedTestSummary") val confirmedTestSummary: ExposureSummaryData?,
+    @SerialName("RecursiveSummary") val recursiveSummary: ExposureSummaryData?,
+    @SerialName("SelfReportedSummary") val selfReportedSummary: ExposureSummaryData?,
 ) {
     constructor(
         dailySummary: NativeDailySummary
