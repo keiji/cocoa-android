@@ -67,8 +67,8 @@ dependencies {
 
     implementation(project(mapOf("path" to ":exposure-notification:core")))
     implementation(project(mapOf("path" to ":exposure-notification:common")))
-    implementation(project(mapOf("path" to ":exposure-notification:submit-diagnosis")))
-    implementation(project(mapOf("path" to ":exposure-notification:detect-exposure")))
+    implementation(project(mapOf("path" to ":exposure-notification:diagnosis-submission")))
+    implementation(project(mapOf("path" to ":exposure-notification:exposure-detection")))
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.0")

@@ -16,8 +16,8 @@
             <option value="$PROJECT_DIR$/exposure-notification" />
             <option value="$PROJECT_DIR$/exposure-notification/common" />
             <option value="$PROJECT_DIR$/exposure-notification/core" />
-            <option value="$PROJECT_DIR$/exposure-notification/detect-exposure" />
-            <option value="$PROJECT_DIR$/exposure-notification/submit-diagnosis" />
+            <option value="$PROJECT_DIR$/exposure-notification/diagnosis-submission" />
+            <option value="$PROJECT_DIR$/exposure-notification/exposure-detection" />
             <option value="$PROJECT_DIR$/exposure-notification/ui" />
           </set>
         </option>
