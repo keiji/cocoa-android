@@ -4,14 +4,12 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     kotlin("plugin.serialization")
     kotlin("kapt")
-    id("dagger.hilt.android.plugin")
 }
 
 val sdkVersion: Int by rootProject.extra
 val minVersion: Int by rootProject.extra
 val targetVersion: Int by rootProject.extra
 
-val hiltVersion: String by rootProject.extra
 val composeVersion: String by rootProject.extra
 val roomVersion: String by rootProject.extra
 
@@ -72,11 +70,6 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
-
-    implementation("com.google.dagger:hilt-android:$hiltVersion")
-    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
-    implementation("androidx.hilt:hilt-work:1.0.0")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")

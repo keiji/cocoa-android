@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.exposure_notification.exposure_detection.work
+package dev.keiji.cocoa.android.work
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker

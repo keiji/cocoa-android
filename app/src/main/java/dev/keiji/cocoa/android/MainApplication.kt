@@ -12,7 +12,7 @@ import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
 import dev.keiji.cocoa.android.BuildConfig.EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES
 import dev.keiji.cocoa.android.BuildConfig.EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.work.ExposureDetectionWorker
+import dev.keiji.cocoa.android.work.ExposureDetectionWorker
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

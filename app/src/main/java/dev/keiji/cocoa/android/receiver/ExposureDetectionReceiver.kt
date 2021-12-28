@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.exposure_notification.exposure_detection.receiver
+package dev.keiji.cocoa.android.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
