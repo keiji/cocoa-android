@@ -16,10 +16,10 @@
     </fragment>
     <fragment
         android:id="@+id/diagnosisSubmissionFragment"
-        android:name="dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.ui.DiagnosisSubmissionFragment"
+        android:name="dev.keiji.cocoa.android.exposure_notification.ui.submit_diagnosis.SubmitDiagnosisFragment"
         android:label="DiagnosisSubmissionFragment" />
     <fragment
         android:id="@+id/riskDetailFragment"
-        android:name="dev.keiji.cocoa.android.exposure_notification.detect_exposure.ui.RiskDetailFragment"
+        android:name="dev.keiji.cocoa.android.exposure_notification.ui.detect_exposure.RiskDetailFragment"
         android:label="RiskDetailFragment" />
 </navigation>

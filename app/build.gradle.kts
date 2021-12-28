@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+import com.android.build.api.dsl.VariantDimension
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -15,6 +18,29 @@ val hiltVersion: String by rootProject.extra
 val composeVersion: String by rootProject.extra
 val roomVersion: String by rootProject.extra
 
+fun loadProperties(filename: String): Properties? {
+    val file = File(rootProject.rootDir, filename)
+    if (!file.exists()) {
+        print("Properties file ${file.absolutePath} not found.")
+        return null
+    }
+    file.reader().use {
+        return Properties().apply {
+            load(it)
+        }
+    }
+}
+
+fun VariantDimension.addBuildConfigStringField(
+    props: Properties?,
+    propertyName: String
+) {
+    props ?: return
+
+    val value = props.getProperty(propertyName) ?: "\"\""
+    buildConfigField("String", propertyName, value)
+}
+
 android {
     compileSdk = sdkVersion
 
@@ -24,6 +50,17 @@ android {
         targetSdk = targetVersion
         versionCode = 1
         versionName = "1.0"
+
+        val props = loadProperties("api-settings.properties")
+            ?: loadProperties("api-settings-sample.properties")
+
+        addBuildConfigStringField(props, "REGION_IDs")
+        addBuildConfigStringField(props, "SUBREGION_IDs")
+
+        addBuildConfigStringField(props, "SUBMIT_DIAGNOSIS_API_ENDPOINT")
+        addBuildConfigStringField(props, "DIAGNOSIS_KEY_API_ENDPOINT")
+        addBuildConfigStringField(props, "EXPOSURE_CONFIGURATION_URL")
+        addBuildConfigStringField(props, "EXPOSURE_DATA_COLLECTION_API_ENDPOINT")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -92,12 +129,13 @@ dependencies {
     implementation(project(mapOf("path" to ":common")))
 
     implementation(project(mapOf("path" to ":exposure-notification:common")))
-    implementation(project(mapOf("path" to ":exposure-notification:diagnosis-submission")))
+    implementation(project(mapOf("path" to ":exposure-notification:submit-diagnosis")))
     implementation(project(mapOf("path" to ":exposure-notification:detect-exposure")))
+    implementation(project(mapOf("path" to ":exposure-notification:ui")))
     implementation(
         fileTree(
             mapOf(
-                "dir" to "../exposure-notification/libs/",
+                "dir" to "../exposure-notification/core/libs/",
                 "include" to listOf("*.aar", "*.jar"),
                 "exclude" to listOf<String>()
             )

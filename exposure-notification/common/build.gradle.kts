@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.konan.properties.Properties
-import com.android.build.api.dsl.VariantDimension
-
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -17,46 +14,12 @@ val targetVersion: Int by rootProject.extra
 val hiltVersion: String by rootProject.extra
 val roomVersion: String by rootProject.extra
 
-fun loadProperties(filename: String): Properties? {
-    val file = File(rootProject.rootDir, filename)
-    if (!file.exists()) {
-        print("Properties file ${file.absolutePath} not found.")
-        return null
-    }
-    file.reader().use {
-        return Properties().apply {
-            load(it)
-        }
-    }
-}
-
-fun VariantDimension.addBuildConfigStringField(
-    props: Properties?,
-    propertyName: String
-) {
-    props ?: return
-
-    val value = props.getProperty(propertyName) ?: "\"\""
-    buildConfigField("String", propertyName, value)
-}
-
 android {
     compileSdk = sdkVersion
 
     defaultConfig {
         minSdk = minVersion
         targetSdk = targetVersion
-
-        val props = loadProperties("api-settings.properties")
-            ?: loadProperties("api-settings-sample.properties")
-
-        addBuildConfigStringField(props, "REGION_IDs")
-        addBuildConfigStringField(props, "SUBREGION_IDs")
-        addBuildConfigStringField(props, "DIAGNOSIS_SUBMISSION_API_ENDPOINT")
-        addBuildConfigStringField(props, "DIAGNOSIS_KEY_API_ENDPOINT")
-        addBuildConfigStringField(props, "EXPOSURE_CONFIGURATION_URL")
-        addBuildConfigStringField(props, "EXPOSURE_DATA_COLLECTION_SERVICE_API_ENDPOINT")
-        addBuildConfigStringField(props, "EXPOSURE_CONFIGURATION_URL")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

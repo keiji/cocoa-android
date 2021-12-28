@@ -57,7 +57,7 @@ dependencies {
     compileOnly(
         fileTree(
             mapOf(
-                "dir" to "../libs",
+                "dir" to "./libs",
                 "include" to listOf("*.aar", "*.jar"),
                 "exclude" to listOf<String>()
             )
@@ -68,16 +68,11 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("androidx.work:work-runtime-ktx:2.7.1")
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
-
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.2")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
-
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
 
     implementation("com.google.android.gms:play-services-base:18.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")

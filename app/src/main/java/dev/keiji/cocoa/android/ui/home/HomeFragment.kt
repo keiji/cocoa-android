@@ -62,7 +62,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private val exposureNotificationViewModel: ExposureNotificationViewModel by activityViewModels()
+    private val exposureNotificationViewModel: dev.keiji.cocoa.android.exposure_notification.ui.ExposureNotificationViewModel by activityViewModels()
     private val viewModel: HomeViewModel by viewModels()
 
     private var binding: FragmentHomeBinding? = null
@@ -206,7 +206,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     )
                     Spacer(Modifier.height(8.dp))
 
-                    Signals()
+                    dev.keiji.cocoa.android.exposure_notification.ui.detect_exposure.Signals()
 
                     Spacer(Modifier.height(16.dp))
                     Button(

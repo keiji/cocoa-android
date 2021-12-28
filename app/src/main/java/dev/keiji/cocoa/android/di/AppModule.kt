@@ -1,63 +1,69 @@
 package dev.keiji.cocoa.android.di
 
 import android.content.Context
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.keiji.cocoa.android.BuildConfig
 import dev.keiji.cocoa.android.exposure_notification.AnonymousInterceptor
 import dev.keiji.cocoa.android.exposure_notification.AnonymousInterceptorOkHttpClient
-import dev.keiji.cocoa.android.exposure_notification.BuildConfig
 import dev.keiji.cocoa.android.exposure_notification.DefaultInterceptorOkHttpClient
-import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.DiagnosisKeyFileProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.DiagnosisKeyFileProvideServiceApiImpl
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.DiagnosisKeyListProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureConfigurationProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureConfigurationProvideServiceApiImpl
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureDataCollectionServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.DiagnosisKeysFileRepository
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.DiagnosisKeysFileRepositoryImpl
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.ExposureConfigurationRepository
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.ExposureConfigurationRepositoryImpl
 import dev.keiji.cocoa.android.exposure_notification.repository.RiskEventRepository
 import dev.keiji.cocoa.android.exposure_notification.repository.UserDataRepository
 import dev.keiji.cocoa.android.exposure_notification.repository.UserDataRepositoryImpl
+import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
+import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSourceImpl
 import dev.keiji.cocoa.android.exposure_notification.source.DatabaseSource
 import dev.keiji.cocoa.android.exposure_notification.source.DatabaseSourceImpl
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSourceImpl
 import dev.keiji.cocoa.android.source.DateTimeSource
 import dev.keiji.cocoa.android.source.DateTimeSourceImpl
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class ExposureNotificationModule {
+class ConfigurationSourceModule {
 
+    @Singleton
     @Provides
-    fun provideExposureNotificationWrapper(
-        @ApplicationContext applicationContext: Context
-    ): ExposureNotificationWrapper {
-        return ExposureNotificationWrapper(applicationContext)
-    }
+    fun provideConfigurationSource(): ConfigurationSource = ConfigurationSourceImpl(
+        BuildConfig.REGION_IDs,
+        BuildConfig.SUBREGION_IDs,
+        BuildConfig.SUBMIT_DIAGNOSIS_API_ENDPOINT,
+        BuildConfig.DIAGNOSIS_KEY_API_ENDPOINT,
+        BuildConfig.EXPOSURE_DATA_COLLECTION_API_ENDPOINT,
+        BuildConfig.EXPOSURE_CONFIGURATION_URL
+    )
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DateTimeProviderModule {
+object DateTimeSourceModule {
 
     @Singleton
     @Provides
-    fun provideDateTimeProvider(
+    fun provideDateTimeSource(
     ): DateTimeSource = DateTimeSourceImpl()
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object PathSourceModule {
+
+    @Singleton
+    @Provides
+    fun providePathSource(
+        @ApplicationContext applicationContext: Context,
+    ): PathSource {
+        return PathSourceImpl(
+            applicationContext,
+        )
+    }
 }
 
 @Module
@@ -95,26 +101,11 @@ object RiskEventRepositoryModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-object PathProviderModule {
+object DatabaseSourceModule {
 
     @Singleton
     @Provides
-    fun providePathProvider(
-        @ApplicationContext applicationContext: Context,
-    ): PathSource {
-        return PathSourceImpl(
-            applicationContext,
-        )
-    }
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseProviderModule {
-
-    @Singleton
-    @Provides
-    fun provideDatabaseProvider(
+    fun provideDatabaseSource(
         @ApplicationContext applicationContext: Context,
     ): DatabaseSource {
         return DatabaseSourceImpl(

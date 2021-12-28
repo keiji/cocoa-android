@@ -4,7 +4,7 @@
 
     <application>
         <receiver
-            android:name=".receiver.ExposureDetectionReceiver"
+            android:name="dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.receiver.ExposureDetectionReceiver"
             android:exported="true"
             android:permission="com.google.android.gms.nearby.exposurenotification.EXPOSURE_CALLBACK">
             <intent-filter>

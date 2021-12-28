@@ -7,21 +7,22 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.keiji.cocoa.android.BuildConfig
 import dev.keiji.cocoa.android.exposure_notification.AnonymousInterceptorOkHttpClient
-import dev.keiji.cocoa.android.exposure_notification.BuildConfig
 import dev.keiji.cocoa.android.exposure_notification.DefaultInterceptorOkHttpClient
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.DiagnosisKeyFileProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.DiagnosisKeyFileProvideServiceApiImpl
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.DiagnosisKeyListProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureConfigurationProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureConfigurationProvideServiceApiImpl
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.api.ExposureDataCollectionServiceApi
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.DiagnosisKeysFileRepository
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.DiagnosisKeysFileRepositoryImpl
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.ExposureConfigurationRepository
-import dev.keiji.cocoa.android.exposure_notification.detect_exposure.repository.ExposureConfigurationRepositoryImpl
+import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
+import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api.DiagnosisKeyFileProvideServiceApi
+import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api.DiagnosisKeyListProvideServiceApi
+import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api.ExposureConfigurationProvideServiceApi
+import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api.ExposureConfigurationProvideServiceApiImpl
+import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api.ExposureDataCollectionServiceApi
+import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.repository.DiagnosisKeysFileRepository
+import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.repository.DiagnosisKeysFileRepositoryImpl
+import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.repository.ExposureConfigurationRepository
+import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.repository.ExposureConfigurationRepositoryImpl
 import dev.keiji.cocoa.android.exposure_notification.source.DatabaseSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
+import dev.keiji.cocoa.android.exposure_notification.submit_diagnosis.api.DiagnosisKeyFileProvideServiceApiImpl
 import dev.keiji.cocoa.android.source.DateTimeSource
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
@@ -114,12 +115,14 @@ object ExposureConfigurationRepositoryModule {
     fun provideExposureConfigurationRepository(
         @ApplicationContext applicationContext: Context,
         pathSource: PathSource,
+        configurationSource: ConfigurationSource,
         exposureConfigurationProvideServiceApi: ExposureConfigurationProvideServiceApi,
     ): ExposureConfigurationRepository {
         return ExposureConfigurationRepositoryImpl(
             applicationContext,
             pathSource,
-            exposureConfigurationProvideServiceApi
+            exposureConfigurationProvideServiceApi,
+            configurationSource,
         )
     }
 }
@@ -131,8 +134,9 @@ object ExposureDataCollectionServiceApiModule {
     @Singleton
     @Provides
     fun provideExposureDataCollectionServiceApi(
-        @AnonymousInterceptorOkHttpClient okHttpClient: OkHttpClient
-    ): ExposureDataCollectionServiceApi {
+        @AnonymousInterceptorOkHttpClient okHttpClient: OkHttpClient,
+        configurationSource: ConfigurationSource,
+        ): ExposureDataCollectionServiceApi {
         val contentType = MediaType.parse("application/json")!!
 
         val json = Json {
@@ -143,7 +147,7 @@ object ExposureDataCollectionServiceApiModule {
         }
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(BuildConfig.EXPOSURE_DATA_COLLECTION_SERVICE_API_ENDPOINT)
+            .baseUrl(configurationSource.exposureDataCollectionApiEndpoint())
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
             .create(ExposureDataCollectionServiceApi::class.java)

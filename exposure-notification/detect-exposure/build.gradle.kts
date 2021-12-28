@@ -36,11 +36,7 @@ android {
     }
 
     buildFeatures {
-        compose = true
         dataBinding = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0-rc01"
     }
 
     flavorDimensions.add("apiVersion")
@@ -76,23 +72,6 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
-
-    implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("androidx.compose.material:material:1.0.5")
-    implementation("androidx.compose.material:material-icons-extended:1.1.0-rc01")
-
-    implementation("androidx.compose.ui:ui-tooling:1.0.5")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
-    implementation("com.google.android.material:compose-theme-adapter:1.1.2")
-    implementation("androidx.navigation:navigation-compose:2.4.0-rc01")
-
-    implementation("androidx.compose.compiler:compiler:$composeVersion")
-    implementation("androidx.compose.runtime:runtime:$composeVersion")
-    implementation("androidx.compose.runtime:runtime-livedata:$composeVersion")
-    implementation("androidx.compose.foundation:foundation:$composeVersion")
-    implementation("androidx.compose.ui:ui:$composeVersion")
-
-    implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")
 
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
