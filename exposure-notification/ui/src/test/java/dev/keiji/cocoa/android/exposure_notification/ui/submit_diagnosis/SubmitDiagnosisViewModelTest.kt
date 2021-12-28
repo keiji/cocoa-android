@@ -5,6 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import dev.keiji.cocoa.android.exposure_notification.core.entity.TemporaryExposureKey
 import dev.keiji.cocoa.android.exposure_notification.api.SubmitDiagnosisServiceApi
+import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import junit.framework.Assert.assertFalse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -62,6 +63,9 @@ class SubmitDiagnosisViewModelTest {
 
     @Test
     fun loadExposureConfiguration(): Unit = runBlocking {
+        val mockConfigurationSource =
+            mock<ConfigurationSource> {
+            }
         val mockDiagnosisSubmissionServiceApi =
             mock<SubmitDiagnosisServiceApi> {
                 onBlocking { submitV3(any()) } doReturn temporaryExposureKeyList
@@ -70,6 +74,7 @@ class SubmitDiagnosisViewModelTest {
         val viewModel =
             SubmitDiagnosisViewModel(
                 SavedStateHandle(),
+                mockConfigurationSource,
                 mockDiagnosisSubmissionServiceApi
             )
 
