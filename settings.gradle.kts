@@ -8,5 +8,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "COCOA"
 include(":app")
-include(":exposure-notification")
 include(":common")
+
+include(":exposure-notification")
+include(":exposure-notification:common")
+include(":exposure-notification:detect-exposure")
+include(":exposure-notification:diagnosis-submission")
+include(":exposure-notification:core")
