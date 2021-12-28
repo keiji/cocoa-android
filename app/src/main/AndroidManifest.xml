@@ -18,7 +18,7 @@
             tools:node="remove" />
 
         <receiver
-            android:name="dev.keiji.cocoa.android.receiver.ExposureNotificationStateReceiver"
+            android:name=".receiver.ExposureNotificationStateReceiver"
             android:exported="true"
             android:permission="com.google.android.gms.nearby.exposurenotification.EXPOSURE_CALLBACK">
             <intent-filter>
