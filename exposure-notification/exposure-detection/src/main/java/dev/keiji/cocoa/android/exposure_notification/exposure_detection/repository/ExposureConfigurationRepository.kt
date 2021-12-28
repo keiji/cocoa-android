@@ -4,7 +4,7 @@ import android.content.Context
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.core.entity.ExposureConfiguration
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureConfigurationProvideServiceApi
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureConfigurationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
@@ -19,7 +19,7 @@ interface ExposureConfigurationRepository {
 class ExposureConfigurationRepositoryImpl(
     private val applicationContext: Context,
     private val pathSource: PathSource,
-    private val exposureConfigurationProvideServiceApi: ExposureConfigurationProvideServiceApi,
+    private val exposureConfigurationApi: ExposureConfigurationApi,
     private val configurationSource: ConfigurationSource,
 ) : ExposureConfigurationRepository {
     companion object {
@@ -37,7 +37,7 @@ class ExposureConfigurationRepositoryImpl(
             val outputFile = File(outputDir, FILENAME)
 
             if (httpUrl != null && !outputFile.exists()) {
-                exposureConfigurationProvideServiceApi.getConfiguration(
+                exposureConfigurationApi.getConfiguration(
                     httpUrl,
                     outputFile
                 )

@@ -3,7 +3,7 @@ package dev.keiji.cocoa.android.exposure_notification.exposure_detection.reposit
 import android.content.Context
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureConfigurationProvideServiceApi
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureConfigurationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -73,7 +73,7 @@ class ExposureConfigurationRepositoryTest {
                 on { exposureConfigurationDir() } doReturn tmpFolder.root
             }
         val mockExposureConfigurationProvideServiceApi =
-            mock<ExposureConfigurationProvideServiceApi> {
+            mock<ExposureConfigurationApi> {
                 onBlocking { getConfiguration(any(), any()) } doReturn exposureNotificationFile
             }
         val mockConfigurationSource =

@@ -5,8 +5,8 @@ import dev.keiji.cocoa.android.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.dao.DiagnosisKeysFileDao
 import dev.keiji.cocoa.android.exposure_notification.entity.DiagnosisKeysFile
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyListProvideServiceApi
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApi
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyListApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -29,8 +29,8 @@ class DiagnosisKeysFileRepositoryImpl(
     private val pathSource: PathSource,
     private val dateTimeSource: DateTimeSource,
     private val diagnosisKeyFileDao: DiagnosisKeysFileDao,
-    private val diagnosisKeyListProvideServiceApi: DiagnosisKeyListProvideServiceApi,
-    private val diagnosisKeyFileProvideServiceApi: DiagnosisKeyFileProvideServiceApi,
+    private val diagnosisKeyListApi: DiagnosisKeyListApi,
+    private val diagnosisKeyFileApi: DiagnosisKeyFileApi,
 ) : DiagnosisKeysFileRepository {
 
     override suspend fun getDiagnosisKeysFileList(
@@ -38,9 +38,9 @@ class DiagnosisKeysFileRepositoryImpl(
         subregion: String?
     ): List<DiagnosisKeysFile> = withContext(Dispatchers.IO) {
         val diagnosisKeysFileEntryList = if (subregion != null) {
-            diagnosisKeyListProvideServiceApi.getList(region, subregion)
+            diagnosisKeyListApi.getList(region, subregion)
         } else {
-            diagnosisKeyListProvideServiceApi.getList(region)
+            diagnosisKeyListApi.getList(region)
         }
 
         val existKeyFileList = diagnosisKeyFileDao.findAllByRegionAndSubregion(region, subregion)
@@ -104,7 +104,7 @@ class DiagnosisKeysFileRepositoryImpl(
             }
 
             try {
-                return@withContext diagnosisKeyFileProvideServiceApi.downloadFile(
+                return@withContext diagnosisKeyFileApi.downloadFile(
                     diagnosisKeyFile,
                     outputDir
                 )

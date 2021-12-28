@@ -10,13 +10,13 @@ import okhttp3.Request
 import java.io.File
 import java.io.FileOutputStream
 
-interface ExposureConfigurationProvideServiceApi {
+interface ExposureConfigurationApi {
     suspend fun getConfiguration(url: HttpUrl, outputFile: File): File
 }
 
-class ExposureConfigurationProvideServiceApiImpl(
+class ExposureConfigurationApiImpl(
     private val okHttpClient: OkHttpClient,
-) : ExposureConfigurationProvideServiceApi {
+) : ExposureConfigurationApi {
     override suspend fun getConfiguration(url: HttpUrl, outputFile: File) = withContext(Dispatchers.Main) {
         val request = Request.Builder()
             .url(url)

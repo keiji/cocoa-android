@@ -1,7 +1,6 @@
 package dev.keiji.cocoa.android.work
 
 import android.content.Context
-import android.os.Build
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
@@ -12,21 +11,13 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureDataCollectionServiceApi
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureDataRequest
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.ExposureConfigurationRepository
-import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
-import timber.log.Timber
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 
 @HiltWorker
 class V1ExposureDetectionWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val exposureConfigurationRepository: ExposureConfigurationRepository,
-    private val exposureDataCollectionServiceApi: ExposureDataCollectionServiceApi,
-    private val exposureNotificationWrapper: ExposureNotificationWrapper,
-    private val configurationSource: ConfigurationSource,
+    private val exposureDetectionService: ExposureDetectionService,
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -49,30 +40,6 @@ class V1ExposureDetectionWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         val token = inputData.getString(WORKER_PARAM_KEY_TOKEN) ?: return Result.failure()
-
-        try {
-            val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
-            val exposureSummary = exposureNotificationWrapper.getExposureSummary(token)
-            val exposureInformationList = exposureNotificationWrapper.getExposureInformation(token)
-
-            configurationSource.regions().forEach { region ->
-                exposureDataCollectionServiceApi.submit(
-                    region,
-                    ExposureDataRequest(
-                        device = Build.MODEL,
-                        enVersion = exposureNotificationWrapper.getVersion().toString(),
-                        exposureConfiguration = exposureConfiguration,
-                        exposureSummary = exposureSummary,
-                        exposureInformationList = exposureInformationList,
-                        dailySummaryList = null,
-                        exposureWindowList = null
-                    )
-                )
-            }
-        } catch (exception: Exception) {
-            Timber.e(exception)
-        }
-
-        return Result.success()
+        return exposureDetectionService.v1ExposureDetectedWork(token);
     }
 }

@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import dagger.hilt.android.AndroidEntryPoint
-import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class ExposureNotificationStateReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var exposureNotificationWrapper: ExposureNotificationWrapper
+    lateinit var exposureDetectionService: ExposureDetectionService
 
     override fun onReceive(context: Context?, intent: Intent?) {
         Timber.i("ExposureNotificationStateReceiver.onReceive")
@@ -21,7 +21,7 @@ class ExposureNotificationStateReceiver : BroadcastReceiver() {
         intent ?: return
 
         val isExposureNotificationEnabled: Boolean =
-            intent.getBooleanExtra(ExposureNotificationWrapper.EXTRA_SERVICE_STATE, false)
+            exposureDetectionService.isExposureNotificationEnabled(intent)
         Timber.i("Service state ${isExposureNotificationEnabled}")
 
     }

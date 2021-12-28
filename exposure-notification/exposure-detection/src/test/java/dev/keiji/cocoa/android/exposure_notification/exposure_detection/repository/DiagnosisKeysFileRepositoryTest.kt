@@ -5,8 +5,8 @@ import dev.keiji.cocoa.android.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.dao.DiagnosisKeysFileDao
 import dev.keiji.cocoa.android.exposure_notification.entity.DiagnosisKeysFile
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileProvideServiceApi
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyListProvideServiceApi
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApi
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyListApi
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert
@@ -72,22 +72,22 @@ class DiagnosisKeysFileRepositoryTest {
         )
 
         val listedDiagnosisKeysFileList = listOf(
-            DiagnosisKeyListProvideServiceApi.Entry(
+            DiagnosisKeyListApi.Entry(
                 987,
                 "https://example.org/2.zip",
                 23128,
             ),
-            DiagnosisKeyListProvideServiceApi.Entry(
+            DiagnosisKeyListApi.Entry(
                 987,
                 "https://example.org/3.zip",
                 23132,
             ),
-            DiagnosisKeyListProvideServiceApi.Entry(
+            DiagnosisKeyListApi.Entry(
                 987,
                 "https://example.org/4.zip",
                 23144,
             ),
-            DiagnosisKeyListProvideServiceApi.Entry(
+            DiagnosisKeyListApi.Entry(
                 987,
                 "https://example.org/5.zip",
                 23177,
@@ -140,12 +140,12 @@ class DiagnosisKeysFileRepositoryTest {
                 } doReturn expectedDiagnosisKeysFileList
             }
         val mockDiagnosisKeyListProvideServiceApi =
-            mock<DiagnosisKeyListProvideServiceApi> {
+            mock<DiagnosisKeyListApi> {
                 onBlocking { getList(any()) } doReturn listedDiagnosisKeysFileList
                 onBlocking { getList(any(), any()) } doReturn emptyList()
             }
         val mockDiagnosisKeyFileProvideServiceApi =
-            mock<DiagnosisKeyFileProvideServiceApi> {
+            mock<DiagnosisKeyFileApi> {
             }
 
         val repository = DiagnosisKeysFileRepositoryImpl(
@@ -241,22 +241,22 @@ class DiagnosisKeysFileRepositoryTest {
         )
 
         val listedDiagnosisKeysFileList = listOf(
-            DiagnosisKeyListProvideServiceApi.Entry(
+            DiagnosisKeyListApi.Entry(
                 987,
                 "https://example.org/2.zip",
                 23128,
             ),
-            DiagnosisKeyListProvideServiceApi.Entry(
+            DiagnosisKeyListApi.Entry(
                 987,
                 "https://example.org/3.zip",
                 23132,
             ),
-            DiagnosisKeyListProvideServiceApi.Entry(
+            DiagnosisKeyListApi.Entry(
                 987,
                 "https://example.org/4.zip",
                 23144,
             ),
-            DiagnosisKeyListProvideServiceApi.Entry(
+            DiagnosisKeyListApi.Entry(
                 987,
                 "https://example.org/5.zip",
                 23177,
@@ -309,12 +309,12 @@ class DiagnosisKeysFileRepositoryTest {
                 } doReturn expectedDiagnosisKeysFileList
             }
         val mockDiagnosisKeyListProvideServiceApi =
-            mock<DiagnosisKeyListProvideServiceApi> {
+            mock<DiagnosisKeyListApi> {
                 onBlocking { getList(any()) } doReturn emptyList()
                 onBlocking { getList(any(), any()) } doReturn listedDiagnosisKeysFileList
             }
         val mockDiagnosisKeyFileProvideServiceApi =
-            mock<DiagnosisKeyFileProvideServiceApi> {
+            mock<DiagnosisKeyFileApi> {
             }
 
         val repository = DiagnosisKeysFileRepositoryImpl(

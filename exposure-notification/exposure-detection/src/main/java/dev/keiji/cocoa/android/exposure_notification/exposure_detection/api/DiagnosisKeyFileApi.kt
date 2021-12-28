@@ -10,13 +10,13 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 
-interface DiagnosisKeyFileProvideServiceApi {
+interface DiagnosisKeyFileApi {
     suspend fun downloadFile(diagnosisKeysFile: DiagnosisKeysFile, outputDir: File): File?
 }
 
-class DiagnosisKeyFileProvideServiceApiImpl(
+class DiagnosisKeyFileApiImpl(
     private val okHttpClient: OkHttpClient
-) : DiagnosisKeyFileProvideServiceApi {
+) : DiagnosisKeyFileApi {
 
     override suspend fun downloadFile(
         diagnosisKeysFile: DiagnosisKeysFile,

@@ -12,7 +12,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import retrofit2.http.Body
 
-interface ExposureDataCollectionServiceApi {
+interface ExposureDataCollectionApi {
     @PUT("exposure_data/{region}")
     suspend fun submit(
         @Path("region") region: String,

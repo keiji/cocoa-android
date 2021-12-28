@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 import retrofit2.http.Path
 import retrofit2.http.GET
 
-interface DiagnosisKeyListProvideServiceApi {
+interface DiagnosisKeyListApi {
     @GET("diagnosis_keys/{region}/list.json")
     suspend fun getList(
         @Path("region") region: String,
