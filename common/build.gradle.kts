@@ -3,17 +3,18 @@ plugins {
     kotlin("android")
     kotlin("plugin.serialization")
     kotlin("kapt")
-    id("dagger.hilt.android.plugin")
 }
 
-val hiltVersion: String by rootProject.extra
+val sdkVersion: Int by rootProject.extra
+val minVersion: Int by rootProject.extra
+val targetVersion: Int by rootProject.extra
 
 android {
-    compileSdk = 31
+    compileSdk = sdkVersion
 
     defaultConfig {
-        minSdk = 23
-        targetSdk = 31
+        minSdk = minVersion
+        targetSdk = targetVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,10 +48,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     api("com.jakewharton.timber:timber:5.0.1")
-
-    implementation("com.google.dagger:hilt-android:$hiltVersion")
-    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
 
     testImplementation("junit:junit:4.+")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0")

@@ -10,9 +10,9 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
-import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig.EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES
-import dev.keiji.cocoa.android.exposure_notificaiton.BuildConfig.EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES
-import dev.keiji.cocoa.android.exposure_notificaiton.work.ExposureDetectionWorker
+import dev.keiji.cocoa.android.BuildConfig.EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES
+import dev.keiji.cocoa.android.BuildConfig.EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES
+import dev.keiji.cocoa.android.exposure_notification.detect_exposure.work.ExposureDetectionWorker
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

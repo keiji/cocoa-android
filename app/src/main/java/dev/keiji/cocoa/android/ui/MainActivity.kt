@@ -6,13 +6,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.R
-import dev.keiji.cocoa.android.exposure_notificaiton.ui.ExposureNotificationViewModel
-import dev.keiji.cocoa.android.exposure_notification.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.ui.ExposureNotificationViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    private val viewModel: ExposureNotificationViewModel by viewModels()
+    private val viewModel: dev.keiji.cocoa.android.exposure_notification.ui.ExposureNotificationViewModel by viewModels()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

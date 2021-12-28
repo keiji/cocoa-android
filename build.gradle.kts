@@ -1,11 +1,19 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    val sdkVersion = 31
+    val minVersion = 23
+    val targetVersion = 31
+
     val kotlinVersion = "1.6.0"
     val hiltVersion = "2.40.5"
     val composeVersion = "1.1.0-rc01"
     val roomVersion = "2.4.0-beta02"
 
     extra.apply {
+        set("sdkVersion", sdkVersion)
+        set("minVersion", minVersion)
+        set("targetVersion", targetVersion)
+
         set("kotlinVersion", kotlinVersion)
         set("hiltVersion", hiltVersion)
         set("composeVersion", composeVersion)
