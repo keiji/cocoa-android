@@ -5,5 +5,7 @@
 
 ## How to build
 
-> cp api-settings-sample.properties api-settings.properties
-> ./gradlew assembleDebug
+```
+cp api-settings-sample.properties api-settings.properties 
+./gradlew assembleDebug
+```
