@@ -5,17 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
-    <application>
-
-        <receiver
-            android:name=".receiver.ExposureNotificationStateReceiver"
-            android:exported="true"
-            android:permission="com.google.android.gms.nearby.exposurenotification.EXPOSURE_CALLBACK">
-            <intent-filter>
-                <action android:name="com.google.android.gms.exposurenotification.ACTION_SERVICE_STATE_UPDATED" />
-            </intent-filter>
-        </receiver>
-
-    </application>
+    <application />
 
 </manifest>

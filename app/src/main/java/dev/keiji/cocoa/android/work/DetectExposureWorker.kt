@@ -18,7 +18,7 @@ import java.io.IOException
 import java.util.*
 
 @HiltWorker
-class ExposureDetectionWorker @AssistedInject constructor(
+class DetectExposureWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val diagnosisKeysFileRepository: DiagnosisKeysFileRepository,
