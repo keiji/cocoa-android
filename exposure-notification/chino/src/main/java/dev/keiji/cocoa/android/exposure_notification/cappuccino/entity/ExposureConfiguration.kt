@@ -127,7 +127,7 @@ data class ExposureConfiguration(
     @Serializable
     data class DailySummariesConfig(
         @SerialName("attenuation_bucket_threshold_db")
-        val attenuationBacketThresholdDb: List<Int> = listOf(50, 70, 90),
+        val attenuationBucketThresholdDb: List<Int> = listOf(50, 70, 90),
 
         @SerialName("attenuation_bucket_weights")
         val attenuationBucketWeights: List<Double> = listOf(1.0, 1.0, 1.0, 1.0),
@@ -188,7 +188,7 @@ data class ExposureConfiguration(
 
         fun toNative(): NativeDailySummariesConfig {
             val builder = NativeDailySummariesConfig.DailySummariesConfigBuilder()
-                .setAttenuationBuckets(attenuationBacketThresholdDb, attenuationBucketWeights)
+                .setAttenuationBuckets(attenuationBucketThresholdDb, attenuationBucketWeights)
                 .setDaysSinceExposureThreshold(daysSinceExposureThreshold)
                 .setMinimumWindowScore(minimumWindowScore)
 

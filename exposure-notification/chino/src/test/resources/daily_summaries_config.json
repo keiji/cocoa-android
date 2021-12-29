@@ -1,0 +1,25 @@
+{
+  "attenuation_bucket_threshold_db": [
+    50,
+    70,
+    90
+  ],
+  "attenuation_bucket_weights": [
+    1.0,
+    1.2,
+    1.4,
+    1.6
+  ],
+  "days_since_exposure_threshold": 0,
+  "infectiousness_weights": {
+    "High": 1.0,
+    "Standard": 1.1
+  },
+  "minimum_window_score": 11.0,
+  "report_type_weights": {
+    "ConfirmedClinicalDiagnosis": 1.0,
+    "ConfirmedTest": 1.1,
+    "SelfReport": 1.2,
+    "Recursive": 1.3
+  }
+}

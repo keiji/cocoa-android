@@ -56,8 +56,7 @@ dependencies {
         fileTree(
             mapOf(
                 "dir" to "./libs",
-                "include" to listOf("*.aar", "*.jar"),
-                "exclude" to listOf<String>()
+                "include" to listOf("play-services-nearby-exposurenotification-*.aar"),
             )
         )
     )
@@ -77,6 +76,14 @@ dependencies {
 
     implementation("dev.keiji.rfc4648:rfc4648:1.0.0")
 
+    testImplementation(
+        fileTree(
+            mapOf(
+                "dir" to "./libs",
+                "include" to listOf("play-services-nearby-exposurenotification-*.aar"),
+            )
+        )
+    )
     testImplementation("junit:junit:4.+")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
