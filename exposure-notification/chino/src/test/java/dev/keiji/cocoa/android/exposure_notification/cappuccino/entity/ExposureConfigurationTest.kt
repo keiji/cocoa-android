@@ -14,7 +14,6 @@ import java.io.InputStreamReader
 class ExposureConfigurationTest {
     companion object {
         private const val FILENAME = "exposure_configuration.json"
-        private const val DELTA = 0.0000001
     }
 
     @Before
@@ -27,21 +26,6 @@ class ExposureConfigurationTest {
 
     @Test
     fun deserializeTest() {
-        val jsonText =
-            InputStreamReader(javaClass.classLoader!!.getResourceAsStream(FILENAME)).use { isr ->
-                isr.readText()
-            }
-
-        val exposureConfiguration =
-            Json.decodeFromString<ExposureConfiguration>(jsonText)
-        Assert.assertNotNull(exposureConfiguration)
-
-        Assert.assertNotNull(exposureConfiguration.dailySummaryConfig)
-        Assert.assertNotNull(exposureConfiguration.diagnosisKeysDataMappingConfig)
-    }
-
-    @Test
-    fun toNativeTest() {
         val jsonText =
             InputStreamReader(javaClass.classLoader!!.getResourceAsStream(FILENAME)).use { isr ->
                 isr.readText()

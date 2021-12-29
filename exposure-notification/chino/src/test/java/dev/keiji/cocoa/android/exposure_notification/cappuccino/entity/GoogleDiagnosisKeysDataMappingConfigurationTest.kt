@@ -75,4 +75,58 @@ class GoogleDiagnosisKeysDataMappingConfigurationTest {
             Assert.assertEquals(0, daysSinceOnsetToInfectiousness[14])
         }
     }
+
+    @Test
+    fun toNativeTest() {
+        val jsonText =
+            InputStreamReader(javaClass.classLoader!!.getResourceAsStream(FILENAME)).use { isr ->
+                isr.readText()
+            }
+
+        val chinoDiagnosisKeysDataMappingConfig =
+            Json.decodeFromString<ExposureConfiguration.DiagnosisKeysDataMappingConfig>(jsonText)
+        Assert.assertNotNull(chinoDiagnosisKeysDataMappingConfig)
+
+        val diagnosisKeysDataMappingConfig = chinoDiagnosisKeysDataMappingConfig.toNative()
+        Assert.assertNotNull(chinoDiagnosisKeysDataMappingConfig)
+
+        Assert.assertEquals(
+            1,
+            diagnosisKeysDataMappingConfig.infectiousnessWhenDaysSinceOnsetMissing
+        )
+        Assert.assertEquals(1, diagnosisKeysDataMappingConfig.reportTypeWhenMissing)
+        Assert.assertEquals(29, diagnosisKeysDataMappingConfig.daysSinceOnsetToInfectiousness.size)
+
+        diagnosisKeysDataMappingConfig.daysSinceOnsetToInfectiousness.also { daysSinceOnsetToInfectiousness ->
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[-14])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[-13])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[-12])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[-11])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[-10])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[-9])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[-8])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[-7])
+            Assert.assertEquals(1, daysSinceOnsetToInfectiousness[-6])
+            Assert.assertEquals(1, daysSinceOnsetToInfectiousness[-5])
+            Assert.assertEquals(1, daysSinceOnsetToInfectiousness[-4])
+            Assert.assertEquals(2, daysSinceOnsetToInfectiousness[-3])
+            Assert.assertEquals(2, daysSinceOnsetToInfectiousness[-2])
+            Assert.assertEquals(2, daysSinceOnsetToInfectiousness[-1])
+            Assert.assertEquals(2, daysSinceOnsetToInfectiousness[0])
+            Assert.assertEquals(2, daysSinceOnsetToInfectiousness[1])
+            Assert.assertEquals(2, daysSinceOnsetToInfectiousness[2])
+            Assert.assertEquals(2, daysSinceOnsetToInfectiousness[3])
+            Assert.assertEquals(2, daysSinceOnsetToInfectiousness[4])
+            Assert.assertEquals(2, daysSinceOnsetToInfectiousness[5])
+            Assert.assertEquals(1, daysSinceOnsetToInfectiousness[6])
+            Assert.assertEquals(1, daysSinceOnsetToInfectiousness[7])
+            Assert.assertEquals(1, daysSinceOnsetToInfectiousness[8])
+            Assert.assertEquals(1, daysSinceOnsetToInfectiousness[9])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[10])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[11])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[12])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[13])
+            Assert.assertEquals(0, daysSinceOnsetToInfectiousness[14])
+        }
+    }
 }
