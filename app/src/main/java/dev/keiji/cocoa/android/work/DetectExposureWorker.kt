@@ -7,8 +7,8 @@ import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dev.keiji.cocoa.android.exposure_notification.entity.DiagnosisKeysFile
-import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
-import dev.keiji.cocoa.android.exposure_notification.core.entity.ExposureNotificationStatus
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureNotificationStatus
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.DiagnosisKeysFileRepository
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.ExposureConfigurationRepository

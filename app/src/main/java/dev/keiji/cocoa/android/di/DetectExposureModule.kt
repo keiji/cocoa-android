@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.BuildConfig
 import dev.keiji.cocoa.android.exposure_notification.AnonymousInterceptorOkHttpClient
 import dev.keiji.cocoa.android.exposure_notification.DefaultInterceptorOkHttpClient
-import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionServiceImpl
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource

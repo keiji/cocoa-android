@@ -1,10 +1,10 @@
 package dev.keiji.cocoa.android.exposure_notification.exposure_detection.api
 
-import dev.keiji.cocoa.android.exposure_notification.core.entity.DailySummary
-import dev.keiji.cocoa.android.exposure_notification.core.entity.ExposureConfiguration
-import dev.keiji.cocoa.android.exposure_notification.core.entity.ExposureInformation
-import dev.keiji.cocoa.android.exposure_notification.core.entity.ExposureSummary
-import dev.keiji.cocoa.android.exposure_notification.core.entity.ExposureWindow
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.DailySummary
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureConfiguration
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureInformation
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureSummary
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureWindow
 import retrofit2.http.PUT
 import retrofit2.http.Path
 

@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
-import dev.keiji.cocoa.android.exposure_notification.core.entity.ReportType
-import dev.keiji.cocoa.android.exposure_notification.core.entity.TemporaryExposureKey
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ReportType
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject

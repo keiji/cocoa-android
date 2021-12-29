@@ -1,8 +1,8 @@
 package dev.keiji.cocoa.android.exposure_notification.repository
 
 import android.content.Context
-import dev.keiji.cocoa.android.exposure_notification.core.entity.RiskEvent
-import dev.keiji.cocoa.android.exposure_notification.core.entity.RiskLevel
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.RiskEvent
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.RiskLevel
 import java.util.*
 
 class RiskEventRepository(applicationContext: Context) {

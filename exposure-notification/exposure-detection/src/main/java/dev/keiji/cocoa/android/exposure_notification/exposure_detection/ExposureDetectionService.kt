@@ -3,7 +3,7 @@ package dev.keiji.cocoa.android.exposure_notification.exposure_detection
 import android.content.Intent
 import android.os.Build
 import androidx.work.ListenableWorker
-import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureDataCollectionApi
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureDataRequest
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.ExposureConfigurationRepository

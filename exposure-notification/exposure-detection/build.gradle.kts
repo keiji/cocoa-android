@@ -59,7 +59,7 @@ android {
 dependencies {
     implementation(project(mapOf("path" to ":common")))
     implementation(project(mapOf("path" to ":exposure-notification:common")))
-    implementation(project(mapOf("path" to ":exposure-notification:core")))
+    implementation(project(mapOf("path" to ":exposure-notification:chino")))
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.0")
