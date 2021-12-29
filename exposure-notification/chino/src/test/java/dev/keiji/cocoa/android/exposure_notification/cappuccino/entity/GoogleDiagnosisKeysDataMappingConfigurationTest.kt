@@ -131,4 +131,21 @@ class GoogleDiagnosisKeysDataMappingConfigurationTest {
             Assert.assertEquals(0, daysSinceOnsetToInfectiousness[14])
         }
     }
+
+    @Test
+    fun equalsTest1() {
+        val jsonText =
+            InputStreamReader(javaClass.classLoader!!.getResourceAsStream(FILENAME)).use { isr ->
+                isr.readText()
+            }
+
+        val chinoDiagnosisKeysDataMappingConfig1 =
+            Json.decodeFromString<ExposureConfiguration.DiagnosisKeysDataMappingConfig>(jsonText)
+        val chinoDiagnosisKeysDataMappingConfig2 =
+            Json.decodeFromString<ExposureConfiguration.DiagnosisKeysDataMappingConfig>(jsonText)
+
+
+        Assert.assertEquals(chinoDiagnosisKeysDataMappingConfig1, chinoDiagnosisKeysDataMappingConfig2)
+    }
+
 }

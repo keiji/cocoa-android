@@ -72,6 +72,40 @@ data class ExposureConfiguration(
                 .setTransmissionRiskScores(*transmissionRiskScores)
                 .setTransmissionRiskWeight(transmissionRiskWeight)
                 .build()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as V1Config
+
+            if (!attenuationScores.contentEquals(other.attenuationScores)) return false
+            if (attenuationWeight != other.attenuationWeight) return false
+            if (!daysSinceLastExposureScores.contentEquals(other.daysSinceLastExposureScores)) return false
+            if (daysSinceLastExposureWeight != other.daysSinceLastExposureWeight) return false
+            if (!durationAtAttenuationThresholds.contentEquals(other.durationAtAttenuationThresholds)) return false
+            if (!durationScores.contentEquals(other.durationScores)) return false
+            if (durationWeight != other.durationWeight) return false
+            if (minimumRiskScore != other.minimumRiskScore) return false
+            if (!transmissionRiskScores.contentEquals(other.transmissionRiskScores)) return false
+            if (transmissionRiskWeight != other.transmissionRiskWeight) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = attenuationScores.contentHashCode()
+            result = 31 * result + attenuationWeight
+            result = 31 * result + daysSinceLastExposureScores.contentHashCode()
+            result = 31 * result + daysSinceLastExposureWeight
+            result = 31 * result + durationAtAttenuationThresholds.contentHashCode()
+            result = 31 * result + durationScores.contentHashCode()
+            result = 31 * result + durationWeight
+            result = 31 * result + minimumRiskScore
+            result = 31 * result + transmissionRiskScores.contentHashCode()
+            result = 31 * result + transmissionRiskWeight
+            return result
+        }
     }
 
     @Serializable

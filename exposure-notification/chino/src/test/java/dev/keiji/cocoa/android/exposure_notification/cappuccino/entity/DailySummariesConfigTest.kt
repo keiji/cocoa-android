@@ -125,4 +125,19 @@ class DailySummariesConfigTest {
             Assert.assertEquals(1.3, reportTypeWeights[NativeReportType.RECURSIVE])
         }
     }
+
+    @Test
+    fun equalsTest1() {
+        val jsonText =
+            InputStreamReader(javaClass.classLoader!!.getResourceAsStream(FILENAME)).use { isr ->
+                isr.readText()
+            }
+
+        val chinoDailySummariesConfig1 =
+            Json.decodeFromString<ExposureConfiguration.DailySummariesConfig>(jsonText)
+        val chinoDailySummariesConfig2 =
+            Json.decodeFromString<ExposureConfiguration.DailySummariesConfig>(jsonText)
+
+        Assert.assertEquals(chinoDailySummariesConfig1, chinoDailySummariesConfig2)
+    }
 }

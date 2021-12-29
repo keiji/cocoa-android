@@ -154,6 +154,20 @@ class GoogleExposureConfigurationV1Test {
             Assert.assertEquals(7, transmissionRiskScores[7])
         }
         Assert.assertEquals(54, v1Config.transmissionRiskWeight)
+    }
 
+    @Test
+    fun equalsTest1() {
+        val jsonText =
+            InputStreamReader(javaClass.classLoader!!.getResourceAsStream(FILENAME)).use { isr ->
+                isr.readText()
+            }
+
+        val chinoV1Config1 =
+            Json.decodeFromString<ExposureConfiguration.V1Config>(jsonText)
+        val chinoV1Config2 =
+            Json.decodeFromString<ExposureConfiguration.V1Config>(jsonText)
+
+        Assert.assertEquals(chinoV1Config1, chinoV1Config2)
     }
 }

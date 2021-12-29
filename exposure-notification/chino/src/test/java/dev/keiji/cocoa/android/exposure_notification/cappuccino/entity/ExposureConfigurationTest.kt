@@ -38,4 +38,19 @@ class ExposureConfigurationTest {
         Assert.assertNotNull(exposureConfiguration.dailySummaryConfig)
         Assert.assertNotNull(exposureConfiguration.diagnosisKeysDataMappingConfig)
     }
+
+    @Test
+    fun equalsTest1() {
+        val jsonText =
+            InputStreamReader(javaClass.classLoader!!.getResourceAsStream(FILENAME)).use { isr ->
+                isr.readText()
+            }
+
+        val exposureConfiguration1 =
+            Json.decodeFromString<ExposureConfiguration>(jsonText)
+        val exposureConfiguration2 =
+            Json.decodeFromString<ExposureConfiguration>(jsonText)
+
+        Assert.assertTrue(exposureConfiguration1.equals(exposureConfiguration2))
+    }
 }
