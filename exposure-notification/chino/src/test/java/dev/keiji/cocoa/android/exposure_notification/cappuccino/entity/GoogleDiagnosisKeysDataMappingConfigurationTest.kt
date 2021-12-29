@@ -1,5 +1,6 @@
 package dev.keiji.cocoa.android.exposure_notification.cappuccino.entity
 
+import com.google.android.gms.nearby.exposurenotification.DiagnosisKeysDataMapping as NativeDiagnosisKeysDataMapping
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.junit.After
@@ -87,8 +88,9 @@ class GoogleDiagnosisKeysDataMappingConfigurationTest {
             Json.decodeFromString<ExposureConfiguration.DiagnosisKeysDataMappingConfig>(jsonText)
         Assert.assertNotNull(chinoDiagnosisKeysDataMappingConfig)
 
-        val diagnosisKeysDataMappingConfig = chinoDiagnosisKeysDataMappingConfig.toNative()
-        Assert.assertNotNull(chinoDiagnosisKeysDataMappingConfig)
+        val diagnosisKeysDataMappingConfig: NativeDiagnosisKeysDataMapping =
+            chinoDiagnosisKeysDataMappingConfig.toNative()
+        Assert.assertNotNull(diagnosisKeysDataMappingConfig)
 
         Assert.assertEquals(
             1,

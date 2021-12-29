@@ -1,5 +1,6 @@
 package dev.keiji.cocoa.android.exposure_notification.cappuccino.entity
 
+import com.google.android.gms.nearby.exposurenotification.ExposureConfiguration as NativeExposureConfiguration
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.junit.After
@@ -100,7 +101,8 @@ class GoogleExposureConfigurationV1Test {
             Json.decodeFromString<ExposureConfiguration.V1Config>(jsonText)
         Assert.assertNotNull(chinoV1Config)
 
-        val v1Config = chinoV1Config.toNative()
+        val v1Config: NativeExposureConfiguration = chinoV1Config.toNative()
+        Assert.assertNotNull(v1Config)
 
         Assert.assertEquals(8, v1Config.attenuationScores.size)
         v1Config.attenuationScores.also { attenuationScores ->

@@ -1,5 +1,6 @@
 package dev.keiji.cocoa.android.exposure_notification.cappuccino.entity
 
+import com.google.android.gms.nearby.exposurenotification.DailySummariesConfig as NativeDailySummariesConfig
 import com.google.android.gms.nearby.exposurenotification.Infectiousness
 import com.google.android.gms.nearby.exposurenotification.ReportType as NativeReportType
 import kotlinx.serialization.decodeFromString
@@ -84,7 +85,7 @@ class DailySummariesConfigTest {
             Json.decodeFromString<ExposureConfiguration.DailySummariesConfig>(jsonText)
         Assert.assertNotNull(chinoDailySummariesConfig)
 
-        val dailySummariesConfig = chinoDailySummariesConfig.toNative()
+        val dailySummariesConfig: NativeDailySummariesConfig = chinoDailySummariesConfig.toNative()
         Assert.assertNotNull(dailySummariesConfig)
 
         Assert.assertEquals(3, dailySummariesConfig.attenuationBucketThresholdDb.size)
@@ -115,7 +116,10 @@ class DailySummariesConfigTest {
 
         Assert.assertEquals(4, dailySummariesConfig.reportTypeWeights.size)
         dailySummariesConfig.reportTypeWeights.also { reportTypeWeights ->
-            Assert.assertEquals(1.0, reportTypeWeights[NativeReportType.CONFIRMED_CLINICAL_DIAGNOSIS])
+            Assert.assertEquals(
+                1.0,
+                reportTypeWeights[NativeReportType.CONFIRMED_CLINICAL_DIAGNOSIS]
+            )
             Assert.assertEquals(1.1, reportTypeWeights[NativeReportType.CONFIRMED_TEST])
             Assert.assertEquals(1.2, reportTypeWeights[NativeReportType.SELF_REPORT])
             Assert.assertEquals(1.3, reportTypeWeights[NativeReportType.RECURSIVE])
