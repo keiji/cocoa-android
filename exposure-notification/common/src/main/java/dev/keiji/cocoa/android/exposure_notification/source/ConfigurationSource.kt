@@ -1,6 +1,5 @@
 package dev.keiji.cocoa.android.exposure_notification.source
 
-
 interface ConfigurationSource {
     fun isEnabledExposureWindowMode(): Boolean
 

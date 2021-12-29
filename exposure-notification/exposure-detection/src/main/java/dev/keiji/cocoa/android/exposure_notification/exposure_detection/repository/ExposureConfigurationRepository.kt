@@ -7,51 +7,89 @@ import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureConfigurationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl
+import timber.log.Timber
 import java.io.File
+import java.io.IOException
 
 interface ExposureConfigurationRepository {
+
+    @Throws(IllegalStateException::class)
     suspend fun getExposureConfiguration(): ExposureConfiguration
 }
 
 class ExposureConfigurationRepositoryImpl(
-    private val applicationContext: Context,
-    private val pathSource: PathSource,
+    applicationContext: Context,
+    pathSource: PathSource,
     private val exposureConfigurationApi: ExposureConfigurationApi,
     private val configurationSource: ConfigurationSource,
 ) : ExposureConfigurationRepository {
-    companion object {
-        private const val FILENAME = "exposure_configuration.json"
-    }
+
+    private val exposureConfigurationDir = pathSource.exposureConfigurationDir()
+    private val exposureConfigurationFile = pathSource.exposureConfigurationFile()
+
+    private val cacheDir = applicationContext.cacheDir
 
     override suspend fun getExposureConfiguration(): ExposureConfiguration =
         withContext(Dispatchers.IO) {
-            val outputDir = pathSource.exposureConfigurationDir()
-            if (!outputDir.exists()) {
-                outputDir.mkdirs()
-            }
+            exposureConfigurationDir.mkdirs()
+
+            var exposureConfiguration: ExposureConfiguration? = null
 
             val httpUrl = HttpUrl.parse(configurationSource.exposureConfigurationUrl())
-            val outputFile = File(outputDir, FILENAME)
 
-            if (httpUrl != null && !outputFile.exists()) {
-                exposureConfigurationApi.getConfiguration(
-                    httpUrl,
-                    outputFile
-                )
-            }
+            if (httpUrl != null) {
+                var tmpFile =
+                    File.createTempFile("exposure_configuration", ".json", cacheDir)
 
-            return@withContext if (outputFile.exists()) {
-                withContext(Dispatchers.IO) {
-                    Json.decodeFromString<ExposureConfiguration>(outputFile.readText()).apply {
-                        appleExposureConfigV1 = null
-                        appleExposureConfigV2 = null
-                    }
+                try {
+                    tmpFile = exposureConfigurationApi.downloadConfigurationFile(
+                        httpUrl,
+                        tmpFile
+                    )
+
+                    // Check deserializable
+                    exposureConfiguration = loadExposureConfiguration(tmpFile)
+
+                    tmpFile.copyTo(exposureConfigurationFile, overwrite = true)
+                    tmpFile.delete()
+
+                } catch (e: SerializationException) {
+                    Timber.e("SerializationException", e)
+                } catch (e: IOException) {
+                    Timber.e("exposureConfigurationApi.getConfiguration", e)
+                } catch (e: Exception) {
+                    Timber.e("exposureConfigurationApi.getConfiguration", e)
                 }
-            } else {
-                ExposureConfiguration()
             }
+
+            if (exposureConfiguration == null && exposureConfigurationFile.exists()) {
+                Timber.d("exposureConfigurationFile ${exposureConfigurationFile.absolutePath} exists")
+
+                try {
+                    exposureConfiguration = loadExposureConfiguration(exposureConfigurationFile)
+                } catch (e: SerializationException) {
+                    Timber.e("SerializationException", e)
+                } catch (e: IOException) {
+                    Timber.e("IOException", e)
+                }
+            }
+
+            if (exposureConfiguration == null) {
+                throw IllegalStateException("ExposureConfiguration could not be loaded.")
+            }
+
+            return@withContext exposureConfiguration
         }
+
+    private fun loadExposureConfiguration(file: File): ExposureConfiguration {
+        return Json.decodeFromString<ExposureConfiguration>(file.readText())
+            .apply {
+                appleExposureConfigV1 = null
+                appleExposureConfigV2 = null
+            }
+    }
 }

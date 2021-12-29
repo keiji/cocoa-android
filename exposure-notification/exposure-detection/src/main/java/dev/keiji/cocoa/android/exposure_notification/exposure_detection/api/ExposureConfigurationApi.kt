@@ -9,15 +9,18 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 
 interface ExposureConfigurationApi {
-    suspend fun getConfiguration(url: HttpUrl, outputFile: File): File
+
+    @Throws(IOException::class, Exception::class)
+    suspend fun downloadConfigurationFile(url: HttpUrl, outputFile: File): File
 }
 
 class ExposureConfigurationApiImpl(
     private val okHttpClient: OkHttpClient,
 ) : ExposureConfigurationApi {
-    override suspend fun getConfiguration(url: HttpUrl, outputFile: File) = withContext(Dispatchers.Main) {
+    override suspend fun downloadConfigurationFile(url: HttpUrl, outputFile: File) = withContext(Dispatchers.Main) {
         val request = Request.Builder()
             .url(url)
             .build()
