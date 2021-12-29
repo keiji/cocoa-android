@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.work.WorkManager
 import dagger.hilt.android.AndroidEntryPoint
-import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.work.V1ExposureDetectionWorker
 import dev.keiji.cocoa.android.work.V2ExposureDetectionWorker

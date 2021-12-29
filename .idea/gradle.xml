@@ -14,8 +14,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/exposure-notification" />
+            <option value="$PROJECT_DIR$/exposure-notification/chino" />
             <option value="$PROJECT_DIR$/exposure-notification/common" />
-            <option value="$PROJECT_DIR$/exposure-notification/core" />
             <option value="$PROJECT_DIR$/exposure-notification/diagnosis-submission" />
             <option value="$PROJECT_DIR$/exposure-notification/exposure-detection" />
             <option value="$PROJECT_DIR$/exposure-notification/ui" />

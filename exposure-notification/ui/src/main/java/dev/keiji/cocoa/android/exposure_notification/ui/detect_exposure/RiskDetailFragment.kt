@@ -40,7 +40,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
-import dev.keiji.cocoa.android.exposure_notification.core.entity.RiskEvent
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.RiskEvent
 import dev.keiji.cocoa.android.exposure_notification.ui.R
 import dev.keiji.cocoa.android.exposure_notification.ui.databinding.FragmentRiskDetailBinding
 import java.text.DateFormat

@@ -6,8 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.R
-import dev.keiji.cocoa.android.exposure_notification.core.ExposureNotificationWrapper
-import dev.keiji.cocoa.android.exposure_notification.ui.ExposureNotificationViewModel
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {

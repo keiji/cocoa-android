@@ -48,7 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
-import dev.keiji.cocoa.android.exposure_notification.core.entity.ReportType
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ReportType
 import dev.keiji.cocoa.android.exposure_notification.ui.ExposureNotificationViewModel
 import dev.keiji.cocoa.android.exposure_notification.ui.R
 import dev.keiji.cocoa.android.exposure_notification.ui.databinding.FragmentDiagnosisSubmissionBinding

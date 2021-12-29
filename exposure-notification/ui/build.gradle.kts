@@ -63,8 +63,8 @@ android {
 
 dependencies {
     implementation(project(mapOf("path" to ":common")))
+    implementation(project(mapOf("path" to ":exposure-notification:chino")))
 
-    implementation(project(mapOf("path" to ":exposure-notification:core")))
     implementation(project(mapOf("path" to ":exposure-notification:common")))
     implementation(project(mapOf("path" to ":exposure-notification:diagnosis-submission")))
     implementation(project(mapOf("path" to ":exposure-notification:exposure-detection")))
