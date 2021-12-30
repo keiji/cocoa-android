@@ -20,11 +20,8 @@ import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import java.io.File
 
-class ExposureNotificationWrapper(applicationContext: Context) {
-
+interface ExposureNotificationWrapper {
     companion object {
-        private val TAG = ExposureNotificationWrapper::class.java.simpleName
-
         const val ACTION_EXPOSURE_NOT_FOUND = ExposureNotificationClient.ACTION_EXPOSURE_NOT_FOUND
         const val ACTION_EXPOSURE_STATE_UPDATED =
             ExposureNotificationClient.ACTION_EXPOSURE_STATE_UPDATED
@@ -32,6 +29,41 @@ class ExposureNotificationWrapper(applicationContext: Context) {
         const val EXTRA_TOKEN = ExposureNotificationClient.EXTRA_TOKEN
 
         const val EXTRA_SERVICE_STATE = ExposureNotificationClient.EXTRA_SERVICE_STATE
+    }
+
+    suspend fun start(activity: Activity)
+    suspend fun stop(activity: Activity)
+
+    suspend fun getVersion(): Long
+    suspend fun isEnabled(): Boolean
+    suspend fun getStatuses(): List<ExposureNotificationStatus>
+    suspend fun getCalibrationConfidence(): Int
+    suspend fun getDiagnosisKeysDataMapping(): DiagnosisKeysDataMapping
+    suspend fun setDiagnosisKeysDataMapping(diagnosisKeysDataMapping: DiagnosisKeysDataMapping)
+    suspend fun getPackageConfiguration(): PackageConfiguration
+    suspend fun getExposureWindow(): List<ExposureWindow>
+    suspend fun getDailySummary(dailySummariesConfig: ExposureConfiguration.DailySummariesConfig): List<DailySummary>
+    suspend fun getExposureSummary(token: String): ExposureSummary
+    suspend fun getExposureInformation(token: String): List<ExposureInformation>
+    suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey>?
+
+    suspend fun provideDiagnosisKeys(diagnosisKeyFileList: List<File>)
+    suspend fun provideDiagnosisKeys(diagnosisKeyFileProvider: DiagnosisKeyFileProvider)
+    suspend fun provideDiagnosisKeys(
+        diagnosisKeyFileList: List<File>,
+        exposureConfiguration: ExposureConfiguration.V1Config,
+        token: String
+    )
+
+    suspend fun requestPreAuthorizedTemporaryExposureKeyHistory(activity: Activity)
+    suspend fun requestPreAuthorizedTemporaryExposureKeyRelease()
+    suspend fun requestPreAuthorizedTemporaryExposureKeyHistoryForSelfReport()
+}
+
+class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNotificationWrapper {
+
+    companion object {
+        private val TAG = ExposureNotificationWrapper::class.java.simpleName
 
         const val REQUEST_EXPOSURE_NOTIFICATION_START = 0x01
         const val REQUEST_EXPOSURE_NOTIFICATION_STOP = 0x02
@@ -41,7 +73,7 @@ class ExposureNotificationWrapper(applicationContext: Context) {
     private val exposureNotificationClient =
         Nearby.getExposureNotificationClient(applicationContext)
 
-    suspend fun start(activity: Activity) {
+    override suspend fun start(activity: Activity) {
         try {
             exposureNotificationClient.start().await()
         } catch (exception: ApiException) {
@@ -58,7 +90,7 @@ class ExposureNotificationWrapper(applicationContext: Context) {
         }
     }
 
-    suspend fun stop(activity: Activity) {
+    override suspend fun stop(activity: Activity) {
         try {
             exposureNotificationClient.stop().await()
         } catch (exception: ApiException) {
@@ -75,44 +107,45 @@ class ExposureNotificationWrapper(applicationContext: Context) {
         }
     }
 
-    suspend fun getVersion(): Long =
+    override suspend fun getVersion(): Long =
         exposureNotificationClient.version.await()
 
-    suspend fun isEnabled(): Boolean =
+    override suspend fun isEnabled(): Boolean =
         exposureNotificationClient.isEnabled.await()
 
-    suspend fun getStatuses(): List<ExposureNotificationStatus> =
+    override suspend fun getStatuses(): List<ExposureNotificationStatus> =
         exposureNotificationClient.status.await()
             .map { status -> status.toExposureNotificationStatus() }
 
-    suspend fun getCalibrationConfidence(): Int =
+    override suspend fun getCalibrationConfidence(): Int =
         exposureNotificationClient.calibrationConfidence.await()
 
-    suspend fun getDiagnosisKeysDataMapping(): DiagnosisKeysDataMapping =
+    override suspend fun getDiagnosisKeysDataMapping(): DiagnosisKeysDataMapping =
         exposureNotificationClient.diagnosisKeysDataMapping.await()
 
-    suspend fun setDiagnosisKeysDataMapping(diagnosisKeysDataMapping: DiagnosisKeysDataMapping) =
+    override suspend fun setDiagnosisKeysDataMapping(diagnosisKeysDataMapping: DiagnosisKeysDataMapping) {
         exposureNotificationClient.setDiagnosisKeysDataMapping(diagnosisKeysDataMapping).await()
+    }
 
-    suspend fun getPackageConfiguration(): PackageConfiguration =
+    override suspend fun getPackageConfiguration(): PackageConfiguration =
         exposureNotificationClient.packageConfiguration.await()
 
-    suspend fun getExposureWindow(): List<ExposureWindow> =
+    override suspend fun getExposureWindow(): List<ExposureWindow> =
         exposureNotificationClient.exposureWindows.await().map { ew -> ExposureWindow(ew) }
 
-    suspend fun getDailySummary(dailySummariesConfig: ExposureConfiguration.DailySummariesConfig): List<DailySummary> =
+    override suspend fun getDailySummary(dailySummariesConfig: ExposureConfiguration.DailySummariesConfig): List<DailySummary> =
         exposureNotificationClient.getDailySummaries(dailySummariesConfig.toNative()).await()
             .map { ds -> DailySummary(ds) }
 
-    suspend fun getExposureSummary(token: String): ExposureSummary =
+    override suspend fun getExposureSummary(token: String): ExposureSummary =
         ExposureSummary(exposureNotificationClient.getExposureSummary(token).await())
 
-    suspend fun getExposureInformation(token: String): List<ExposureInformation> =
+    override suspend fun getExposureInformation(token: String): List<ExposureInformation> =
         exposureNotificationClient.getExposureInformation(token).await().map { ei ->
             ExposureInformation(ei)
         }
 
-    suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey>? {
+    override suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey>? {
         try {
             return exposureNotificationClient.temporaryExposureKeyHistory.await()
                 ?.map { tek -> TemporaryExposureKey(tek) }
@@ -129,23 +162,27 @@ class ExposureNotificationWrapper(applicationContext: Context) {
         return null
     }
 
-    suspend fun provideDiagnosisKeys(diagnosisKeyFileList: List<File>) =
+    override suspend fun provideDiagnosisKeys(diagnosisKeyFileList: List<File>) {
         provideDiagnosisKeys(DiagnosisKeyFileProvider(diagnosisKeyFileList))
+    }
 
-    suspend fun provideDiagnosisKeys(diagnosisKeyFileProvider: DiagnosisKeyFileProvider) =
+    override suspend fun provideDiagnosisKeys(diagnosisKeyFileProvider: DiagnosisKeyFileProvider) {
         exposureNotificationClient.provideDiagnosisKeys(diagnosisKeyFileProvider).await()
+    }
 
-    suspend fun provideDiagnosisKeys(
+    override suspend fun provideDiagnosisKeys(
         diagnosisKeyFileList: List<File>,
         exposureConfiguration: ExposureConfiguration.V1Config,
         token: String
-    ) = exposureNotificationClient.provideDiagnosisKeys(
-        diagnosisKeyFileList,
-        exposureConfiguration.toNative(),
-        token
-    ).await()
+    ) {
+        exposureNotificationClient.provideDiagnosisKeys(
+            diagnosisKeyFileList,
+            exposureConfiguration.toNative(),
+            token
+        ).await()
+    }
 
-    suspend fun requestPreAuthorizedTemporaryExposureKeyHistory(activity: Activity) {
+    override suspend fun requestPreAuthorizedTemporaryExposureKeyHistory(activity: Activity) {
         try {
             exposureNotificationClient.requestPreAuthorizedTemporaryExposureKeyHistory().await()
         } catch (exception: ApiException) {
@@ -160,10 +197,12 @@ class ExposureNotificationWrapper(applicationContext: Context) {
         }
     }
 
-    suspend fun requestPreAuthorizedTemporaryExposureKeyRelease() =
+    override suspend fun requestPreAuthorizedTemporaryExposureKeyRelease() {
         exposureNotificationClient.requestPreAuthorizedTemporaryExposureKeyRelease().await()
+    }
 
-    suspend fun requestPreAuthorizedTemporaryExposureKeyHistoryForSelfReport() =
+    override suspend fun requestPreAuthorizedTemporaryExposureKeyHistoryForSelfReport() {
         exposureNotificationClient.requestPreAuthorizedTemporaryExposureKeyHistoryForSelfReport()
             .await()
+    }
 }

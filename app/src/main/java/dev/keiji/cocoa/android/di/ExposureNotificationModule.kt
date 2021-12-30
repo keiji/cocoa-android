@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapperImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -16,6 +17,6 @@ object ExposureNotificationModule {
     fun provideExposureNotificationWrapper(
         @ApplicationContext applicationContext: Context
     ): ExposureNotificationWrapper {
-        return ExposureNotificationWrapper(applicationContext)
+        return ExposureNotificationWrapperImpl(applicationContext)
     }
 }
