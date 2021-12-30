@@ -66,7 +66,7 @@ jobs:
       - name: Unit Tests
         run: ./gradlew test
   androidTest:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     # needs: [test]
     strategy:
       matrix:
@@ -84,15 +84,15 @@ jobs:
             ~/.gradle/wrapper
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ matrix.apiLevel }}
+          key: ${{ runner.os }}-avd-${{ matrix.apiLevel }}
           restore-keys: |
-            avd-${{ matrix.apiLevel }}-
-            avd-
+            ${{ runner.os }}-avd-${{ matrix.apiLevel }}-
+            ${{ runner.os }}-avd-
       - uses: actions/checkout@v2
       - name: Android Emulator Runner
         uses: ReactiveCircus/android-emulator-runner@v2.22.0
         with:
-          api-level: 30
+          api-level: ${{ matrix.apiLevel }}
           arch: x86_64
           script: |
             sdkmanager --list
