@@ -47,7 +47,7 @@ interface ExposureNotificationWrapper {
     suspend fun getDailySummary(dailySummariesConfig: ExposureConfiguration.DailySummariesConfig): List<DailySummary>
     suspend fun getExposureSummary(token: String): ExposureSummary
     suspend fun getExposureInformation(token: String): List<ExposureInformation>
-    suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey>?
+    suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey>
 
     suspend fun provideDiagnosisKeys(diagnosisKeyFileList: List<File>)
     suspend fun provideDiagnosisKeys(diagnosisKeyFileProvider: DiagnosisKeyFileProvider)
@@ -157,10 +157,10 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
             ExposureInformation(ei)
         }
 
-    override suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey>? {
+    override suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey> {
         try {
             return exposureNotificationClient.temporaryExposureKeyHistory.await()
-                ?.map { tek -> TemporaryExposureKey(tek) }
+                .map { tek -> TemporaryExposureKey(tek) }
         } catch (exception: ApiException) {
             Timber.d("ApiException", exception)
 
@@ -170,8 +170,8 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
                     ExposureNotificationWrapper.REQUEST_TEMPORARY_EXPOSURE_KEY_HISTORY
                 )
             }
+            throw exception.toExposureNotificationException()
         }
-        return null
     }
 
     override suspend fun provideDiagnosisKeys(diagnosisKeyFileList: List<File>) {

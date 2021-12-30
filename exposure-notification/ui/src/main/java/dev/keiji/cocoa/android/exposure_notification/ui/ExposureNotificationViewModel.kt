@@ -69,8 +69,12 @@ class ExposureNotificationViewModel @Inject constructor(
         this.reportType = reportType
 
         viewModelScope.launch {
-            _temporaryExposureKey.value =
-                exposureNotificationWrapper.getTemporaryExposureKeyHistory(activity)
+            try {
+                _temporaryExposureKey.value =
+                    exposureNotificationWrapper.getTemporaryExposureKeyHistory(activity)
+            } catch (exception: ExposureNotificationException) {
+                // Do nothing
+            }
         }
     }
 }

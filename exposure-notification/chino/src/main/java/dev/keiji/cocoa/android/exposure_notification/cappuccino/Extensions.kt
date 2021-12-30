@@ -33,6 +33,7 @@ fun NativeExposureNotificationStatus.toExposureNotificationStatus(): ExposureNot
 fun ApiException.toExposureNotificationException(): ExposureNotificationException {
     val code = when (statusCode) {
         CommonStatusCodes.API_NOT_CONNECTED -> ExposureNotificationException.Code.ApiNotConnected
+        CommonStatusCodes.RESOLUTION_REQUIRED -> ExposureNotificationException.Code.ResolutionRequired
         else -> ExposureNotificationException.Code.Unknown
     }
 
