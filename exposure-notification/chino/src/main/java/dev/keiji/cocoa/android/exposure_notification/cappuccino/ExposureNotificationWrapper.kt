@@ -23,6 +23,7 @@ import java.io.File
 class ExposureNotificationWrapper(applicationContext: Context) {
 
     companion object {
+        private val TAG = ExposureNotificationWrapper::class.java.simpleName
 
         const val ACTION_EXPOSURE_NOT_FOUND = ExposureNotificationClient.ACTION_EXPOSURE_NOT_FOUND
         const val ACTION_EXPOSURE_STATE_UPDATED =
@@ -31,8 +32,6 @@ class ExposureNotificationWrapper(applicationContext: Context) {
         const val EXTRA_TOKEN = ExposureNotificationClient.EXTRA_TOKEN
 
         const val EXTRA_SERVICE_STATE = ExposureNotificationClient.EXTRA_SERVICE_STATE
-
-        private val TAG = ExposureNotificationWrapper::class.java.simpleName
 
         const val REQUEST_EXPOSURE_NOTIFICATION_START = 0x01
         const val REQUEST_EXPOSURE_NOTIFICATION_STOP = 0x02
@@ -53,6 +52,8 @@ class ExposureNotificationWrapper(applicationContext: Context) {
                     activity,
                     REQUEST_EXPOSURE_NOTIFICATION_START
                 )
+            } else {
+                throw exception.toExposureNotificationException()
             }
         }
     }
@@ -68,6 +69,8 @@ class ExposureNotificationWrapper(applicationContext: Context) {
                     activity,
                     REQUEST_EXPOSURE_NOTIFICATION_STOP
                 )
+            } else {
+                throw exception.toExposureNotificationException()
             }
         }
     }
