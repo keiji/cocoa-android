@@ -3,8 +3,8 @@ package dev.keiji.cocoa.android.exposure_notification.ui.submit_diagnosis
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey
-import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.SubmitDiagnosisServiceApi
+import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.ENCalibrationSubmitDiagnosisApi
+import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.V3DiagnosisSubmissionRequest
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import junit.framework.Assert.assertFalse
 import kotlinx.coroutines.Dispatchers
@@ -42,7 +42,8 @@ class SubmitDiagnosisViewModelTest {
     @get:Rule
     val rule: TestRule = InstantTaskExecutorRule()
 
-    private var temporaryExposureKeyList: List<TemporaryExposureKey> = emptyList()
+    private var temporaryExposureKeyList: List<V3DiagnosisSubmissionRequest.TemporaryExposureKey> =
+        emptyList()
 
     @Before
     fun setup() {
@@ -67,7 +68,7 @@ class SubmitDiagnosisViewModelTest {
             mock<ConfigurationSource> {
             }
         val mockDiagnosisSubmissionServiceApi =
-            mock<SubmitDiagnosisServiceApi> {
+            mock<ENCalibrationSubmitDiagnosisApi> {
                 onBlocking { submitV3(any()) } doReturn temporaryExposureKeyList
             }
 

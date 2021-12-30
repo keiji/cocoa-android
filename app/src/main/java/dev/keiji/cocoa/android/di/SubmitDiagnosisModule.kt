@@ -6,7 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.exposure_notification.DefaultInterceptorOkHttpClient
-import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.SubmitDiagnosisServiceApi
+import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.ENCalibrationSubmitDiagnosisApi
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
@@ -23,7 +23,7 @@ object SubmitDiagnosisModule {
     fun provideSubmitDiagnosisServiceApi(
         @DefaultInterceptorOkHttpClient okHttpClient: OkHttpClient,
         configurationSource: ConfigurationSource,
-    ): SubmitDiagnosisServiceApi {
+    ): ENCalibrationSubmitDiagnosisApi {
         val contentType = MediaType.parse("application/json")!!
 
         return Retrofit.Builder()
@@ -31,6 +31,6 @@ object SubmitDiagnosisModule {
             .baseUrl(configurationSource.submitDiagnosisApiEndpoint())
             .addConverterFactory(Json.asConverterFactory(contentType))
             .build()
-            .create(SubmitDiagnosisServiceApi::class.java)
+            .create(ENCalibrationSubmitDiagnosisApi::class.java)
     }
 }
