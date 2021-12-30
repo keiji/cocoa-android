@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.exposure_notification.diagnosis_submission
+package dev.keiji.cocoa.android.exposure_notification.exposure_detection
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -20,7 +20,7 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals(
-            "dev.keiji.cocoa.android.exposure_notification.detect_exposure.test",
+            "dev.keiji.cocoa.android.exposure_notification.exposure_detection.test",
             appContext.packageName
         )
     }

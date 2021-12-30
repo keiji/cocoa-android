@@ -10,7 +10,6 @@ import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.BuildConfig
 import dev.keiji.cocoa.android.exposure_notification.AnonymousInterceptorOkHttpClient
 import dev.keiji.cocoa.android.exposure_notification.DefaultInterceptorOkHttpClient
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionServiceImpl
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
@@ -26,7 +25,7 @@ import dev.keiji.cocoa.android.exposure_notification.exposure_detection.reposito
 import dev.keiji.cocoa.android.exposure_notification.source.DatabaseSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApiImpl
-import dev.keiji.cocoa.android.source.DateTimeSource
+import dev.keiji.cocoa.android.common.source.DateTimeSource
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient

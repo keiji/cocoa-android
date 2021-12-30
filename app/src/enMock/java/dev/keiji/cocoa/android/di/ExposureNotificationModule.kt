@@ -10,7 +10,7 @@ import dev.keiji.cocoa.android.ExposureNotificationWrapperMock
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
-import dev.keiji.cocoa.android.source.DateTimeSource
+import dev.keiji.cocoa.android.common.source.DateTimeSource
 
 @Module
 @InstallIn(SingletonComponent::class)

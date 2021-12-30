@@ -49,12 +49,17 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/AL2.0")
+        resources.excludes.add("META-INF/LGPL2.1")
+    }
 }
 
 dependencies {
     implementation(project(mapOf("path" to ":common")))
-    implementation(project(mapOf("path" to ":exposure-notification:chino")))
 
+    implementation(project(mapOf("path" to ":exposure-notification:chino")))
     implementation(project(mapOf("path" to ":exposure-notification:common")))
     implementation(project(mapOf("path" to ":exposure-notification:diagnosis-submission")))
     implementation(project(mapOf("path" to ":exposure-notification:exposure-detection")))

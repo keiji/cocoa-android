@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.source
+package dev.keiji.cocoa.android.common.source
 
 import java.util.*
 

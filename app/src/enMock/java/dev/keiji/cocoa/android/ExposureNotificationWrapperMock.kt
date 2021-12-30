@@ -16,7 +16,7 @@ import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.Temporary
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.toEnTimeWindow
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
-import dev.keiji.cocoa.android.source.DateTimeSource
+import dev.keiji.cocoa.android.common.source.DateTimeSource
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.File

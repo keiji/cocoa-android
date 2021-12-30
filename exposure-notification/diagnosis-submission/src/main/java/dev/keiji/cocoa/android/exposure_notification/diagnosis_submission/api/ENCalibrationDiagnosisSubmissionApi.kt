@@ -1,6 +1,5 @@
 package dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api
 
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey
 import retrofit2.http.PUT
 import retrofit2.http.Body
 import java.util.*

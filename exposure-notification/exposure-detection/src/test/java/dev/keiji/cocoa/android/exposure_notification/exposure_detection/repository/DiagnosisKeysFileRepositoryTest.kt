@@ -1,7 +1,7 @@
 package dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository
 
 import android.content.Context
-import dev.keiji.cocoa.android.source.DateTimeSource
+import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.dao.DiagnosisKeysFileDao
 import dev.keiji.cocoa.android.exposure_notification.entity.DiagnosisKeysFile
@@ -334,7 +334,10 @@ class DiagnosisKeysFileRepositoryTest {
         verify(mockDiagnosisKeyListProvideServiceApi, never()).getList(eq("987"))
         verify(mockDiagnosisKeyListProvideServiceApi, times(1)).getList(eq("987"), eq("443214"))
 
-        verify(mockDiagnosisKeysFileDao, times(1)).findAllByRegionAndSubregion(eq("987"), eq("443214"))
+        verify(mockDiagnosisKeysFileDao, times(1)).findAllByRegionAndSubregion(
+            eq("987"),
+            eq("443214")
+        )
         verify(
             mockDiagnosisKeysFileDao,
             times(1)

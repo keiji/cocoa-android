@@ -18,29 +18,6 @@ val hiltVersion: String by rootProject.extra
 val composeVersion: String by rootProject.extra
 val roomVersion: String by rootProject.extra
 
-fun loadProperties(filename: String): Properties? {
-    val file = File(rootProject.rootDir, filename)
-    if (!file.exists()) {
-        print("Properties file ${file.absolutePath} not found.")
-        return null
-    }
-    file.reader().use {
-        return Properties().apply {
-            load(it)
-        }
-    }
-}
-
-fun VariantDimension.addBuildConfigStringField(
-    props: Properties?,
-    propertyName: String
-) {
-    props ?: return
-
-    val value = props.getProperty(propertyName) ?: "\"\""
-    buildConfigField("String", propertyName, value)
-}
-
 android {
     compileSdk = sdkVersion
 
@@ -49,7 +26,7 @@ android {
         minSdk = minVersion
         targetSdk = targetVersion
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         val props = loadProperties("api-settings.properties")
             ?: loadProperties("api-settings-sample.properties")
@@ -140,6 +117,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/AL2.0")
+        resources.excludes.add("META-INF/LGPL2.1")
+    }
 }
 
 dependencies {
@@ -152,7 +134,7 @@ dependencies {
     implementation(
         fileTree(
             mapOf(
-                "dir" to "../exposure-notification/chino/libs/",
+                "dir" to "$rootDir/exposure-notification/chino/libs/",
                 "include" to listOf("play-services-nearby-exposurenotification-*.aar"),
             )
         )
@@ -211,4 +193,27 @@ dependencies {
 // Allow references to generated code
 kapt {
     correctErrorTypes = true
+}
+
+fun loadProperties(filename: String): Properties? {
+    val file = File(rootProject.rootDir, filename)
+    if (!file.exists()) {
+        print("Properties file ${file.absolutePath} not found.")
+        return null
+    }
+    file.reader().use {
+        return Properties().apply {
+            load(it)
+        }
+    }
+}
+
+fun VariantDimension.addBuildConfigStringField(
+    props: Properties?,
+    propertyName: String
+) {
+    props ?: return
+
+    val value = props.getProperty(propertyName) ?: "\"\""
+    buildConfigField("String", propertyName, value)
 }
