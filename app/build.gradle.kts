@@ -145,9 +145,8 @@ dependencies {
     implementation(
         fileTree(
             mapOf(
-                "dir" to "../exposure-notification/core/libs/",
-                "include" to listOf("*.aar", "*.jar"),
-                "exclude" to listOf<String>()
+                "dir" to "../exposure-notification/chino/libs/",
+                "include" to listOf("play-services-nearby-exposurenotification-*.aar"),
             )
         )
     )
