@@ -62,7 +62,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private val exposureNotificationViewModel: dev.keiji.cocoa.android.exposure_notification.ui.ExposureNotificationViewModel by activityViewModels()
+    private val exposureNotificationViewModel: ExposureNotificationViewModel by activityViewModels()
     private val viewModel: HomeViewModel by viewModels()
 
     private var binding: FragmentHomeBinding? = null
@@ -72,10 +72,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         DataBindingUtil.bind<FragmentHomeBinding>(view)?.also {
             binding = it
-            it.composeView.setContent {
-                MdcTheme {
-                    Main()
-                }
+            refresh(binding)
+        }
+
+        exposureNotificationViewModel.isExposureNotificationExceptionOccurred.observe(
+            viewLifecycleOwner
+        ) {
+            refresh(binding)
+        }
+    }
+
+    private fun refresh(binding: FragmentHomeBinding?) {
+        binding?.composeView?.setContent {
+            MdcTheme {
+                Main()
             }
         }
     }
@@ -106,7 +116,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     .verticalScroll(rememberScrollState())
             ) {
 
-                Status()
+                val isExposureNotificationExceptionOccurredState =
+                    exposureNotificationViewModel.isExposureNotificationExceptionOccurred.value
+                        ?: false
+
+                if (!isExposureNotificationExceptionOccurredState) {
+                    Status()
+                } else {
+                    StatusNotWorking()
+                }
 
                 Spacer(Modifier.width(32.dp))
 
@@ -166,6 +184,41 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 Spacer(Modifier.width(8.dp))
                 Text(
                     text = "正常に動作しています",
+                    style = MaterialTheme.typography.body1
+                )
+            }
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = "最終確認日時: 2021年9月19日 3時19分",
+                style = MaterialTheme.typography.body2
+            )
+        }
+    }
+
+    @Composable
+    fun StatusNotWorking() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp)
+                .defaultMinSize(140.dp, 0.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.baseline_circle_24),
+                    contentDescription = "",
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier.size(15.dp)
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    text = "停止中",
                     style = MaterialTheme.typography.body1
                 )
             }

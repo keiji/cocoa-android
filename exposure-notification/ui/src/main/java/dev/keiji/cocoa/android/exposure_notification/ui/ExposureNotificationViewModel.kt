@@ -3,9 +3,11 @@ package dev.keiji.cocoa.android.exposure_notification.ui
 import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationException
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ReportType
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey
@@ -15,14 +17,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExposureNotificationViewModel @Inject constructor(
+    private val state: SavedStateHandle,
     private val exposureNotificationWrapper: ExposureNotificationWrapper
 ) : ViewModel() {
+    companion object {
+        private const val KEY_STATE_IS_EXPOSURE_NOTIFICATION_EXCEPTION_OCCURRED =
+            "is_exposure_notification_exception_occurred"
+    }
+
+    val isExposureNotificationExceptionOccurred: LiveData<Boolean>
+        get() = state.getLiveData(KEY_STATE_IS_EXPOSURE_NOTIFICATION_EXCEPTION_OCCURRED, true)
 
     fun start(activity: Activity) {
         Timber.d("Start ExposureNotification.")
 
         viewModelScope.launch {
-            exposureNotificationWrapper.start(activity)
+            try {
+                exposureNotificationWrapper.start(activity)
+                state[KEY_STATE_IS_EXPOSURE_NOTIFICATION_EXCEPTION_OCCURRED] = false
+            } catch (exception: ExposureNotificationException) {
+                state[KEY_STATE_IS_EXPOSURE_NOTIFICATION_EXCEPTION_OCCURRED] = true
+            }
         }
     }
 
@@ -30,7 +45,12 @@ class ExposureNotificationViewModel @Inject constructor(
         Timber.d("Stop ExposureNotification.")
 
         viewModelScope.launch {
-            exposureNotificationWrapper.stop(activity)
+            try {
+                exposureNotificationWrapper.stop(activity)
+                state[KEY_STATE_IS_EXPOSURE_NOTIFICATION_EXCEPTION_OCCURRED] = false
+            } catch (exception: ExposureNotificationException) {
+                state[KEY_STATE_IS_EXPOSURE_NOTIFICATION_EXCEPTION_OCCURRED] = true
+            }
         }
     }
 

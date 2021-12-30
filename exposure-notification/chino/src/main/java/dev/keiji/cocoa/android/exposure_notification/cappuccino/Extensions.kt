@@ -1,5 +1,7 @@
 package dev.keiji.cocoa.android.exposure_notification.cappuccino
 
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureNotificationStatus
 import java.util.*
 import com.google.android.gms.nearby.exposurenotification.ExposureNotificationStatus as NativeExposureNotificationStatus
@@ -26,4 +28,16 @@ fun NativeExposureNotificationStatus.toExposureNotificationStatus(): ExposureNot
         NativeExposureNotificationStatus.USER_PROFILE_NOT_SUPPORT -> ExposureNotificationStatus.USER_PROFILE_NOT_SUPPORT
         else -> ExposureNotificationStatus.UNKNOWN
     }
+}
+
+fun ApiException.toExposureNotificationException(): ExposureNotificationException {
+    val code = when (statusCode) {
+        CommonStatusCodes.API_NOT_CONNECTED -> ExposureNotificationException.Code.ApiNotConnected
+        else -> ExposureNotificationException.Code.Unknown
+    }
+
+    return ExposureNotificationException(
+        code = code,
+        message = statusMessage
+    )
 }
