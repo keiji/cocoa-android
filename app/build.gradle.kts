@@ -83,7 +83,7 @@ android {
             dimension = "enApiMode"
         }
         create("legacyV1") {
-            dimension = "apiVersion"
+            dimension = "enApiVersion"
             buildConfigField(
                 "Boolean",
                 "USE_EXPOSURE_WINDOW_MODE",
@@ -91,7 +91,7 @@ android {
             )
         }
         create("exposureWindow") {
-            dimension = "apiVersion"
+            dimension = "enApiVersion"
             buildConfigField(
                 "Boolean",
                 "USE_EXPOSURE_WINDOW_MODE",
