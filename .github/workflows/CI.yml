@@ -22,7 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        flavor: ["ExposureWindow", "LegacyV1"]
+        enApiMode: ["enMock", "enProd"]
+        enApiVersion: ["legacyV1", "exposureWindow"]
         type: ["Debug", "Release"]
     steps:
       - name: set up JDK 11
@@ -37,7 +38,7 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle.kts-
       - uses: actions/checkout@v2
       - name: Build Debug
-        run: ./gradlew assemble${{ matrix.flavor }}${{ matrix.type }}
+        run: ./gradlew assemble${{ matrix.enApiMode }}${{ matrix.enApiVersion }}${{ matrix.type }}
   test:
     runs-on: ubuntu-latest
     needs: [build]

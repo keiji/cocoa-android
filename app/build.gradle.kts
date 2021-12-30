@@ -73,10 +73,17 @@ android {
         kotlinCompilerExtensionVersion = "1.1.0-rc01"
     }
 
-    flavorDimensions.add("apiVersion")
+    flavorDimensions.add("enApiMode")
+    flavorDimensions.add("enApiVersion")
     productFlavors {
+        create("enMock") {
+            dimension = "enApiMode"
+        }
+        create("enProd") {
+            dimension = "enApiMode"
+        }
         create("legacyV1") {
-            dimension = "apiVersion"
+            dimension = "enApiVersion"
             buildConfigField(
                 "Boolean",
                 "USE_EXPOSURE_WINDOW_MODE",
@@ -84,7 +91,7 @@ android {
             )
         }
         create("exposureWindow") {
-            dimension = "apiVersion"
+            dimension = "enApiVersion"
             buildConfigField(
                 "Boolean",
                 "USE_EXPOSURE_WINDOW_MODE",

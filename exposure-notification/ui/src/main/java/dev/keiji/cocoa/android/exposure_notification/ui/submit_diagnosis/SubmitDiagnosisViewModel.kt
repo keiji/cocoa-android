@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.keiji.cocoa.android.exposure_notification.ui.AppConstants
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey
-import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.DiagnosisSubmissionRequest
-import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.SubmitDiagnosisServiceApi
+import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.V3DiagnosisSubmissionRequest
+import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.ENCalibrationSubmitDiagnosisApi
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class SubmitDiagnosisViewModel @Inject constructor(
     private val state: SavedStateHandle,
     private val configurationSource: ConfigurationSource,
-    private val submitDiagnosisServiceApi: SubmitDiagnosisServiceApi,
+    private val submitDiagnosisServiceApi: ENCalibrationSubmitDiagnosisApi,
 ) : ViewModel() {
     companion object {
         private const val KEY_STATE_PROCESS_NUMBER = "process_number"
@@ -97,12 +97,16 @@ class SubmitDiagnosisViewModel @Inject constructor(
             Timber.w("TemporaryExposureKeys is empty.")
         }
 
-        val request = DiagnosisSubmissionRequest(
+        val request = V3DiagnosisSubmissionRequest(
             idempotencyKey,
             configurationSource.regions(),
             configurationSource.subregions(),
             symptomOnsetDate.time,
-            temporaryExposureKeyList
+            temporaryExposureKeyList.map { tek ->
+                V3DiagnosisSubmissionRequest.TemporaryExposureKey(
+                    tek
+                )
+            }
         )
 
         Timber.d(request.toString())
