@@ -29,6 +29,10 @@ interface ExposureNotificationWrapper {
         const val EXTRA_TOKEN = ExposureNotificationClient.EXTRA_TOKEN
 
         const val EXTRA_SERVICE_STATE = ExposureNotificationClient.EXTRA_SERVICE_STATE
+
+        const val REQUEST_EXPOSURE_NOTIFICATION_START = 0x01
+        const val REQUEST_EXPOSURE_NOTIFICATION_STOP = 0x02
+        const val REQUEST_TEMPORARY_EXPOSURE_KEY_HISTORY = 0x03
     }
 
     suspend fun start(activity: Activity)
@@ -64,10 +68,6 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
 
     companion object {
         private val TAG = ExposureNotificationWrapper::class.java.simpleName
-
-        const val REQUEST_EXPOSURE_NOTIFICATION_START = 0x01
-        const val REQUEST_EXPOSURE_NOTIFICATION_STOP = 0x02
-        const val REQUEST_TEMPORARY_EXPOSURE_KEY_HISTORY = 0x03
     }
 
     private val exposureNotificationClient =
@@ -82,7 +82,7 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
             if (exception.status.statusCode == CommonStatusCodes.RESOLUTION_REQUIRED) {
                 exception.status.startResolutionForResult(
                     activity,
-                    REQUEST_EXPOSURE_NOTIFICATION_START
+                    ExposureNotificationWrapper.REQUEST_EXPOSURE_NOTIFICATION_START
                 )
             } else {
                 throw exception.toExposureNotificationException()
@@ -99,7 +99,7 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
             if (exception.status.statusCode == CommonStatusCodes.RESOLUTION_REQUIRED) {
                 exception.status.startResolutionForResult(
                     activity,
-                    REQUEST_EXPOSURE_NOTIFICATION_STOP
+                    ExposureNotificationWrapper.REQUEST_EXPOSURE_NOTIFICATION_STOP
                 )
             } else {
                 throw exception.toExposureNotificationException()
@@ -155,7 +155,7 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
             if (exception.status.statusCode == CommonStatusCodes.RESOLUTION_REQUIRED) {
                 exception.status.startResolutionForResult(
                     activity,
-                    REQUEST_TEMPORARY_EXPOSURE_KEY_HISTORY
+                    ExposureNotificationWrapper.REQUEST_TEMPORARY_EXPOSURE_KEY_HISTORY
                 )
             }
         }
@@ -191,7 +191,7 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
             if (exception.status.statusCode == CommonStatusCodes.RESOLUTION_REQUIRED) {
                 exception.status.startResolutionForResult(
                     activity,
-                    REQUEST_EXPOSURE_NOTIFICATION_STOP
+                    ExposureNotificationWrapper.REQUEST_EXPOSURE_NOTIFICATION_STOP
                 )
             }
         }
