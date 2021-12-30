@@ -6,10 +6,10 @@ import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureN
 import java.util.*
 import com.google.android.gms.nearby.exposurenotification.ExposureNotificationStatus as NativeExposureNotificationStatus
 
-private const val TIME_WINDOW_INTERVAL: Long = 60 * 10
+private const val TIME_WINDOW_INTERVAL: Int = 60 * 10
 
-fun Date.toEnTimeWindow(): Long {
-    return this.time / 1000 / TIME_WINDOW_INTERVAL
+fun Date.toEnTimeWindow(): Int {
+    return (this.time / 1000).toInt() / TIME_WINDOW_INTERVAL
 }
 
 fun NativeExposureNotificationStatus.toExposureNotificationStatus(): ExposureNotificationStatus {

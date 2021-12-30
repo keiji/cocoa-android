@@ -3,6 +3,10 @@ package dev.keiji.cocoa.android.source
 import java.util.*
 
 abstract class DateTimeSource {
+    companion object {
+        const val TIMEZONE_ID_UTC = "UTC"
+    }
+
     abstract fun utcNow(): Calendar
 
     fun epoch(): Long = utcNow().timeInMillis / 1000
@@ -20,10 +24,6 @@ abstract class DateTimeSource {
 }
 
 class DateTimeSourceImpl : DateTimeSource() {
-    companion object {
-        private const val TIMEZONE_ID_UTC = "UTC"
-    }
-
     private val TIMEZONE_UTC = TimeZone.getTimeZone(TIMEZONE_ID_UTC)
 
     override fun utcNow(): Calendar = Calendar.getInstance(TIMEZONE_UTC)
