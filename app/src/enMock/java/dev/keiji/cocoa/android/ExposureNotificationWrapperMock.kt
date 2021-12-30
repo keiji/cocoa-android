@@ -2,9 +2,8 @@ package dev.keiji.cocoa.android
 
 import android.app.Activity
 import android.content.Context
-import com.google.android.gms.nearby.exposurenotification.DiagnosisKeyFileProvider
-import com.google.android.gms.nearby.exposurenotification.DiagnosisKeysDataMapping
-import com.google.android.gms.nearby.exposurenotification.PackageConfiguration
+import android.os.Bundle
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.DiagnosisKeyFileProvider
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.DailySummary
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureConfiguration
@@ -12,10 +11,15 @@ import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureI
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureNotificationStatus
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureSummary
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureWindow
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.PackageConfiguration
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import java.io.File
 
-class ExposureNotificationWrapperMock(applicationContext: Context) : ExposureNotificationWrapper {
+class ExposureNotificationWrapperMock(
+    private val applicationContext: Context,
+    private var exposureDetectionService: ExposureDetectionService,
+    ) : ExposureNotificationWrapper {
 
     private var isStarted: Boolean = false
 
@@ -32,23 +36,29 @@ class ExposureNotificationWrapperMock(applicationContext: Context) : ExposureNot
     override suspend fun isEnabled(): Boolean = isStarted
 
     override suspend fun getStatuses(): List<ExposureNotificationStatus> {
-        TODO("Not yet implemented")
+        return listOf(ExposureNotificationStatus.ACTIVATED)
     }
 
     override suspend fun getCalibrationConfidence(): Int {
-        TODO("Not yet implemented")
+        return 0
     }
 
-    override suspend fun getDiagnosisKeysDataMapping(): DiagnosisKeysDataMapping {
-        TODO("Not yet implemented")
+    private var diagnosisKeysDataMappingConfig: ExposureConfiguration.DiagnosisKeysDataMappingConfig =
+        ExposureConfiguration.DiagnosisKeysDataMappingConfig(
+            infectiousnessWhenDaysSinceOnsetMissing = 1,
+            reportTypeWhenMissing = 2,
+        )
+
+    override suspend fun getDiagnosisKeysDataMapping(): ExposureConfiguration.DiagnosisKeysDataMappingConfig {
+        return diagnosisKeysDataMappingConfig
     }
 
-    override suspend fun setDiagnosisKeysDataMapping(diagnosisKeysDataMapping: DiagnosisKeysDataMapping) {
-        TODO("Not yet implemented")
+    override suspend fun setDiagnosisKeysDataMapping(diagnosisKeysDataMapping: ExposureConfiguration.DiagnosisKeysDataMappingConfig) {
+        diagnosisKeysDataMappingConfig = diagnosisKeysDataMapping
     }
 
     override suspend fun getPackageConfiguration(): PackageConfiguration {
-        TODO("Not yet implemented")
+        return PackageConfiguration(Bundle())
     }
 
     override suspend fun getExposureWindow(): List<ExposureWindow> {
