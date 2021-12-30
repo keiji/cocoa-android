@@ -33,16 +33,6 @@ android {
         }
     }
 
-    flavorDimensions.add("apiVersion")
-    productFlavors {
-        create("legacyV1") {
-            dimension = "apiVersion"
-        }
-        create("exposureWindow") {
-            dimension = "apiVersion"
-
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

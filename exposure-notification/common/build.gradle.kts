@@ -24,16 +24,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    flavorDimensions.add("apiVersion")
-    productFlavors {
-        create("legacyV1") {
-            dimension = "apiVersion"
-        }
-        create("exposureWindow") {
-            dimension = "apiVersion"
-        }
-    }
-
     buildTypes {
         debug {
         }
