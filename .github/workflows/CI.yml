@@ -67,7 +67,7 @@ jobs:
         run: ./gradlew test
   androidTest:
     runs-on: macos-latest
-    # needs: [test]
+    needs: [test]
     strategy:
       matrix:
         apiLevel: [30]
