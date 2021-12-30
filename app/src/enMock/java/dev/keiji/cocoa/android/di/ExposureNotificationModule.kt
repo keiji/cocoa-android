@@ -8,6 +8,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.ExposureNotificationWrapperMock
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
+import dev.keiji.cocoa.android.exposure_notification.source.PathSource
+import dev.keiji.cocoa.android.source.DateTimeSource
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -15,8 +18,16 @@ object ExposureNotificationModule {
 
     @Provides
     fun provideExposureNotificationWrapper(
-        @ApplicationContext applicationContext: Context
+        @ApplicationContext applicationContext: Context,
+        pathSource: PathSource,
+        dateTimeSource: DateTimeSource,
+        exposureDetectionService: ExposureDetectionService,
     ): ExposureNotificationWrapper {
-        return ExposureNotificationWrapperMock(applicationContext)
+        return ExposureNotificationWrapperMock(
+            applicationContext,
+            dateTimeSource,
+            pathSource,
+            exposureDetectionService
+        )
     }
 }

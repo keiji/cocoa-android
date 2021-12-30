@@ -43,13 +43,11 @@ object ExposureDetectionServiceModule {
     fun provideDiagnosisKeyFileProvideServiceApi(
         exposureConfigurationRepository: ExposureConfigurationRepository,
         exposureDataCollectionApi: ExposureDataCollectionApi,
-        exposureNotificationWrapper: ExposureNotificationWrapper,
         configurationSource: ConfigurationSource,
     ): ExposureDetectionService {
         return ExposureDetectionServiceImpl(
             exposureConfigurationRepository,
             exposureDataCollectionApi,
-            exposureNotificationWrapper,
             configurationSource
         )
     }
@@ -161,7 +159,7 @@ object ExposureDataCollectionApiModule {
     fun provideExposureDataCollectionApi(
         @AnonymousInterceptorOkHttpClient okHttpClient: OkHttpClient,
         configurationSource: ConfigurationSource,
-        ): ExposureDataCollectionApi {
+    ): ExposureDataCollectionApi {
         val contentType = MediaType.parse("application/json")!!
 
         val json = Json {

@@ -11,6 +11,7 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 
 @HiltWorker
@@ -18,6 +19,7 @@ class V1ExposureDetectionWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val exposureDetectionService: ExposureDetectionService,
+    private val exposureNotificationWrapper: ExposureNotificationWrapper,
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -40,6 +42,6 @@ class V1ExposureDetectionWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         val token = inputData.getString(WORKER_PARAM_KEY_TOKEN) ?: return Result.failure()
-        return exposureDetectionService.v1ExposureDetectedWork(token);
+        return exposureDetectionService.v1ExposureDetectedWork(token, exposureNotificationWrapper)
     }
 }

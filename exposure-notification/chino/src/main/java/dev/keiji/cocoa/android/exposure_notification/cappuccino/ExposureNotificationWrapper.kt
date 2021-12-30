@@ -5,16 +5,14 @@ import android.content.Context
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.nearby.Nearby
-import com.google.android.gms.nearby.exposurenotification.DiagnosisKeyFileProvider
-import com.google.android.gms.nearby.exposurenotification.DiagnosisKeysDataMapping
 import com.google.android.gms.nearby.exposurenotification.ExposureNotificationClient
-import com.google.android.gms.nearby.exposurenotification.PackageConfiguration
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.DailySummary
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureConfiguration
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureInformation
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureNotificationStatus
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureSummary
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureWindow
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.PackageConfiguration
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
@@ -42,14 +40,14 @@ interface ExposureNotificationWrapper {
     suspend fun isEnabled(): Boolean
     suspend fun getStatuses(): List<ExposureNotificationStatus>
     suspend fun getCalibrationConfidence(): Int
-    suspend fun getDiagnosisKeysDataMapping(): DiagnosisKeysDataMapping
-    suspend fun setDiagnosisKeysDataMapping(diagnosisKeysDataMapping: DiagnosisKeysDataMapping)
+    suspend fun getDiagnosisKeysDataMapping(): ExposureConfiguration.DiagnosisKeysDataMappingConfig
+    suspend fun setDiagnosisKeysDataMapping(diagnosisKeysDataMapping: ExposureConfiguration.DiagnosisKeysDataMappingConfig)
     suspend fun getPackageConfiguration(): PackageConfiguration
     suspend fun getExposureWindow(): List<ExposureWindow>
     suspend fun getDailySummary(dailySummariesConfig: ExposureConfiguration.DailySummariesConfig): List<DailySummary>
     suspend fun getExposureSummary(token: String): ExposureSummary
     suspend fun getExposureInformation(token: String): List<ExposureInformation>
-    suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey>?
+    suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey>
 
     suspend fun provideDiagnosisKeys(diagnosisKeyFileList: List<File>)
     suspend fun provideDiagnosisKeys(diagnosisKeyFileProvider: DiagnosisKeyFileProvider)
@@ -120,15 +118,29 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
     override suspend fun getCalibrationConfidence(): Int =
         exposureNotificationClient.calibrationConfidence.await()
 
-    override suspend fun getDiagnosisKeysDataMapping(): DiagnosisKeysDataMapping =
-        exposureNotificationClient.diagnosisKeysDataMapping.await()
+    override suspend fun getDiagnosisKeysDataMapping(): ExposureConfiguration.DiagnosisKeysDataMappingConfig {
+        val nativeDiagnosisKeysDataMapping =
+            exposureNotificationClient.diagnosisKeysDataMapping.await()
 
-    override suspend fun setDiagnosisKeysDataMapping(diagnosisKeysDataMapping: DiagnosisKeysDataMapping) {
-        exposureNotificationClient.setDiagnosisKeysDataMapping(diagnosisKeysDataMapping).await()
+        return ExposureConfiguration.DiagnosisKeysDataMappingConfig(
+            infectiousnessWhenDaysSinceOnsetMissing = nativeDiagnosisKeysDataMapping.infectiousnessWhenDaysSinceOnsetMissing,
+            reportTypeWhenMissing = nativeDiagnosisKeysDataMapping.reportTypeWhenMissing,
+        ).also { diagnosisKeysDataMappingConfig ->
+            nativeDiagnosisKeysDataMapping.daysSinceOnsetToInfectiousness.entries.forEach { (key, value) ->
+                diagnosisKeysDataMappingConfig.daysSinceOnsetToInfectiousness[key] = value
+            }
+        }
     }
 
-    override suspend fun getPackageConfiguration(): PackageConfiguration =
-        exposureNotificationClient.packageConfiguration.await()
+    override suspend fun setDiagnosisKeysDataMapping(diagnosisKeysDataMapping: ExposureConfiguration.DiagnosisKeysDataMappingConfig) {
+        exposureNotificationClient.setDiagnosisKeysDataMapping(diagnosisKeysDataMapping.toNative())
+            .await()
+    }
+
+    override suspend fun getPackageConfiguration(): PackageConfiguration {
+        val nativePackageConfiguration = exposureNotificationClient.packageConfiguration.await()
+        return PackageConfiguration(nativePackageConfiguration.values)
+    }
 
     override suspend fun getExposureWindow(): List<ExposureWindow> =
         exposureNotificationClient.exposureWindows.await().map { ew -> ExposureWindow(ew) }
@@ -145,10 +157,10 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
             ExposureInformation(ei)
         }
 
-    override suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey>? {
+    override suspend fun getTemporaryExposureKeyHistory(activity: Activity): List<TemporaryExposureKey> {
         try {
             return exposureNotificationClient.temporaryExposureKeyHistory.await()
-                ?.map { tek -> TemporaryExposureKey(tek) }
+                .map { tek -> TemporaryExposureKey(tek) }
         } catch (exception: ApiException) {
             Timber.d("ApiException", exception)
 
@@ -158,8 +170,8 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
                     ExposureNotificationWrapper.REQUEST_TEMPORARY_EXPOSURE_KEY_HISTORY
                 )
             }
+            throw exception.toExposureNotificationException()
         }
-        return null
     }
 
     override suspend fun provideDiagnosisKeys(diagnosisKeyFileList: List<File>) {
@@ -167,7 +179,7 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
     }
 
     override suspend fun provideDiagnosisKeys(diagnosisKeyFileProvider: DiagnosisKeyFileProvider) {
-        exposureNotificationClient.provideDiagnosisKeys(diagnosisKeyFileProvider).await()
+        exposureNotificationClient.provideDiagnosisKeys(diagnosisKeyFileProvider.toNative()).await()
     }
 
     override suspend fun provideDiagnosisKeys(

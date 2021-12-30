@@ -44,7 +44,7 @@ data class V3DiagnosisSubmissionRequest constructor(
     }
 
     @SerialName("platform")
-    val platform: String = "Android"
+    val platform: String = "android"
 
     @SerialName("padding")
     val padding: String = createPadding()

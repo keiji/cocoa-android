@@ -26,9 +26,6 @@ class DetectExposureWorker @AssistedInject constructor(
     private val exposureNotificationWrapper: ExposureNotificationWrapper,
     private val configurationSource: ConfigurationSource,
 ) : CoroutineWorker(appContext, workerParams) {
-    companion object {
-        private const val DIR_NAME = "diagnosis_keys"
-    }
 
     override suspend fun doWork(): Result {
         Timber.d("Starting worker...")

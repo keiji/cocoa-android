@@ -10,6 +10,7 @@ import androidx.work.WorkRequest
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 
 @HiltWorker
@@ -17,6 +18,7 @@ class NoExposureDetectionWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val exposureDetectionService: ExposureDetectionService,
+    private val exposureNotificationWrapper: ExposureNotificationWrapper,
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -30,6 +32,6 @@ class NoExposureDetectionWorker @AssistedInject constructor(
     }
 
     override suspend fun doWork(): Result {
-        return exposureDetectionService.noExposureDetectedWork()
+        return exposureDetectionService.noExposureDetectedWork(exposureNotificationWrapper)
     }
 }

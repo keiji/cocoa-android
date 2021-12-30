@@ -112,7 +112,7 @@ data class ExposureConfiguration(
     data class DiagnosisKeysDataMappingConfig(
 
         @SerialName("infectiousness_for_days_since_onset_of_symptoms")
-        val daysSinceOnsetToInfectiousness: Map<Int, Int> = mapOf(
+        val daysSinceOnsetToInfectiousness: MutableMap<Int, Int> = mutableMapOf(
             -14 to Infectiousness.NONE,
             -13 to Infectiousness.NONE,
             -12 to Infectiousness.NONE,

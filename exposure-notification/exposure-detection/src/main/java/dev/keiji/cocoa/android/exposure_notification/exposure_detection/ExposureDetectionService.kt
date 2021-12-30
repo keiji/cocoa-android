@@ -13,30 +13,42 @@ import timber.log.Timber
 interface ExposureDetectionService {
     fun isExposureNotificationEnabled(intent: Intent): Boolean
 
-    suspend fun noExposureDetectedWork(): ListenableWorker.Result;
-    suspend fun v1ExposureDetectedWork(token: String): ListenableWorker.Result;
-    suspend fun v2ExposureDetectedWork(): ListenableWorker.Result;
+    suspend fun noExposureDetectedWork(
+        exposureNotificationWrapper: ExposureNotificationWrapper,
+    ): ListenableWorker.Result;
+
+    suspend fun v1ExposureDetectedWork(
+        token: String,
+        exposureNotificationWrapper: ExposureNotificationWrapper,
+    ): ListenableWorker.Result;
+
+    suspend fun v2ExposureDetectedWork(
+        exposureNotificationWrapper: ExposureNotificationWrapper,
+    ): ListenableWorker.Result;
 }
 
 class ExposureDetectionServiceImpl(
     private val exposureConfigurationRepository: ExposureConfigurationRepository,
     private val exposureDataCollectionApi: ExposureDataCollectionApi,
-    private val exposureNotificationWrapper: ExposureNotificationWrapper,
     private val configurationSource: ConfigurationSource,
 ) : ExposureDetectionService {
 
     override fun isExposureNotificationEnabled(intent: Intent): Boolean =
         intent.getBooleanExtra(ExposureNotificationWrapper.EXTRA_SERVICE_STATE, false)
 
-    override suspend fun noExposureDetectedWork(): ListenableWorker.Result {
+    override suspend fun noExposureDetectedWork(
+        exposureNotificationWrapper: ExposureNotificationWrapper,
+    ): ListenableWorker.Result {
+        val enVersion = exposureNotificationWrapper.getVersion()
+        val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
+
         try {
-            val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
             configurationSource.regions().forEach { region ->
                 exposureDataCollectionApi.submit(
                     region,
                     ExposureDataRequest(
                         device = Build.MODEL,
-                        enVersion = exposureNotificationWrapper.getVersion().toString(),
+                        enVersion = enVersion.toString(),
                         exposureConfiguration = exposureConfiguration,
                         null,
                         null,
@@ -51,18 +63,22 @@ class ExposureDetectionServiceImpl(
         return ListenableWorker.Result.success()
     }
 
-    override suspend fun v1ExposureDetectedWork(token: String): ListenableWorker.Result {
-        try {
-            val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
-            val exposureSummary = exposureNotificationWrapper.getExposureSummary(token)
-            val exposureInformationList = exposureNotificationWrapper.getExposureInformation(token)
+    override suspend fun v1ExposureDetectedWork(
+        token: String,
+        exposureNotificationWrapper: ExposureNotificationWrapper,
+    ): ListenableWorker.Result {
+        val enVersion = exposureNotificationWrapper.getVersion()
+        val exposureSummary = exposureNotificationWrapper.getExposureSummary(token)
+        val exposureInformationList = exposureNotificationWrapper.getExposureInformation(token)
+        val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
 
+        try {
             configurationSource.regions().forEach { region ->
                 exposureDataCollectionApi.submit(
                     region,
                     ExposureDataRequest(
                         device = Build.MODEL,
-                        enVersion = exposureNotificationWrapper.getVersion().toString(),
+                        enVersion = enVersion.toString(),
                         exposureConfiguration = exposureConfiguration,
                         exposureSummary = exposureSummary,
                         exposureInformationList = exposureInformationList,
@@ -78,24 +94,27 @@ class ExposureDetectionServiceImpl(
         return ListenableWorker.Result.success()
     }
 
-    override suspend fun v2ExposureDetectedWork(): ListenableWorker.Result {
-        try {
-            val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
-            val dailySummary =
-                exposureNotificationWrapper.getDailySummary(exposureConfiguration.dailySummaryConfig)
-            val exposureWindowList =
-                exposureNotificationWrapper.getExposureWindow()
+    override suspend fun v2ExposureDetectedWork(
+        exposureNotificationWrapper: ExposureNotificationWrapper,
+    ): ListenableWorker.Result {
+        val enVersion = exposureNotificationWrapper.getVersion()
+        val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
 
+        val dailySummaryList =
+            exposureNotificationWrapper.getDailySummary(exposureConfiguration.dailySummaryConfig)
+        val exposureWindowList = exposureNotificationWrapper.getExposureWindow()
+
+        try {
             configurationSource.regions().forEach { region ->
                 exposureDataCollectionApi.submit(
                     region,
                     ExposureDataRequest(
                         device = Build.MODEL,
-                        enVersion = exposureNotificationWrapper.getVersion().toString(),
+                        enVersion = enVersion.toString(),
                         exposureConfiguration = exposureConfiguration,
                         exposureSummary = null,
                         exposureInformationList = null,
-                        dailySummaryList = dailySummary,
+                        dailySummaryList = dailySummaryList,
                         exposureWindowList = exposureWindowList
                     )
                 )
