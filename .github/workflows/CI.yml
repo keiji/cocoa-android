@@ -57,7 +57,9 @@ jobs:
           java-version: '11'
       - uses: actions/cache@v2
         with:
-          path: ~/.gradle/caches
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts*') }}
           restore-keys: ${{ runner.os }}-gradle.kts-
       - uses: actions/checkout@v2
