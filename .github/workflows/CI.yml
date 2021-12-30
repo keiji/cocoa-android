@@ -36,6 +36,13 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts*') }}
           restore-keys: ${{ runner.os }}-gradle.kts-
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts*') }}
+          restore-keys: ${{ runner.os }}-gradle.kts-
       - uses: actions/checkout@v2
       - name: Build Debug
         run: ./gradlew assemble${{ matrix.enApiMode }}${{ matrix.enApiVersion }}${{ matrix.type }}
