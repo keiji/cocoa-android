@@ -41,10 +41,12 @@ object ExposureDetectionServiceModule {
     @Singleton
     @Provides
     fun provideDiagnosisKeyFileProvideServiceApi(
+        exposureConfigurationRepository: ExposureConfigurationRepository,
         exposureDataCollectionApi: ExposureDataCollectionApi,
         configurationSource: ConfigurationSource,
     ): ExposureDetectionService {
         return ExposureDetectionServiceImpl(
+            exposureConfigurationRepository,
             exposureDataCollectionApi,
             configurationSource
         )

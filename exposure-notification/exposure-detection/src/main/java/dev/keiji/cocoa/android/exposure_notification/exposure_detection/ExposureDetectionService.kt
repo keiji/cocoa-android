@@ -4,13 +4,9 @@ import android.content.Intent
 import android.os.Build
 import androidx.work.ListenableWorker
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.DailySummary
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureConfiguration
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureInformation
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureSummary
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureWindow
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureDataCollectionApi
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureDataRequest
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.ExposureConfigurationRepository
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import timber.log.Timber
 
@@ -18,26 +14,21 @@ interface ExposureDetectionService {
     fun isExposureNotificationEnabled(intent: Intent): Boolean
 
     suspend fun noExposureDetectedWork(
-        enVersion: Long,
-        exposureConfiguration: ExposureConfiguration,
+        exposureNotificationWrapper: ExposureNotificationWrapper,
     ): ListenableWorker.Result;
 
     suspend fun v1ExposureDetectedWork(
-        enVersion: Long,
-        exposureSummary: ExposureSummary,
-        exposureInformationList: List<ExposureInformation>,
-        exposureConfiguration: ExposureConfiguration,
+        token: String,
+        exposureNotificationWrapper: ExposureNotificationWrapper,
     ): ListenableWorker.Result;
 
     suspend fun v2ExposureDetectedWork(
-        enVersion: Long,
-        dailySummaryList: List<DailySummary>,
-        exposureWindowList: List<ExposureWindow>,
-        exposureConfiguration: ExposureConfiguration,
+        exposureNotificationWrapper: ExposureNotificationWrapper,
     ): ListenableWorker.Result;
 }
 
 class ExposureDetectionServiceImpl(
+    private val exposureConfigurationRepository: ExposureConfigurationRepository,
     private val exposureDataCollectionApi: ExposureDataCollectionApi,
     private val configurationSource: ConfigurationSource,
 ) : ExposureDetectionService {
@@ -46,9 +37,11 @@ class ExposureDetectionServiceImpl(
         intent.getBooleanExtra(ExposureNotificationWrapper.EXTRA_SERVICE_STATE, false)
 
     override suspend fun noExposureDetectedWork(
-        enVersion: Long,
-        exposureConfiguration: ExposureConfiguration,
+        exposureNotificationWrapper: ExposureNotificationWrapper,
     ): ListenableWorker.Result {
+        val enVersion = exposureNotificationWrapper.getVersion()
+        val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
+
         try {
             configurationSource.regions().forEach { region ->
                 exposureDataCollectionApi.submit(
@@ -71,11 +64,14 @@ class ExposureDetectionServiceImpl(
     }
 
     override suspend fun v1ExposureDetectedWork(
-        enVersion: Long,
-        exposureSummary: ExposureSummary,
-        exposureInformationList: List<ExposureInformation>,
-        exposureConfiguration: ExposureConfiguration,
+        token: String,
+        exposureNotificationWrapper: ExposureNotificationWrapper,
     ): ListenableWorker.Result {
+        val enVersion = exposureNotificationWrapper.getVersion()
+        val exposureSummary = exposureNotificationWrapper.getExposureSummary(token)
+        val exposureInformationList = exposureNotificationWrapper.getExposureInformation(token)
+        val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
+
         try {
             configurationSource.regions().forEach { region ->
                 exposureDataCollectionApi.submit(
@@ -99,11 +95,15 @@ class ExposureDetectionServiceImpl(
     }
 
     override suspend fun v2ExposureDetectedWork(
-        enVersion: Long,
-        dailySummaryList: List<DailySummary>,
-        exposureWindowList: List<ExposureWindow>,
-        exposureConfiguration: ExposureConfiguration,
+        exposureNotificationWrapper: ExposureNotificationWrapper,
     ): ListenableWorker.Result {
+        val enVersion = exposureNotificationWrapper.getVersion()
+        val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
+
+        val dailySummaryList =
+            exposureNotificationWrapper.getDailySummary(exposureConfiguration.dailySummaryConfig)
+        val exposureWindowList = exposureNotificationWrapper.getExposureWindow()
+
         try {
             configurationSource.regions().forEach { region ->
                 exposureDataCollectionApi.submit(

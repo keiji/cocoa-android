@@ -34,13 +34,13 @@ class ExposureNotificationWrapperMock(
         private const val MAX_TEK_COUNT = 14
     }
 
-    private val dummyExposureInfos =
+    private val dummyExposureInfosFile =
         File(pathSource.dummyExposureDataDir(), PathSource.FILENAME_DUMMY_EXPOSURE_INFOS_DATA)
-    private val dummuExposureSummary =
+    private val dummyExposureSummaryFile =
         File(pathSource.dummyExposureDataDir(), PathSource.FILENAME_DUMMY_EXPOSURE_SUMMARY_DATA)
-    private val dummyDailySummaries =
+    private val dummyDailySummariesFile =
         File(pathSource.dummyExposureDataDir(), PathSource.FILENAME_DUMMY_DAILY_SUMMARY_DATA)
-    private val dummyExposureWindows =
+    private val dummyExposureWindowsFile =
         File(pathSource.dummyExposureDataDir(), PathSource.FILENAME_DUMMY_EXPOSURE_WINDOW_DATA)
 
     private var isStarted: Boolean = false
@@ -96,68 +96,50 @@ class ExposureNotificationWrapperMock(
     }
 
     override suspend fun getExposureWindow(): List<ExposureWindow> {
-        if (!dummyExposureWindows.exists()) {
+        if (!dummyExposureWindowsFile.exists()) {
             return emptyList()
         }
 
-        val jsonText = dummyExposureWindows.readText()
+        val jsonText = dummyExposureWindowsFile.readText()
         return Json.decodeFromString(jsonText)
     }
 
     override suspend fun getDailySummary(dailySummariesConfig: ExposureConfiguration.DailySummariesConfig): List<DailySummary> {
-        if (!dummyDailySummaries.exists()) {
+        if (!dummyDailySummariesFile.exists()) {
             return emptyList()
         }
 
-        val jsonText = dummyDailySummaries.readText()
+        val jsonText = dummyDailySummariesFile.readText()
         return Json.decodeFromString(jsonText)
     }
 
     override suspend fun getExposureSummary(token: String): ExposureSummary {
-        if (!dummuExposureSummary.exists()) {
+        if (!dummyExposureSummaryFile.exists()) {
             return ExposureSummary(IntArray(0), 0, 0, 0, 0)
         }
 
-        val jsonText = dummuExposureSummary.readText()
+        val jsonText = dummyExposureSummaryFile.readText()
         return Json.decodeFromString(jsonText)
     }
 
     override suspend fun getExposureInformation(token: String): List<ExposureInformation> {
-        if (!dummyExposureInfos.exists()) {
+        if (!dummyExposureInfosFile.exists()) {
             return emptyList()
         }
 
-        val jsonText = dummyExposureInfos.readText()
+        val jsonText = dummyExposureInfosFile.readText()
         return Json.decodeFromString(jsonText)
     }
 
     override suspend fun provideDiagnosisKeys(diagnosisKeyFileList: List<File>) {
-        if (dummyDailySummaries.exists()) {
-            val enVersion = getVersion()
-            val dailySummaryList = getDailySummary(ExposureConfiguration.DailySummariesConfig())
-            val exposureWindowList = getExposureWindow()
-
-            exposureDetectionService.v2ExposureDetectedWork(
-                enVersion,
-                dailySummaryList,
-                exposureWindowList,
-                ExposureConfiguration()
-            )
+        if (dummyDailySummariesFile.exists()) {
+            exposureDetectionService.v2ExposureDetectedWork(this)
         }
     }
 
     override suspend fun provideDiagnosisKeys(diagnosisKeyFileProvider: DiagnosisKeyFileProvider) {
-        if (dummyDailySummaries.exists()) {
-            val enVersion = getVersion()
-            val dailySummaryList = getDailySummary(ExposureConfiguration.DailySummariesConfig())
-            val exposureWindowList = getExposureWindow()
-
-            exposureDetectionService.v2ExposureDetectedWork(
-                enVersion,
-                dailySummaryList,
-                exposureWindowList,
-                ExposureConfiguration(),
-            )
+        if (dummyDailySummariesFile.exists()) {
+            exposureDetectionService.v2ExposureDetectedWork(this)
         }
     }
 
@@ -166,17 +148,8 @@ class ExposureNotificationWrapperMock(
         exposureConfiguration: ExposureConfiguration.V1Config,
         token: String
     ) {
-        if (dummuExposureSummary.exists()) {
-            val enVersion = getVersion()
-            val exposureSummary = getExposureSummary(token)
-            val exposureInformationList = getExposureInformation(token)
-
-            exposureDetectionService.v1ExposureDetectedWork(
-                enVersion,
-                exposureSummary,
-                exposureInformationList,
-                ExposureConfiguration()
-            )
+        if (dummyExposureSummaryFile.exists()) {
+            exposureDetectionService.v1ExposureDetectedWork(token, this)
         }
     }
 
