@@ -71,6 +71,7 @@ jobs:
     strategy:
       matrix:
         apiLevel: [30]
+        target: ["default"]
     steps:
       - name: set up JDK 11
         uses: actions/setup-java@v2
@@ -84,9 +85,10 @@ jobs:
             ~/.gradle/wrapper
             ~/.android/avd/*
             ~/.android/adb*
-          key: ${{ runner.os }}-avd-${{ matrix.apiLevel }}
+          key: ${{ runner.os }}-avd-${{ matrix.target }}-${{ matrix.apiLevel }}
           restore-keys: |
-            ${{ runner.os }}-avd-${{ matrix.apiLevel }}-
+            ${{ runner.os }}-avd-${{ matrix.target }}-${{ matrix.apiLevel }}-
+            ${{ runner.os }}-avd-${{ matrix.target }}-
             ${{ runner.os }}-avd-
       - uses: actions/checkout@v2
       - name: Android Emulator Runner
