@@ -2,9 +2,9 @@ package dev.keiji.cocoa.android.exposure_notification.exposure_detection.reposit
 
 import android.content.Context
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureConfiguration
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureConfigurationApi
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureConfigurationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi

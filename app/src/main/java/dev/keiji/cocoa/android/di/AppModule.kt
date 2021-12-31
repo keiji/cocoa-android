@@ -20,8 +20,8 @@ import dev.keiji.cocoa.android.exposure_notification.source.DatabaseSource
 import dev.keiji.cocoa.android.exposure_notification.source.DatabaseSourceImpl
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSourceImpl
-import dev.keiji.cocoa.android.source.DateTimeSource
-import dev.keiji.cocoa.android.source.DateTimeSourceImpl
+import dev.keiji.cocoa.android.common.source.DateTimeSource
+import dev.keiji.cocoa.android.common.source.DateTimeSourceImpl
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 

@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
-import dev.keiji.cocoa.android.source.DateTimeSource
+import dev.keiji.cocoa.android.common.source.DateTimeSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi

@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.exposure_notificaiton.repository
+package dev.keiji.cocoa.android.exposure_notification.repository
 
 import android.content.Context
 import org.junit.After
