@@ -1,18 +1,24 @@
 package dev.keiji.cocoa.android.exposure_notification.ui.submit_diagnosis
 
+import android.app.Application
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.keiji.cocoa.android.common.attestation.AttestationApi
 import dev.keiji.cocoa.android.common.attestation.AttestationException
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ReportType
 import dev.keiji.cocoa.android.exposure_notification.ui.AppConstants
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey
 import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.V3DiagnosisSubmissionRequest
 import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.V3SubmitDiagnosisApi
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
+import dev.keiji.cocoa.android.exposure_notification.ui.BuildConfig
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
@@ -21,11 +27,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SubmitDiagnosisViewModel @Inject constructor(
+    application: Application,
     private val state: SavedStateHandle,
     private val configurationSource: ConfigurationSource,
     private val submitDiagnosisApi: V3SubmitDiagnosisApi,
     private val attestationApi: AttestationApi,
-) : ViewModel() {
+) : AndroidViewModel(application) {
     companion object {
         private const val KEY_STATE_PROCESS_NUMBER = "process_number"
         private const val KEY_STATE_HAS_SYMPTOM = "has_symptom"
@@ -77,7 +84,11 @@ class SubmitDiagnosisViewModel @Inject constructor(
     }
 
     fun submit(temporaryExposureKeyList: List<TemporaryExposureKey>) {
-        Timber.d("ProcessNumber ${processNumber.value ?: "null"}")
+        val processNumberSnapshot = processNumber.value
+        if (processNumberSnapshot.isNullOrEmpty()) {
+            Timber.d("ProcessNumber ${processNumber.value ?: "null"}")
+            return
+        }
 
         val hasSymptomSnapshot = hasSymptom.value
         if (hasSymptomSnapshot == null) {
@@ -107,9 +118,12 @@ class SubmitDiagnosisViewModel @Inject constructor(
             symptomOnsetDate.time,
             temporaryExposureKeyList.map { tek ->
                 V3DiagnosisSubmissionRequest.TemporaryExposureKey(
-                    tek
+                    tek,
+                    reportType = ReportType.CONFIRMED_TEST.ordinal
                 )
-            }
+            },
+            appPackageName = getApplication<Application>().packageName,
+            processNumber = processNumberSnapshot
         )
 
         Timber.d(request.toString())
@@ -117,16 +131,16 @@ class SubmitDiagnosisViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 request.jwsPayload = attestationApi.attest(request)
-                val resultTemporaryExposureKeyList = submitDiagnosisApi.submitV3(
-                    request
-                )
+                val resultTemporaryExposureKeyList = submitDiagnosisApi.submitV3(request)
                 resultTemporaryExposureKeyList.forEach { tek ->
                     Timber.d(tek.toString())
                 }
             } catch (exception: HttpException) {
-                Timber.e("HttpException occurred.", exception)
+                Timber.e(exception, "HttpException occurred.")
             } catch (exception: AttestationException) {
-                Timber.e("AttestationException occurred. ${exception.statusCode}", exception)
+                Timber.e(exception, "AttestationException occurred. ${exception.statusCode}")
+            } catch (exception: Exception) {
+                Timber.e(exception, "Exception occurred.")
             }
         }
     }

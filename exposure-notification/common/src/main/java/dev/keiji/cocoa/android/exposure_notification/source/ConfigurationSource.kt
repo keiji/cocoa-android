@@ -31,7 +31,7 @@ class ConfigurationSourceImpl(
         .split(",")
         .filter { it.isNotEmpty() }
 
-    private val subregionsArray = regionsStr
+    private val subregionsArray = subregionsStr
         .replace(" ", "")
         .split(",")
         .filter { it.isNotEmpty() }
