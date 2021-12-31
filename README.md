@@ -9,3 +9,7 @@
 cp api-settings-sample.properties api-settings.properties 
 ./gradlew assembleDebug
 ```
+
+## License
+
+TBD
