@@ -3,13 +3,13 @@ package dev.keiji.cocoa.android.exposure_notification.cappuccino
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureNotificationStatus
-import java.util.*
+import org.joda.time.DateTime
 import com.google.android.gms.nearby.exposurenotification.ExposureNotificationStatus as NativeExposureNotificationStatus
 
 private const val TIME_WINDOW_INTERVAL: Int = 60 * 10
 
-fun Date.toEnTimeWindow(): Int {
-    return (this.time / 1000).toInt() / TIME_WINDOW_INTERVAL
+fun DateTime.toEnTimeWindow(): Int {
+    return (this.millis / 1000).toInt() / TIME_WINDOW_INTERVAL
 }
 
 fun NativeExposureNotificationStatus.toExposureNotificationStatus(): ExposureNotificationStatus {

@@ -1,30 +1,23 @@
 package dev.keiji.cocoa.android.common.source
 
-import java.util.*
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 
 abstract class DateTimeSource {
-    companion object {
-        const val TIMEZONE_ID_UTC = "UTC"
-    }
 
-    abstract fun utcNow(): Calendar
+    abstract fun utcNow(): DateTime
 
-    fun epoch(): Long = utcNow().timeInMillis / 1000
+    fun epoch(): Long = utcNow().millis / 1000
 
-    fun today(): Calendar = utcNow().apply {
-        set(Calendar.HOUR_OF_DAY, 0)
-        set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
-    }
+    fun today(): DateTime = utcNow()
+        .withHourOfDay(0)
+        .withMinuteOfHour(0)
+        .withSecondOfMinute(0)
+        .withMillisOfSecond(0)
 
-    fun offsetDate(offsetDays: Int) = today().apply {
-        add(Calendar.DATE, offsetDays)
-    }
+    fun offsetDateTime(offsetDays: Int) = today().plusDays(offsetDays)
 }
 
 class DateTimeSourceImpl : DateTimeSource() {
-    private val TIMEZONE_UTC = TimeZone.getTimeZone(TIMEZONE_ID_UTC)
-
-    override fun utcNow(): Calendar = Calendar.getInstance(TIMEZONE_UTC)
+    override fun utcNow(): DateTime = DateTime(DateTimeZone.UTC)
 }

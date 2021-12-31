@@ -1,6 +1,8 @@
 package dev.keiji.cocoa.android.source
 
 import dev.keiji.cocoa.android.common.source.DateTimeSource
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -43,7 +45,7 @@ class DateTimeSourceTest {
 
         val mockDateTimeProvider =
             mock<DateTimeSource> {
-                onBlocking { utcNow() } doReturn now
+                onBlocking { utcNow() } doReturn DateTime(now.timeInMillis, DateTimeZone.UTC)
             }
 
         assertEquals(
@@ -52,13 +54,13 @@ class DateTimeSourceTest {
         )
 
         assertEquals(
-            today.time,
-            mockDateTimeProvider.today().time
+            today.timeInMillis,
+            mockDateTimeProvider.today().millis
         )
 
         assertEquals(
-            yesterday.time,
-            mockDateTimeProvider.offsetDate(-1).time
+            yesterday.timeInMillis,
+            mockDateTimeProvider.offsetDateTime(-1).millis
         )
     }
 }
