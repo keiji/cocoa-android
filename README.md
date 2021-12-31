@@ -19,7 +19,7 @@ cp settings-sample.properties settings.properties
 ##### enApiMode - ExposureNotification API Mode
 |  enMock(*)  |  enProd  |
 | ---- | ---- |
-|  Mocked, for develop  |  Product, need certification  |
+|  Mock, for develop  |  Product, need certification  |
 
 ##### enApiVersion - ExposureNotification API Version
 |  legacyV1  |  exposureWindow(*)  |
@@ -30,7 +30,8 @@ cp settings-sample.properties settings.properties
 
 |  Feature  |  debug(*)  |  staging  | release  |
 | ---- | ---- | ---- | ---- |
-|  AttestationAPI  |  disable  |  enable  |  enable  |
+|  Attestation API  |  disable  |  enable  |  enable  |
+|  WorkManager(Check exposure) interval  |  16 min  |  4 hours  |  4 hours  |
 
 
 ## License
