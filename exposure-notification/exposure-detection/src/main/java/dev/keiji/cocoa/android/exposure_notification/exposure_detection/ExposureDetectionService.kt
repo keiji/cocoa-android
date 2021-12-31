@@ -43,9 +43,9 @@ class ExposureDetectionServiceImpl(
         val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
 
         try {
-            configurationSource.regions().forEach { region ->
+            configurationSource.regions.forEach { region ->
                 exposureDataCollectionApi.submit(
-                    region,
+                    region.toString(),
                     ExposureDataRequest(
                         device = Build.MODEL,
                         enVersion = enVersion.toString(),
@@ -73,9 +73,9 @@ class ExposureDetectionServiceImpl(
         val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
 
         try {
-            configurationSource.regions().forEach { region ->
+            configurationSource.regions.forEach { region ->
                 exposureDataCollectionApi.submit(
-                    region,
+                    region.toString(),
                     ExposureDataRequest(
                         device = Build.MODEL,
                         enVersion = enVersion.toString(),
@@ -105,9 +105,9 @@ class ExposureDetectionServiceImpl(
         val exposureWindowList = exposureNotificationWrapper.getExposureWindow()
 
         try {
-            configurationSource.regions().forEach { region ->
+            configurationSource.regions.forEach { region ->
                 exposureDataCollectionApi.submit(
-                    region,
+                    region.toString(),
                     ExposureDataRequest(
                         device = Build.MODEL,
                         enVersion = enVersion.toString(),

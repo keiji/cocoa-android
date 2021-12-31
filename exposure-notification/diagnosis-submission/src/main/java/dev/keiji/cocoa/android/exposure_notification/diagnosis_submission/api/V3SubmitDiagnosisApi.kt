@@ -1,5 +1,6 @@
 package dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api
 
+import dev.keiji.cocoa.android.common.attestation.AttestationRequest
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey as ChinoTemporaryExposureKey
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ReportType
 import dev.keiji.cocoa.android.exposure_notification.toRFC3339Format
@@ -17,14 +18,14 @@ interface V3SubmitDiagnosisApi {
 @Serializable
 data class V3DiagnosisSubmissionRequest constructor(
     @SerialName("idempotencyKey") val idempotencyKey: String,
-    @SerialName("regions") val regions: List<String>,
+    @SerialName("regions") val regions: List<Int>,
     @SerialName("subRegions") val subRegions: List<String>,
     @SerialName("symptomOnsetDate") val symptomOnsetDate: String,
     @SerialName("keys") val temporaryExposureKeys: List<TemporaryExposureKey>,
     @SerialName("appPackageName") val appPackageName: String? = null,
     @SerialName("verificationPayload") val processNumber: String? = null,
-    @SerialName("deviceVerificationPayload") val jwsPayload: String? = null,
-) {
+    @SerialName("deviceVerificationPayload") var jwsPayload: String? = null,
+) : AttestationRequest {
     companion object {
         const val MIN_PADDING_SIZE = 1024
         const val MAX_PADDING_SIZE = 2048
@@ -51,7 +52,7 @@ data class V3DiagnosisSubmissionRequest constructor(
 
     constructor(
         idempotencyKey: String,
-        regions: List<String>,
+        regions: List<Int>,
         subRegions: List<String>,
         symptomOnsetDate: Date,
         temporaryExposureKeys: List<TemporaryExposureKey>,
@@ -68,6 +69,22 @@ data class V3DiagnosisSubmissionRequest constructor(
         appPackageName,
         jwsPayload
     )
+
+    private val keysClearText = temporaryExposureKeys.map { temporaryExposureKey ->
+        temporaryExposureKey.getClearText()
+    }.joinToString(",")
+
+    private val regionsCleaText = regions
+        .sorted()
+        .joinToString(",")
+
+    override fun getClearText(): String = arrayOf(
+        symptomOnsetDate,
+        appPackageName,
+        keysClearText,
+        regionsCleaText,
+        processNumber,
+    ).joinToString("|")
 
     @Serializable
     data class TemporaryExposureKey(
@@ -86,10 +103,10 @@ data class V3DiagnosisSubmissionRequest constructor(
 
         @SerialName("daysSinceOnsetOfSymptoms")
         val daysSinceOnsetOfSymptoms: Int = -1,
-    ) {
+
         @SerialName("reportType")
         var reportType: Int = ReportType.UNKNOWN.ordinal
-
+    ) : AttestationRequest {
         @SerialName("createdAt")
         val createdAt: Long = -1
 
@@ -102,5 +119,13 @@ data class V3DiagnosisSubmissionRequest constructor(
         ) {
             reportType = temporaryExposureKey.reportType
         }
+
+        override fun getClearText(): String =
+            arrayOf(
+                key,
+                rollingStartNumber,
+                rollingPeriod,
+                reportType
+            ).joinToString(".")
     }
 }

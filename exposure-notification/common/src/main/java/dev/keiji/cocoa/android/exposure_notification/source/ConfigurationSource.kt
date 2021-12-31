@@ -1,47 +1,51 @@
 package dev.keiji.cocoa.android.exposure_notification.source
 
+import timber.log.Timber
+import java.util.*
+
 interface ConfigurationSource {
     fun isEnabledExposureWindowMode(): Boolean
 
-    fun regions(): List<String>
-    fun subregions(): List<String>
+    val regions: List<Int>
+    val subregions: List<String>
 
-    fun submitDiagnosisApiEndpoint(): String
-    fun diagnosisKeysApiEndpoint(): String
-    fun exposureDataCollectionApiEndpoint(): String
+    val submitDiagnosisApiEndpoint: String
+    val diagnosisKeysApiEndpoint: String
+    val exposureDataCollectionApiEndpoint: String
 
-    fun exposureConfigurationUrl(): String
+    val exposureConfigurationUrl: String
 }
 
 class ConfigurationSourceImpl(
     private val isEnabledExposureWindowMode: Boolean,
     regionsStr: String,
     subregionsStr: String,
-    private val submitDiagnosisApiEndpoint: String,
-    private val diagnosisKeysApiEndpoint: String,
-    private val exposureDataCollectionApiEndpoint: String,
-    private val exposureConfigurationUrl: String,
+    override val submitDiagnosisApiEndpoint: String,
+    override val diagnosisKeysApiEndpoint: String,
+    override val exposureDataCollectionApiEndpoint: String,
+    override val exposureConfigurationUrl: String,
 ) : ConfigurationSource {
 
-    private val regions = regionsStr
+    private val regionsStrArray = regionsStr
         .replace(" ", "")
         .split(",")
         .filter { it.isNotEmpty() }
 
-    private val subregions = subregionsStr
+    private val subregionsArray = regionsStr
         .replace(" ", "")
         .split(",")
         .filter { it.isNotEmpty() }
+
+    override val regions: List<Int> =
+        regionsStrArray.map { regionStr ->
+            val regionInt = regionStr.toIntOrNull()
+            if (regionInt == null) {
+                Timber.e("Region must be Int: $regionStr")
+            }
+            return@map regionInt
+        }.filterNotNull()
+
+    override val subregions = subregionsArray
 
     override fun isEnabledExposureWindowMode(): Boolean = isEnabledExposureWindowMode
-
-    override fun regions(): List<String> = regions
-
-    override fun subregions(): List<String> = subregions
-
-    override fun submitDiagnosisApiEndpoint(): String = submitDiagnosisApiEndpoint
-    override fun diagnosisKeysApiEndpoint(): String = diagnosisKeysApiEndpoint
-    override fun exposureDataCollectionApiEndpoint(): String = exposureDataCollectionApiEndpoint
-    override fun exposureConfigurationUrl(): String = exposureConfigurationUrl
-
 }

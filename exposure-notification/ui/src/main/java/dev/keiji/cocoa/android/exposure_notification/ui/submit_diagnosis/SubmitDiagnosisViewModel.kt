@@ -99,8 +99,8 @@ class SubmitDiagnosisViewModel @Inject constructor(
 
         val request = V3DiagnosisSubmissionRequest(
             idempotencyKey,
-            configurationSource.regions(),
-            configurationSource.subregions(),
+            configurationSource.regions,
+            configurationSource.subregions,
             symptomOnsetDate.time,
             temporaryExposureKeyList.map { tek ->
                 V3DiagnosisSubmissionRequest.TemporaryExposureKey(

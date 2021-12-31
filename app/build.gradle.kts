@@ -78,7 +78,12 @@ android {
     }
 
     buildTypes {
-        debug {
+        getByName("debug") {
+            buildConfigField(
+                "Boolean",
+                "IS_SAFETYNET_ATTESTATION_API_ENABLED",
+                "false"
+            )
             buildConfigField(
                 "Long",
                 "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",
@@ -90,7 +95,30 @@ android {
                 "16L"
             )
         }
-        release {
+        create("staging") {
+            initWith(getByName("debug"))
+            buildConfigField(
+                "Boolean",
+                "IS_SAFETYNET_ATTESTATION_API_ENABLED",
+                "true"
+            )
+            buildConfigField(
+                "Long",
+                "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",
+                "4 * 60L"
+            )
+            buildConfigField(
+                "Long",
+                "EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES",
+                "60L"
+            )
+        }
+        getByName("release") {
+            buildConfigField(
+                "Boolean",
+                "IS_SAFETYNET_ATTESTATION_API_ENABLED",
+                "true"
+            )
             buildConfigField(
                 "Long",
                 "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",

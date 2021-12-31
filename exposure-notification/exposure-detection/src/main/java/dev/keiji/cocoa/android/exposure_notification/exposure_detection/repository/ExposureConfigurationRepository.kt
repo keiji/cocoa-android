@@ -39,7 +39,7 @@ class ExposureConfigurationRepositoryImpl(
 
             var exposureConfiguration: ExposureConfiguration? = null
 
-            val httpUrl = HttpUrl.parse(configurationSource.exposureConfigurationUrl())
+            val httpUrl = HttpUrl.parse(configurationSource.exposureConfigurationUrl)
 
             if (httpUrl != null) {
                 var tmpFile =

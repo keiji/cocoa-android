@@ -20,13 +20,16 @@ android {
     }
 
     buildTypes {
-        debug {
+        getByName("debug") {
         }
-        release {
+        create("staging") {
+            initWith(getByName("debug"))
+        }
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -51,6 +54,8 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+
+    implementation("com.google.android.gms:play-services-safetynet:18.0.0")
 
     api("com.jakewharton.timber:timber:5.0.1")
 

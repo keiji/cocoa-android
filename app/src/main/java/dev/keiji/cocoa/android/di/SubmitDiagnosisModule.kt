@@ -28,7 +28,7 @@ object SubmitDiagnosisModule {
 
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(configurationSource.submitDiagnosisApiEndpoint())
+            .baseUrl(configurationSource.submitDiagnosisApiEndpoint)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .build()
             .create(ENCalibrationSubmitDiagnosisApi::class.java)
