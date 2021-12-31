@@ -56,6 +56,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
 
     api("com.jakewharton.timber:timber:5.0.1")
+    api("joda-time:joda-time:2.10.13")
 
     testImplementation("junit:junit:4.+")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0")

@@ -1,9 +1,8 @@
 package dev.keiji.cocoa.android.exposure_notification
 
-import java.text.SimpleDateFormat
-import java.util.*
+import org.joda.time.DateTime
+import org.joda.time.format.ISODateTimeFormat
 
-private const val RFC3339Format = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
+fun DateTime.toRFC3339Format(): String = ISODateTimeFormat.dateTime().print(this)
 
-fun Date.toRFC3339Format(): String =
-    SimpleDateFormat(RFC3339Format, Locale.getDefault()).format(this)
+

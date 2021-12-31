@@ -52,6 +52,8 @@ import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ReportTyp
 import dev.keiji.cocoa.android.exposure_notification.ui.ExposureNotificationViewModel
 import dev.keiji.cocoa.android.exposure_notification.ui.R
 import dev.keiji.cocoa.android.exposure_notification.ui.databinding.FragmentDiagnosisSubmissionBinding
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import java.util.*
 
 @AndroidEntryPoint
@@ -66,13 +68,8 @@ class SubmitDiagnosisFragment : Fragment(R.layout.fragment_diagnosis_submission)
             }
         }
 
-        private fun convertToString(calendar: Calendar): String {
-            return "${calendar.get(Calendar.YEAR)}" +
-                    "/" +
-                    "${calendar.get(Calendar.MONTH) + 1}" +
-                    "/" +
-                    "${calendar.get(Calendar.DAY_OF_MONTH)}"
-        }
+        private fun convertToString(dateTime: DateTime): String =
+            "${dateTime.year}/${dateTime.monthOfYear}/${dateTime.dayOfMonth}"
     }
 
     private val exposureNotificationViewModel: ExposureNotificationViewModel by activityViewModels()
@@ -360,14 +357,24 @@ class SubmitDiagnosisFragment : Fragment(R.layout.fragment_diagnosis_submission)
         val datePicker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
-                .setSelection(viewModel.symptomOnsetDate.value?.timeInMillis)
+                .setSelection(viewModel.symptomOnsetDate.value?.millis)
                 .build()
         datePicker.addOnPositiveButtonClickListener {
-            val ticks = datePicker.selection ?: return@addOnPositiveButtonClickListener
-            val calendar: Calendar = Calendar.getInstance(TimeZone.getDefault()).apply {
-                timeInMillis = ticks
-            }
-            viewModel.setSymptomOnsetDate(calendar)
+            var ticks = datePicker.selection ?: return@addOnPositiveButtonClickListener
+
+            /**
+             * `MaterialDatePicker` returns datetime(`selection`) as UTC.
+             * 2022/01/01 -> 2022-01-01T00:00:00+00:00
+             *
+             * ExposureNotification API treat all datetime as UTC, `SymptomOnsetDate` as well.
+             *
+             * If the datetime is `2022/01/01T00:00:00` in Japan Standard Time(UTC+9),
+             * it must be corrected to `2021/12/31T15:00:00` by based on the local-timezone.
+             */
+            ticks -= TimeZone.getDefault().rawOffset
+            val symptomOnsetDateInUtc = DateTime(ticks, DateTimeZone.UTC)
+
+            viewModel.setSymptomOnsetDate(symptomOnsetDateInUtc)
         }
         datePicker.addOnDismissListener {
             focusManager.clearFocus()

@@ -13,14 +13,13 @@ import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureS
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureWindow
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.PackageConfiguration
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.toEnTimeWindow
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.common.source.DateTimeSource
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.toEnTimeWindow
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.File
-import java.util.*
 import kotlin.random.Random
 
 class ExposureNotificationWrapperMock(
@@ -88,10 +87,8 @@ class ExposureNotificationWrapperMock(
         val keyCount = random.nextInt(MAX_TEK_COUNT)
         return (0..keyCount).map { num ->
             val offsetDays = num + 1
-            val date = dateTimeSource.today().also {
-                it.add(Calendar.DAY_OF_MONTH, -offsetDays)
-            }
-            TemporaryExposureKey.createDummy(random, date.time.toEnTimeWindow())
+            val dateTime = dateTimeSource.offsetDateTime(-offsetDays)
+            TemporaryExposureKey.createDummy(random, dateTime.toEnTimeWindow())
         }
     }
 
