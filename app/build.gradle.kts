@@ -28,8 +28,10 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
-        val props = loadProperties("api-settings.properties")
-            ?: loadProperties("api-settings-sample.properties")
+        val props = loadProperties("settings.properties")
+            ?: loadProperties("settings-sample.properties")
+
+        addBuildConfigStringField(props, "ATTESTATION_API_KEY")
 
         addBuildConfigStringField(props, "REGION_IDs")
         addBuildConfigStringField(props, "SUBREGION_IDs")
@@ -80,11 +82,6 @@ android {
     buildTypes {
         getByName("debug") {
             buildConfigField(
-                "Boolean",
-                "IS_SAFETYNET_ATTESTATION_API_ENABLED",
-                "false"
-            )
-            buildConfigField(
                 "Long",
                 "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",
                 "16L"
@@ -97,11 +94,8 @@ android {
         }
         create("staging") {
             initWith(getByName("debug"))
-            buildConfigField(
-                "Boolean",
-                "IS_SAFETYNET_ATTESTATION_API_ENABLED",
-                "true"
-            )
+            matchingFallbacks.add("debug")
+
             buildConfigField(
                 "Long",
                 "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",
@@ -114,11 +108,6 @@ android {
             )
         }
         getByName("release") {
-            buildConfigField(
-                "Boolean",
-                "IS_SAFETYNET_ATTESTATION_API_ENABLED",
-                "true"
-            )
             buildConfigField(
                 "Long",
                 "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",

@@ -22,9 +22,6 @@ android {
     buildTypes {
         getByName("debug") {
         }
-        create("staging") {
-            initWith(getByName("debug"))
-        }
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
@@ -56,6 +53,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     implementation("com.google.android.gms:play-services-safetynet:18.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
 
     api("com.jakewharton.timber:timber:5.0.1")
 
