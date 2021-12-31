@@ -20,6 +20,7 @@ import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.V3
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import dev.keiji.cocoa.android.exposure_notification.ui.BuildConfig
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
 import retrofit2.HttpException
 import timber.log.Timber
 import java.util.*
@@ -73,14 +74,14 @@ class SubmitDiagnosisViewModel @Inject constructor(
     val isShowCalendar: Boolean
         get() = hasSymptom.value != null
 
-    private val _symptomOnsetDate: MutableLiveData<Calendar> =
+    private val _symptomOnsetDate: MutableLiveData<DateTime> =
         state.getLiveData(KEY_STATE_SYMPTOM_ONSET_DATE)
 
-    val symptomOnsetDate: LiveData<Calendar>
+    val symptomOnsetDate: LiveData<DateTime>
         get() = _symptomOnsetDate
 
-    fun setSymptomOnsetDate(calendar: Calendar) {
-        state[KEY_STATE_SYMPTOM_ONSET_DATE] = calendar
+    fun setSymptomOnsetDate(dateTime: DateTime) {
+        state[KEY_STATE_SYMPTOM_ONSET_DATE] = dateTime
     }
 
     fun submit(temporaryExposureKeyList: List<TemporaryExposureKey>) {
@@ -96,11 +97,7 @@ class SubmitDiagnosisViewModel @Inject constructor(
             return
         }
 
-        val symptomOnsetDate = if (!hasSymptomSnapshot) {
-            Calendar.getInstance(Locale.getDefault())
-        } else {
-            _symptomOnsetDate.value
-        }
+        val symptomOnsetDate = _symptomOnsetDate.value
 
         if (symptomOnsetDate == null) {
             Timber.w("symptomOnsetDate is not set.")
@@ -115,7 +112,7 @@ class SubmitDiagnosisViewModel @Inject constructor(
             idempotencyKey,
             configurationSource.regions,
             configurationSource.subregions,
-            symptomOnsetDate.time,
+            symptomOnsetDate,
             temporaryExposureKeyList.map { tek ->
                 V3DiagnosisSubmissionRequest.TemporaryExposureKey(
                     tek,
@@ -132,6 +129,7 @@ class SubmitDiagnosisViewModel @Inject constructor(
             try {
                 request.jwsPayload = attestationApi.attest(request)
                 val resultTemporaryExposureKeyList = submitDiagnosisApi.submitV3(request)
+
                 resultTemporaryExposureKeyList.forEach { tek ->
                     Timber.d(tek.toString())
                 }

@@ -6,6 +6,7 @@ import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ReportTyp
 import dev.keiji.cocoa.android.exposure_notification.toRFC3339Format
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.joda.time.DateTime
 import retrofit2.http.Body
 import retrofit2.http.PUT
 import java.util.*
@@ -56,7 +57,7 @@ data class V3DiagnosisSubmissionRequest constructor(
         idempotencyKey: String,
         regions: List<Int>,
         subRegions: List<String>,
-        symptomOnsetDate: Date,
+        symptomOnsetDate: DateTime,
         temporaryExposureKeys: List<TemporaryExposureKey>,
         processNumber: String? = null,
         appPackageName: String? = null,
