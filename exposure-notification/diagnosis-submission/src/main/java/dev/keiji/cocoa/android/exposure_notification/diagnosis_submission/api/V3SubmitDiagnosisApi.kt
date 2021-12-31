@@ -7,9 +7,11 @@ import dev.keiji.cocoa.android.exposure_notification.toRFC3339Format
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import retrofit2.http.Body
+import retrofit2.http.PUT
 import java.util.*
 
 interface V3SubmitDiagnosisApi {
+    @PUT("v3/diagnosis")
     suspend fun submitV3(
         @Body v3DiagnosisSubmissionRequest: V3DiagnosisSubmissionRequest
     ): List<V3DiagnosisSubmissionRequest.TemporaryExposureKey>

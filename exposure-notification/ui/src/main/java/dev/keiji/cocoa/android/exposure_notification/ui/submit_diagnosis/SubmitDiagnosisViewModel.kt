@@ -131,16 +131,16 @@ class SubmitDiagnosisViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 request.jwsPayload = attestationApi.attest(request)
-                val resultTemporaryExposureKeyList = submitDiagnosisApi.submitV3(
-                    request
-                )
+                val resultTemporaryExposureKeyList = submitDiagnosisApi.submitV3(request)
                 resultTemporaryExposureKeyList.forEach { tek ->
                     Timber.d(tek.toString())
                 }
             } catch (exception: HttpException) {
-                Timber.e("HttpException occurred.", exception)
+                Timber.e(exception, "HttpException occurred.")
             } catch (exception: AttestationException) {
-                Timber.e("AttestationException occurred. ${exception.statusCode}", exception)
+                Timber.e(exception, "AttestationException occurred. ${exception.statusCode}")
+            } catch (exception: Exception) {
+                Timber.e(exception, "Exception occurred.")
             }
         }
     }
