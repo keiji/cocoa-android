@@ -4,6 +4,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
+//        maven(url = "https://s01.oss.sonatype.org/content/repositories/devkeijirfc4648-1007/")
     }
 }
 rootProject.name = "COCOA"

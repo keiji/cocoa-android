@@ -65,6 +65,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.5")
+
+    androidTestImplementation("dev.keiji.rfc4648:rfc4648:1.0.1")
 }
 
 // Allow references to generated code
