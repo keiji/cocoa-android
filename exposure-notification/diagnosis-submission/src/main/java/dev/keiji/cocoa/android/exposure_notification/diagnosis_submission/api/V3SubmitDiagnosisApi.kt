@@ -60,14 +60,14 @@ data class V3DiagnosisSubmissionRequest constructor(
         appPackageName: String? = null,
         jwsPayload: String? = null,
     ) : this(
-        idempotencyKey,
-        regions,
-        subRegions,
-        symptomOnsetDate.toRFC3339Format(),
-        temporaryExposureKeys,
-        processNumber,
-        appPackageName,
-        jwsPayload
+        idempotencyKey = idempotencyKey,
+        regions = regions,
+        subRegions = subRegions,
+        symptomOnsetDate = symptomOnsetDate.toRFC3339Format(),
+        temporaryExposureKeys = temporaryExposureKeys,
+        processNumber = processNumber,
+        appPackageName = appPackageName,
+        jwsPayload = jwsPayload
     )
 
     private val keysClearText = temporaryExposureKeys.map { temporaryExposureKey ->
@@ -105,20 +105,19 @@ data class V3DiagnosisSubmissionRequest constructor(
         val daysSinceOnsetOfSymptoms: Int = -1,
 
         @SerialName("reportType")
-        var reportType: Int = ReportType.UNKNOWN.ordinal
+        val reportType: Int = ReportType.UNKNOWN.ordinal
     ) : AttestationRequest {
         @SerialName("createdAt")
         val createdAt: Long = -1
 
-        constructor(temporaryExposureKey: ChinoTemporaryExposureKey) : this(
+        constructor(temporaryExposureKey: ChinoTemporaryExposureKey, reportType: Int) : this(
             temporaryExposureKey.key,
             temporaryExposureKey.rollingStartNumber,
             temporaryExposureKey.rollingPeriod,
             temporaryExposureKey.transmissionRisk,
             temporaryExposureKey.daysSinceOnsetOfSymptoms,
-        ) {
-            reportType = temporaryExposureKey.reportType
-        }
+            reportType,
+        )
 
         override fun getClearText(): String =
             arrayOf(
