@@ -148,30 +148,3 @@ object ExposureConfigurationRepositoryModule {
         )
     }
 }
-
-@Module
-@InstallIn(SingletonComponent::class)
-object ExposureDataCollectionApiModule {
-
-    @Singleton
-    @Provides
-    fun provideExposureDataCollectionApi(
-        @AnonymousInterceptorOkHttpClient okHttpClient: OkHttpClient,
-        configurationSource: ConfigurationSource,
-    ): ExposureDataCollectionApi {
-        val contentType = MediaType.parse("application/json")!!
-
-        val json = Json {
-            isLenient = true
-            ignoreUnknownKeys = true
-            useArrayPolymorphism = true
-            coerceInputValues = false
-        }
-        return Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl(configurationSource.exposureDataCollectionApiEndpoint)
-            .addConverterFactory(json.asConverterFactory(contentType))
-            .build()
-            .create(ExposureDataCollectionApi::class.java)
-    }
-}
