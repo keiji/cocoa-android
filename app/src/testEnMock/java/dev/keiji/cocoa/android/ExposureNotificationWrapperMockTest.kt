@@ -12,6 +12,8 @@ import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -28,10 +30,6 @@ import java.util.*
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner.Silent::class)
 class ExposureNotificationWrapperMockTest {
-    companion object {
-        private val TIMEZONE_UTC = TimeZone.getTimeZone(DateTimeSource.TIMEZONE_ID_UTC)
-    }
-
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
     private lateinit var tmpFolder: TemporaryFolder
@@ -64,7 +62,7 @@ class ExposureNotificationWrapperMockTest {
             }
         val mockDateTimeSource =
             mock<DateTimeSource> {
-                on { utcNow() } doReturn Calendar.getInstance(TIMEZONE_UTC)
+                on { utcNow() } doReturn DateTime.now(DateTimeZone.UTC)
             }
         val mockExposureDetectionService =
             mock<ExposureDetectionService> {
