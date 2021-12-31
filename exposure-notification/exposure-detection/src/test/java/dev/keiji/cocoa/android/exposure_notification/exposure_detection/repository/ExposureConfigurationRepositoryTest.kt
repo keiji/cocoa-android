@@ -119,7 +119,7 @@ class ExposureConfigurationRepositoryTest {
             }
         val mockConfigurationSource =
             mock<ConfigurationSource> {
-                onBlocking { exposureConfigurationUrl() } doReturn "https://example.com"
+                onBlocking { exposureConfigurationUrl } doReturn "https://example.com"
             }
 
         val repository = ExposureConfigurationRepositoryImpl(
@@ -142,7 +142,7 @@ class ExposureConfigurationRepositoryTest {
             }
         val mockConfigurationSource =
             mock<ConfigurationSource> {
-                onBlocking { exposureConfigurationUrl() } doReturn "https://example.com"
+                onBlocking { exposureConfigurationUrl } doReturn "https://example.com"
             }
         val mockExposureConfigurationProvideServiceApi =
             mock<ExposureConfigurationApi> {
@@ -169,7 +169,7 @@ class ExposureConfigurationRepositoryTest {
             }
         val mockConfigurationSource =
             mock<ConfigurationSource> {
-                onBlocking { exposureConfigurationUrl() } doReturn "https://example.com"
+                onBlocking { exposureConfigurationUrl } doReturn "https://example.com"
             }
         val mockExposureConfigurationProvideServiceApi =
             mock<ExposureConfigurationApi> {
@@ -203,7 +203,7 @@ class ExposureConfigurationRepositoryTest {
             }
         val mockConfigurationSource =
             mock<ConfigurationSource> {
-                onBlocking { exposureConfigurationUrl() } doReturn "https://example.com"
+                onBlocking { exposureConfigurationUrl } doReturn "https://example.com"
             }
 
         val repository = ExposureConfigurationRepositoryImpl(

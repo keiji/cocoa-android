@@ -20,13 +20,13 @@ android {
     }
 
     buildTypes {
-        debug {
+        getByName("debug") {
         }
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -52,6 +52,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
+    implementation("com.google.android.gms:play-services-safetynet:18.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
+
     api("com.jakewharton.timber:timber:5.0.1")
 
     testImplementation("junit:junit:4.+")
@@ -62,6 +65,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.5")
+
+    androidTestImplementation("dev.keiji.rfc4648:rfc4648:1.0.1")
 }
 
 // Allow references to generated code

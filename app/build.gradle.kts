@@ -28,8 +28,10 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
-        val props = loadProperties("api-settings.properties")
-            ?: loadProperties("api-settings-sample.properties")
+        val props = loadProperties("settings.properties")
+            ?: loadProperties("settings-sample.properties")
+
+        addBuildConfigStringField(props, "ATTESTATION_API_KEY")
 
         addBuildConfigStringField(props, "REGION_IDs")
         addBuildConfigStringField(props, "SUBREGION_IDs")
@@ -78,7 +80,7 @@ android {
     }
 
     buildTypes {
-        debug {
+        getByName("debug") {
             buildConfigField(
                 "Long",
                 "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",
@@ -90,7 +92,22 @@ android {
                 "16L"
             )
         }
-        release {
+        create("staging") {
+            initWith(getByName("debug"))
+            matchingFallbacks.add("debug")
+
+            buildConfigField(
+                "Long",
+                "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",
+                "4 * 60L"
+            )
+            buildConfigField(
+                "Long",
+                "EXPOSURE_DETECTION_WORKER_BACKOFF_DELAY_IN_MINUTES",
+                "60L"
+            )
+        }
+        getByName("release") {
             buildConfigField(
                 "Long",
                 "EXPOSURE_DETECTION_WORKER_INTERVAL_IN_MINUTES",

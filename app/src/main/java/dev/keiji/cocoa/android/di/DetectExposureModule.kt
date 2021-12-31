@@ -169,7 +169,7 @@ object ExposureDataCollectionApiModule {
         }
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(configurationSource.exposureDataCollectionApiEndpoint())
+            .baseUrl(configurationSource.exposureDataCollectionApiEndpoint)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
             .create(ExposureDataCollectionApi::class.java)

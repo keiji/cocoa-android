@@ -23,6 +23,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+//        maven(url = "https://s01.oss.sonatype.org/content/repositories/devkeijirfc4648-1007/")
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.4")

@@ -43,17 +43,21 @@ class DetectExposureWorker @AssistedInject constructor(
         }
 
         try {
-            configurationSource.regions().forEach { region ->
-
+            configurationSource.regions.forEach { region ->
                 // Sub-region
                 val subRegionDiagnosisKeyFiles = mutableListOf<DiagnosisKeysContainer>()
-                configurationSource.subregions().forEach { subregion ->
-                    subRegionDiagnosisKeyFiles.addAll(downloadDiagnosisKeys(region, subregion))
+                configurationSource.subregions.forEach { subregion ->
+                    subRegionDiagnosisKeyFiles.addAll(
+                        downloadDiagnosisKeys(region.toString(), subregion)
+                    )
                 }
                 detectExposure(subRegionDiagnosisKeyFiles)
 
                 // Region
-                val diagnosisKeyFiles = downloadDiagnosisKeys(region, null)
+                val diagnosisKeyFiles = downloadDiagnosisKeys(
+                    region.toString(),
+                    null
+                )
                 detectExposure(diagnosisKeyFiles)
             }
             return Result.success();

@@ -79,7 +79,7 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     testImplementation("androidx.room:room-testing:$roomVersion")
 
-    implementation("dev.keiji.rfc4648:rfc4648:1.0.0")
+    implementation("dev.keiji.rfc4648:rfc4648:1.0.1")
 
     testImplementation("junit:junit:4.+")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0")

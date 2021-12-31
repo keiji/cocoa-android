@@ -3,6 +3,7 @@ package dev.keiji.cocoa.android.exposure_notification.ui.submit_diagnosis
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
+import dev.keiji.cocoa.android.common.attestation.AttestationApi
 import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.ENCalibrationSubmitDiagnosisApi
 import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.V3DiagnosisSubmissionRequest
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
@@ -71,12 +72,16 @@ class SubmitDiagnosisViewModelTest {
             mock<ENCalibrationSubmitDiagnosisApi> {
                 onBlocking { submitV3(any()) } doReturn temporaryExposureKeyList
             }
+        val mockAttestationApi =
+            mock<AttestationApi> {
+            }
 
         val viewModel =
             SubmitDiagnosisViewModel(
                 SavedStateHandle(),
                 mockConfigurationSource,
-                mockDiagnosisSubmissionServiceApi
+                mockDiagnosisSubmissionServiceApi,
+                mockAttestationApi,
             )
 
         assertFalse(viewModel.isSubmittable())
