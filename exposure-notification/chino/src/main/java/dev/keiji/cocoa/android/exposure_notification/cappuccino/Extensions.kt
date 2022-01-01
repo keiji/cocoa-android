@@ -39,6 +39,6 @@ fun ApiException.toExposureNotificationException(): ExposureNotificationExceptio
 
     return ExposureNotificationException(
         code = code,
-        message = statusMessage
+        message = status.statusMessage
     )
 }
