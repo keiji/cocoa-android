@@ -4,9 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.DailySummary
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureSummaryData
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 
 @Entity(tableName = "daily_summaries")
 class DailySummaryModel(
@@ -40,6 +41,9 @@ class DailySummaryModel(
             return ExposureSummaryDataModel(exposureSummaryData)
         }
     }
+
+    val dateTime
+        get() = DateTime(dateMillisSinceEpoch, DateTimeZone.UTC)
 
     constructor(
         dailySummary: DailySummary

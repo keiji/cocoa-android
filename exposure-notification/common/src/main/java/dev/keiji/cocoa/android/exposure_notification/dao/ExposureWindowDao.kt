@@ -15,6 +15,9 @@ abstract class ExposureWindowDao {
     @Query("SELECT * FROM exposure_windows")
     abstract suspend fun getAll(): List<ExposureWindowModelAndScanInstances>
 
+    @Query("SELECT * FROM exposure_windows WHERE date_millis_since_epoch > :fromDateMillisSinceEpoch")
+    abstract fun findBy(fromDateMillisSinceEpoch: Long): List<ExposureWindowModelAndScanInstances>
+
     @Insert
     abstract suspend fun insert(exposureWindowModel: ExposureWindowModel): Long
 

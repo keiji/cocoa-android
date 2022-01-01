@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureInformation
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 
 @Entity(tableName = "exposure_informations")
 data class ExposureInformationModel(
@@ -19,6 +21,9 @@ data class ExposureInformationModel(
     @ColumnInfo(name = "total_risk_score") val totalRiskScore: Int,
     @ColumnInfo(name = "transmission_risk_level") val transmissionRiskLevel: Int,
 ) {
+    val dateTime
+        get() = DateTime(dateMillisSinceEpoch, DateTimeZone.UTC)
+
     constructor(exposureInformation: ExposureInformation) : this(
         id = 0,
         exposureDataId = 0,

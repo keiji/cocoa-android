@@ -11,6 +11,9 @@ interface DailySummaryDao {
     @Query("SELECT * FROM daily_summaries")
     suspend fun getAll(): List<DailySummaryModel>
 
+    @Query("SELECT * FROM daily_summaries WHERE date_millis_since_epoch > :fromDateMillisSinceEpoch")
+    suspend fun findBy(fromDateMillisSinceEpoch: Long): List<DailySummaryModel>
+
     @Insert
     suspend fun insert(dailySummary: DailySummaryModel): Long
 
