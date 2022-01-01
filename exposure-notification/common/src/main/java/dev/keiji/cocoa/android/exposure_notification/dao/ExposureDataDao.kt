@@ -34,9 +34,9 @@ abstract class ExposureDataDao {
         diagnosisKeysFileList: List<DiagnosisKeysFileModel> = emptyList(),
         exposureSummary: ExposureSummaryModel? = null,
         exposureInformationList: List<ExposureInformationModel> = emptyList(),
-        dailySummary: DailySummaryModel? = null,
+        dailySummaryList: List<DailySummaryModel> = emptyList(),
         exposureWindowList: List<ExposureWindowModelAndScanInstances> = emptyList(),
-        ): Long {
+    ): Long {
         val exposureDataId = insert(exposureBaseData)
 
         diagnosisKeysFileList.forEach { model ->
@@ -53,10 +53,11 @@ abstract class ExposureDataDao {
             insert(modelList)
         }
 
-        dailySummary?.also { model ->
+        dailySummaryList.forEach { model ->
             model.exposureDataId = exposureDataId
-            insert(model)
         }
+        insertDailySummaryList(dailySummaryList)
+
         exposureWindowList.forEach { model ->
             model.exposureWindowModel.exposureDataId = exposureDataId
             insert(model.exposureWindowModel, model.scanInstances)
@@ -72,6 +73,11 @@ abstract class ExposureDataDao {
 
     @Insert
     abstract suspend fun insert(dailySummaryModel: DailySummaryModel): Long
+
+    @Insert
+    abstract suspend fun insertDailySummaryList(
+        dailySummaryList: List<DailySummaryModel>
+    ): List<Long>
 
     @Insert
     abstract suspend fun insert(exposureWindowModel: ExposureWindowModel): Long

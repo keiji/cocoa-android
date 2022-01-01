@@ -37,14 +37,13 @@ data class ExposureDataModel(
         parentColumn = "id",
         entityColumn = "exposure_data_id"
     )
-
     val diagnosisKeysFileList: List<DiagnosisKeysFileModel>,
 
     @Relation(
         parentColumn = "id",
         entityColumn = "exposure_data_id"
     )
-    val dailySummary: DailySummaryModel?,
+    val dailySummaryList: List<DailySummaryModel>,
 
     @Relation(
         entity = ExposureWindowModel::class,

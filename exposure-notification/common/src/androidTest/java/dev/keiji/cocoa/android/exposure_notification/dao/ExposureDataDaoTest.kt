@@ -135,7 +135,7 @@ class ExposureDataDaoTest {
             diagnosisKeysFileList = listOf(diagnosisKeysFileModel),
             exposureSummary = exposureSummaryModel,
             exposureInformationList = listOf(exposureInformation),
-            dailySummary = dailySummaryModel,
+            dailySummaryList = listOf(dailySummaryModel),
             exposureWindowList = listOf(exposureWindowModelAndScanInstances),
         )
 
@@ -171,7 +171,8 @@ class ExposureDataDaoTest {
             Assert.assertNotNull(exposureDataAndAllModel.exposureInformationList)
             Assert.assertEquals(1, exposureDataAndAllModel.exposureInformationList.size)
 
-            Assert.assertNotNull(exposureDataAndAllModel.dailySummary)
+            Assert.assertNotNull(exposureDataAndAllModel.dailySummaryList)
+            Assert.assertEquals(1, exposureDataAndAllModel.dailySummaryList.size)
 
             Assert.assertNotNull(exposureDataAndAllModel.exposureWindowList)
             Assert.assertEquals(1, exposureDataAndAllModel.exposureWindowList.size)
@@ -248,7 +249,7 @@ class ExposureDataDaoTest {
             diagnosisKeysFileList = listOf(diagnosisKeysFileModel),
             exposureSummary = null,
             exposureInformationList = emptyList(),
-            dailySummary = dailySummaryModel,
+            dailySummaryList = listOf(dailySummaryModel),
             exposureWindowList = listOf(exposureWindowModelAndScanInstances),
         )
 
@@ -262,7 +263,8 @@ class ExposureDataDaoTest {
             Assert.assertNotNull(exposureDataAndAllModel.exposureInformationList)
             Assert.assertEquals(0, exposureDataAndAllModel.exposureInformationList.size)
 
-            Assert.assertNotNull(exposureDataAndAllModel.dailySummary)
+            Assert.assertNotNull(exposureDataAndAllModel.dailySummaryList)
+            Assert.assertEquals(1, exposureDataAndAllModel.dailySummaryList.size)
 
             Assert.assertNotNull(exposureDataAndAllModel.exposureWindowList)
             Assert.assertEquals(1, exposureDataAndAllModel.exposureWindowList.size)
@@ -323,7 +325,7 @@ class ExposureDataDaoTest {
             diagnosisKeysFileList = listOf(diagnosisKeysFileModel),
             exposureSummary = exposureSummaryModel,
             exposureInformationList = listOf(exposureInformation),
-            dailySummary = null,
+            dailySummaryList = emptyList(),
             exposureWindowList = emptyList(),
         )
 
@@ -337,7 +339,8 @@ class ExposureDataDaoTest {
             Assert.assertNotNull(exposureDataAndAllModel.exposureInformationList)
             Assert.assertEquals(1, exposureDataAndAllModel.exposureInformationList.size)
 
-            Assert.assertNull(exposureDataAndAllModel.dailySummary)
+            Assert.assertNotNull(exposureDataAndAllModel.dailySummaryList)
+            Assert.assertEquals(0, exposureDataAndAllModel.dailySummaryList.size)
 
             Assert.assertNotNull(exposureDataAndAllModel.exposureWindowList)
             Assert.assertEquals(0, exposureDataAndAllModel.exposureWindowList.size)
