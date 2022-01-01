@@ -1,0 +1,2938 @@
+[
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 37
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 38
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 33
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 33
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 33
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 59,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 64
+      },
+      {
+        "MinAttenuationDb": 59,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 60
+      },
+      {
+        "MinAttenuationDb": 57,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 62
+      },
+      {
+        "MinAttenuationDb": 56,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 60
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 59
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 72
+      },
+      {
+        "MinAttenuationDb": 57,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 56,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 59
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 60
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 53
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 58,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 61
+      },
+      {
+        "MinAttenuationDb": 56,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 58,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 69
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 61
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 59
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 59
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 58,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 56,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 59
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 57,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 62
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 60,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 66
+      },
+      {
+        "MinAttenuationDb": 57,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 49,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 51
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 59
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 59
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 56,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 60
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 56,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 52
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 61
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 60
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 52
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 55
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 54
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 52
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 52
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 51
+      },
+      {
+        "MinAttenuationDb": 49,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 50
+      },
+      {
+        "MinAttenuationDb": 48,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 51
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 55
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 52
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 51
+      },
+      {
+        "MinAttenuationDb": 49,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 50
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 49,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 46,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 50
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 33
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 38
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 37
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 34
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 37
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 37
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 37
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 38
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 34
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 37
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 36
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 34
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 33
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 33
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 33
+      },
+      {
+        "MinAttenuationDb": 30,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 33
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 33
+      },
+      {
+        "MinAttenuationDb": 30,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 33
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 65
+      },
+      {
+        "MinAttenuationDb": 56,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 61
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 59,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 69
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 64
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 56,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 49,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 52
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 60
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 52,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 59
+      },
+      {
+        "MinAttenuationDb": 49,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 50
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 36,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 38
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 37
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 37
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 37
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 34
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 32,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 48,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 53
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 44,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 50
+      },
+      {
+        "MinAttenuationDb": 34,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 30,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 30,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 33
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 34
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 33
+      },
+      {
+        "MinAttenuationDb": 31,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 33
+      },
+      {
+        "MinAttenuationDb": 30,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 34
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 50,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 49,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 49,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 50
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 36
+      },
+      {
+        "MinAttenuationDb": 33,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 35
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634169600000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 52
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 39,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 41
+      },
+      {
+        "MinAttenuationDb": 38,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 41
+      },
+      {
+        "MinAttenuationDb": 38,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 39
+      },
+      {
+        "MinAttenuationDb": 38,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 40
+      },
+      {
+        "MinAttenuationDb": 37,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 42
+      },
+      {
+        "MinAttenuationDb": 37,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 41
+      },
+      {
+        "MinAttenuationDb": 37,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 40
+      },
+      {
+        "MinAttenuationDb": 37,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 39
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 1,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 38,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 41
+      },
+      {
+        "MinAttenuationDb": 37,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 40
+      },
+      {
+        "MinAttenuationDb": 37,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 40
+      },
+      {
+        "MinAttenuationDb": 37,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 40
+      },
+      {
+        "MinAttenuationDb": 37,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 40
+      },
+      {
+        "MinAttenuationDb": 37,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 40
+      },
+      {
+        "MinAttenuationDb": 37,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 39
+      },
+      {
+        "MinAttenuationDb": 36,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 38
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 64
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 64
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 63
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 64
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 62
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 61,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 62,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 61,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 61,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 61,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 63
+      },
+      {
+        "MinAttenuationDb": 60,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 62
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 59
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 56
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 55,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 54,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 51,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 58
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 56
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 180,
+        "TypicalAttenuationDb": 56
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 54
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 55
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 57
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      }
+    ]
+  },
+  {
+    "CalibrationConfidence": 3,
+    "DateMillisSinceEpoch": 1634083200000,
+    "Infectiousness": 2,
+    "ReportType": 2,
+    "ScanInstances": [
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 300,
+        "TypicalAttenuationDb": 55
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 56
+      },
+      {
+        "MinAttenuationDb": 53,
+        "SecondsSinceLastScan": 240,
+        "TypicalAttenuationDb": 54
+      }
+    ]
+  }
+]

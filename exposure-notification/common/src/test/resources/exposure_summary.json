@@ -1,0 +1,11 @@
+{
+  "AttenuationDurationsInMillis": [
+    1800000,
+    1560000,
+    0
+  ],
+  "DaysSinceLastExposure": 0,
+  "MatchedKeyCount": 11,
+  "MaximumRiskScore": 255,
+  "SummationRiskScore": 10280
+}
