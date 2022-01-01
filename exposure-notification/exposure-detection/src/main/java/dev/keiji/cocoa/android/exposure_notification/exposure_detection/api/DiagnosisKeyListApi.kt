@@ -6,12 +6,12 @@ import retrofit2.http.Path
 import retrofit2.http.GET
 
 interface DiagnosisKeyListApi {
-    @GET("diagnosis_keys/{region}/list.json")
+    @GET("{region}/list.json")
     suspend fun getList(
         @Path("region") region: String,
     ): List<Entry?>
 
-    @GET("diagnosis_keys/{region}/{subregion}/list.json")
+    @GET("{region}/{subregion}/list.json")
     suspend fun getList(
         @Path("region") region: String,
         @Path("subregion") subregion: String,
