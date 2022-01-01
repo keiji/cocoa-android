@@ -1,10 +1,11 @@
-package dev.keiji.cocoa.android.exposure_notification.model
+package dev.keiji.cocoa.android.exposure_notification.dao
 
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import dev.keiji.cocoa.android.exposure_notification.AppDatabase
-import dev.keiji.cocoa.android.exposure_notification.dao.DailySummaryDao
+import dev.keiji.cocoa.android.exposure_notification.model.DailySummaryModel
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureSummaryDataModel
 import kotlinx.coroutines.runBlocking
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
@@ -16,7 +17,7 @@ import org.junit.runner.RunWith
 import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
-class DailySummaryModelTest {
+class DailySummaryDaoTest {
     companion object {
         private const val DELTA = 0.0000001
     }

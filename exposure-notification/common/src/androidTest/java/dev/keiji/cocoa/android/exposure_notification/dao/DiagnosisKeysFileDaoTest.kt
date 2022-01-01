@@ -1,10 +1,11 @@
-package dev.keiji.cocoa.android.exposure_notification.model
+package dev.keiji.cocoa.android.exposure_notification.dao
 
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import dev.keiji.cocoa.android.exposure_notification.AppDatabase
-import dev.keiji.cocoa.android.exposure_notification.dao.DiagnosisKeysFileDao
+import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
+import dev.keiji.cocoa.android.exposure_notification.model.State
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert
@@ -14,7 +15,7 @@ import org.junit.runner.RunWith
 import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
-class DiagnosisKeysFileModelTest {
+class DiagnosisKeysFileDaoTest {
     companion object {
         private const val DELTA = 0.0000001
     }

@@ -1,4 +1,4 @@
-package dev.keiji.cocoa.android.exposure_notification.model
+package dev.keiji.cocoa.android.exposure_notification.dao
 
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -6,7 +6,15 @@ import androidx.test.platform.app.InstrumentationRegistry
 import dev.keiji.cocoa.android.exposure_notification.AppDatabase
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.Infectiousness
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ReportType
-import dev.keiji.cocoa.android.exposure_notification.dao.ExposureDataDao
+import dev.keiji.cocoa.android.exposure_notification.model.DailySummaryModel
+import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataBaseModel
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureInformationModel
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureSummaryModel
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowModel
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowModelAndScanInstances
+import dev.keiji.cocoa.android.exposure_notification.model.ScanInstanceModel
+import dev.keiji.cocoa.android.exposure_notification.model.State
 import kotlinx.coroutines.runBlocking
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
@@ -18,7 +26,7 @@ import org.junit.runner.RunWith
 import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
-class ExposureDataModelTest {
+class ExposureDataDaoTest {
 
     private lateinit var db: AppDatabase
 
