@@ -15,7 +15,7 @@ abstract class DateTimeSource {
         .withSecondOfMinute(0)
         .withMillisOfSecond(0)
 
-    fun offsetDateTime(offsetDays: Int) = today().plusDays(offsetDays)
+    fun offsetDateTime(offsetDays: Int): DateTime = today().plusDays(offsetDays)
 }
 
 class DateTimeSourceImpl : DateTimeSource() {
