@@ -56,7 +56,7 @@ data class ScanInstanceModel(
     )
 }
 
-data class ExposureWindowModelAndScanInstances(
+data class ExposureWindowAndScanInstancesModel(
     @Embedded
     val exposureWindowModel: ExposureWindowModel,
 

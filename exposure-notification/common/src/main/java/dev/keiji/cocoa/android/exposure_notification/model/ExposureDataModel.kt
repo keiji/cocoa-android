@@ -50,7 +50,7 @@ data class ExposureDataModel(
         parentColumn = "id",
         entityColumn = "exposure_data_id"
     )
-    val exposureWindowList: List<ExposureWindowModelAndScanInstances>,
+    val exposureWindowList: List<ExposureWindowAndScanInstancesModel>,
 
     @Relation(
         parentColumn = "id",

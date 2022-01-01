@@ -11,7 +11,7 @@ import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureInformationModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureSummaryModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowModel
-import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowModelAndScanInstances
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowAndScanInstancesModel
 import dev.keiji.cocoa.android.exposure_notification.model.ScanInstanceModel
 
 @Dao
@@ -35,7 +35,7 @@ abstract class ExposureDataDao {
         exposureSummary: ExposureSummaryModel? = null,
         exposureInformationList: List<ExposureInformationModel> = emptyList(),
         dailySummaryList: List<DailySummaryModel> = emptyList(),
-        exposureWindowList: List<ExposureWindowModelAndScanInstances> = emptyList(),
+        exposureWindowList: List<ExposureWindowAndScanInstancesModel> = emptyList(),
     ): ExposureDataModel {
         val exposureDataId = insert(exposureBaseData)
 

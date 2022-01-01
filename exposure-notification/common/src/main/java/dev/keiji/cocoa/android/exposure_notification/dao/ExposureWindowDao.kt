@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowModel
-import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowModelAndScanInstances
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowAndScanInstancesModel
 import dev.keiji.cocoa.android.exposure_notification.model.ScanInstanceModel
 
 @Dao
@@ -13,10 +13,10 @@ abstract class ExposureWindowDao {
 
     @Transaction
     @Query("SELECT * FROM exposure_windows")
-    abstract suspend fun getAll(): List<ExposureWindowModelAndScanInstances>
+    abstract suspend fun getAll(): List<ExposureWindowAndScanInstancesModel>
 
     @Query("SELECT * FROM exposure_windows WHERE date_millis_since_epoch > :fromDateMillisSinceEpoch")
-    abstract fun findBy(fromDateMillisSinceEpoch: Long): List<ExposureWindowModelAndScanInstances>
+    abstract fun findBy(fromDateMillisSinceEpoch: Long): List<ExposureWindowAndScanInstancesModel>
 
     @Insert
     abstract suspend fun insert(exposureWindowModel: ExposureWindowModel): Long

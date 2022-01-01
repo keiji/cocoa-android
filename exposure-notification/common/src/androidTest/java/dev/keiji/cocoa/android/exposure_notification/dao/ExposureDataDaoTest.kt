@@ -12,7 +12,7 @@ import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataBaseModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureInformationModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureSummaryModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowModel
-import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowModelAndScanInstances
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowAndScanInstancesModel
 import dev.keiji.cocoa.android.exposure_notification.model.ScanInstanceModel
 import dev.keiji.cocoa.android.exposure_notification.model.State
 import kotlinx.coroutines.runBlocking
@@ -96,7 +96,7 @@ class ExposureDataDaoTest {
                 typicalAttenuationDb = 31,
             ),
         )
-        val exposureWindowModelAndScanInstances = ExposureWindowModelAndScanInstances(
+        val exposureWindowAndScanInstancesModel = ExposureWindowAndScanInstancesModel(
             exposureWindowModel = exposureWindowModel,
             scanInstances = scanInstanceList
         )
@@ -136,7 +136,7 @@ class ExposureDataDaoTest {
             exposureSummary = exposureSummaryModel,
             exposureInformationList = listOf(exposureInformation),
             dailySummaryList = listOf(dailySummaryModel),
-            exposureWindowList = listOf(exposureWindowModelAndScanInstances),
+            exposureWindowList = listOf(exposureWindowAndScanInstancesModel),
         )
 
         val allModel = exposureDataDao.getAll()
@@ -230,7 +230,7 @@ class ExposureDataDaoTest {
                 typicalAttenuationDb = 31,
             ),
         )
-        val exposureWindowModelAndScanInstances = ExposureWindowModelAndScanInstances(
+        val exposureWindowAndScanInstancesModel = ExposureWindowAndScanInstancesModel(
             exposureWindowModel = exposureWindowModel,
             scanInstances = scanInstanceList
         )
@@ -250,7 +250,7 @@ class ExposureDataDaoTest {
             exposureSummary = null,
             exposureInformationList = emptyList(),
             dailySummaryList = listOf(dailySummaryModel),
-            exposureWindowList = listOf(exposureWindowModelAndScanInstances),
+            exposureWindowList = listOf(exposureWindowAndScanInstancesModel),
         )
 
         val allModel = exposureDataDao.getAll()
