@@ -7,6 +7,7 @@ import dev.keiji.cocoa.android.exposure_notification.dao.DiagnosisKeysFileDao
 import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApi
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyListApi
+import dev.keiji.cocoa.android.exposure_notification.model.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -21,7 +22,7 @@ interface DiagnosisKeysFileRepository {
     ): List<DiagnosisKeysFileModel>
 
     suspend fun getDiagnosisKeysFile(diagnosisKeyFile: DiagnosisKeysFileModel): File?
-    suspend fun setIsProcessed(diagnosisKeyFileModelList: List<DiagnosisKeysFileModel>)
+    suspend fun setState(diagnosisKeyFileModelList: List<DiagnosisKeysFileModel>, state: State)
 }
 
 class DiagnosisKeysFileRepositoryImpl(
@@ -43,7 +44,7 @@ class DiagnosisKeysFileRepositoryImpl(
             diagnosisKeyListApi.getList(region)
         }
 
-        val existKeyFileList = diagnosisKeyFileDao.findAllByRegionAndSubregion(region, subregion)
+        val existKeyFileList = diagnosisKeyFileDao.findAllBy(region, subregion)
 
         val urlFileMap = HashMap<String, DiagnosisKeysFileModel>().also { map ->
             existKeyFileList.forEach { keyFile ->
@@ -63,6 +64,7 @@ class DiagnosisKeysFileRepositoryImpl(
                 } else {
                     val keyFile = DiagnosisKeysFileModel(
                         id = 0,
+                        exposureDataId = 0,
                         region = region,
                         subregion = subregion,
                         url = fileEntry.url,
@@ -86,9 +88,9 @@ class DiagnosisKeysFileRepositoryImpl(
             .filter { keyFile -> !keyFile.isListed }
         diagnosisKeyFileDao.deleteAll(expiredFileList)
 
-        return@withContext diagnosisKeyFileDao.findAllByRegionAndSubregionNotProcessed(
+        return@withContext diagnosisKeyFileDao.findNotCompleted(
             region,
-            subregion
+            subregion,
         )
     }
 
@@ -117,9 +119,9 @@ class DiagnosisKeysFileRepositoryImpl(
             return@withContext null
         }
 
-    override suspend fun setIsProcessed(diagnosisKeyFileModelList: List<DiagnosisKeysFileModel>) =
+    override suspend fun setState(diagnosisKeyFileModelList: List<DiagnosisKeysFileModel>, state: State) =
         withContext(Dispatchers.IO) {
-            diagnosisKeyFileModelList.forEach { keyFile -> keyFile.isProcessed = true }
+            diagnosisKeyFileModelList.forEach { keyFile -> keyFile.state = state.value }
 
             diagnosisKeyFileDao.updateAll(diagnosisKeyFileModelList)
         }

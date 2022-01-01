@@ -35,10 +35,10 @@ class ExposureSummaryTest {
         val exposureSummary = Json.decodeFromString<ExposureSummary>(jsonText)
         Assert.assertNotNull(exposureSummary)
 
-        Assert.assertEquals(3, exposureSummary.attenuationDurationsInMinutes.size)
-        exposureSummary.attenuationDurationsInMinutes.also { attenuationDurationsInMinutes ->
-            Assert.assertEquals(1800, attenuationDurationsInMinutes[0])
-            Assert.assertEquals(1560, attenuationDurationsInMinutes[1])
+        Assert.assertEquals(3, exposureSummary.attenuationDurationsInMillis.size)
+        exposureSummary.attenuationDurationsInMillis.also { attenuationDurationsInMinutes ->
+            Assert.assertEquals(1800000, attenuationDurationsInMinutes[0])
+            Assert.assertEquals(1560000, attenuationDurationsInMinutes[1])
             Assert.assertEquals(0, attenuationDurationsInMinutes[2])
         }
         Assert.assertEquals(0, exposureSummary.daysSinceLastExposure)

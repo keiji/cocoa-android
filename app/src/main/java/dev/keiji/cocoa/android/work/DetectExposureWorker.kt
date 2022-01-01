@@ -12,6 +12,7 @@ import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureN
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.DiagnosisKeysFileRepository
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.ExposureConfigurationRepository
+import dev.keiji.cocoa.android.exposure_notification.model.State
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -82,8 +83,9 @@ class DetectExposureWorker @AssistedInject constructor(
         diagnosisKeys.forEach { container ->
             container.file.delete()
         }
-        diagnosisKeysFileRepository.setIsProcessed(
-            diagnosisKeys.map { container -> container.diagnosisKeysFileModel }
+        diagnosisKeysFileRepository.setState(
+            diagnosisKeys.map { container -> container.diagnosisKeysFileModel },
+            State.Processing
         )
     }
 
