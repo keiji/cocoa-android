@@ -1,6 +1,6 @@
 package dev.keiji.cocoa.android.exposure_notification.exposure_detection.api
 
-import dev.keiji.cocoa.android.exposure_notification.entity.DiagnosisKeysFile
+import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
@@ -11,7 +11,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 interface DiagnosisKeyFileApi {
-    suspend fun downloadFile(diagnosisKeysFile: DiagnosisKeysFile, outputDir: File): File?
+    suspend fun downloadFile(diagnosisKeysFileModel: DiagnosisKeysFileModel, outputDir: File): File?
 }
 
 class DiagnosisKeyFileApiImpl(
@@ -19,7 +19,7 @@ class DiagnosisKeyFileApiImpl(
 ) : DiagnosisKeyFileApi {
 
     override suspend fun downloadFile(
-        diagnosisKeysFile: DiagnosisKeysFile,
+        diagnosisKeysFileModel: DiagnosisKeysFileModel,
         outputDir: File
     ): File? =
         withContext(Dispatchers.Main) {
@@ -27,7 +27,7 @@ class DiagnosisKeyFileApiImpl(
                 outputDir.mkdirs()
             }
 
-            val url = HttpUrl.parse(diagnosisKeysFile.url)
+            val url = HttpUrl.parse(diagnosisKeysFileModel.url)
             if (url == null) {
                 Timber.w("DiagnosisKeysEntry.url is null")
                 return@withContext null
@@ -50,9 +50,9 @@ class DiagnosisKeyFileApiImpl(
                             inputStream.copyTo(outputStream)
                         }
                     }
-                    Timber.d("Download completed. From:${diagnosisKeysFile.url} To:${outputFile.absolutePath}")
+                    Timber.d("Download completed. From:${diagnosisKeysFileModel.url} To:${outputFile.absolutePath}")
                 } else {
-                    Timber.d("Download failed. From:${diagnosisKeysFile.url} StatusCode:${response.code()}")
+                    Timber.d("Download failed. From:${diagnosisKeysFileModel.url} StatusCode:${response.code()}")
                 }
             }
 

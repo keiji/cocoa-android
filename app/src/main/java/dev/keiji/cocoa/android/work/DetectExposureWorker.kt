@@ -6,7 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import dev.keiji.cocoa.android.exposure_notification.entity.DiagnosisKeysFile
+import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureNotificationStatus
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
@@ -83,7 +83,7 @@ class DetectExposureWorker @AssistedInject constructor(
             container.file.delete()
         }
         diagnosisKeysFileRepository.setIsProcessed(
-            diagnosisKeys.map { container -> container.diagnosisKeysFile }
+            diagnosisKeys.map { container -> container.diagnosisKeysFileModel }
         )
     }
 
@@ -134,7 +134,7 @@ class DetectExposureWorker @AssistedInject constructor(
     }
 
     private data class DiagnosisKeysContainer(
-        val diagnosisKeysFile: DiagnosisKeysFile,
+        val diagnosisKeysFileModel: DiagnosisKeysFileModel,
         val file: File,
     )
 }

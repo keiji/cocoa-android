@@ -1,11 +1,11 @@
-package dev.keiji.cocoa.android.exposure_notification.entity
+package dev.keiji.cocoa.android.exposure_notification.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
-data class DiagnosisKeysFile(
+@Entity(tableName = "diagnosiskeysfile")
+data class DiagnosisKeysFileModel(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "region") val region: String,
     @ColumnInfo(name = "subregion") val subregion: String?,
