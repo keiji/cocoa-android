@@ -108,6 +108,159 @@ class ExposureDataRepositoryTest {
     )
 
     @Test
+    fun findGroupedDailySummaryListByTest(): Unit = runBlocking {
+        val mockPathSource =
+            mock<PathSource> {
+                on { diagnosisKeysFileDir() } doReturn tmpFolder.root
+            }
+        val mockDateTimeSource =
+            mock<DateTimeSource> {
+                on { utcNow() } doReturn dummyNow
+            }
+        val mockExposureDataDao =
+            mock<ExposureDataDao> {
+            }
+        val mockExposureInformationDao =
+            mock<ExposureInformationDao> {
+                onBlocking { findBy(any()) } doReturn exposureInformationModelList
+            }
+        val mockDailySummaryDao =
+            mock<DailySummaryDao> {
+                onBlocking { findBy(any()) } doReturn dailySummaryModelList
+            }
+        val mockExposureWindowDao =
+            mock<ExposureWindowDao> {
+                onBlocking { findBy(any()) } doReturn exposureWindowAndScanInstancesList
+            }
+
+        val repository = ExposureDataRepositoryImpl(
+            mockPathSource,
+            mockDateTimeSource,
+            mockExposureDataDao,
+            mockExposureInformationDao,
+            mockDailySummaryDao,
+            mockExposureWindowDao,
+        )
+
+        val groupedDailySummary = repository.findGroupedDailySummaryListBy(dummyNow)
+        Assert.assertNotNull(groupedDailySummary)
+        Assert.assertEquals(8, groupedDailySummary.keys.size)
+
+        println(groupedDailySummary.keys)
+
+        groupedDailySummary.keys.forEach { dateMillisSinceEpoch ->
+            when (dateMillisSinceEpoch) {
+                1630108800000 -> {
+                    val dailySummaries = groupedDailySummary[dateMillisSinceEpoch]
+                    Assert.assertNotNull(dailySummaries)
+
+                    Assert.assertEquals(1, dailySummaries!!.size)
+                    dailySummaries.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1630108800000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1629072000000 -> {
+                    val dailySummaries = groupedDailySummary[dateMillisSinceEpoch]
+                    Assert.assertNotNull(dailySummaries)
+
+                    Assert.assertEquals(1, dailySummaries!!.size)
+                    dailySummaries.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1629072000000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1630195200000 -> {
+                    val dailySummaries = groupedDailySummary[dateMillisSinceEpoch]
+                    Assert.assertNotNull(dailySummaries)
+
+                    Assert.assertEquals(1, dailySummaries!!.size)
+                    dailySummaries.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1630195200000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1629158400000 -> {
+                    val dailySummaries = groupedDailySummary[dateMillisSinceEpoch]
+                    Assert.assertNotNull(dailySummaries)
+
+                    Assert.assertEquals(1, dailySummaries!!.size)
+                    dailySummaries.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1629158400000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1630281600000 -> {
+                    val dailySummaries = groupedDailySummary[dateMillisSinceEpoch]
+                    Assert.assertNotNull(dailySummaries)
+
+                    Assert.assertEquals(1, dailySummaries!!.size)
+                    dailySummaries.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1630281600000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1629244800000 -> {
+                    val dailySummaries = groupedDailySummary[dateMillisSinceEpoch]
+                    Assert.assertNotNull(dailySummaries)
+
+                    Assert.assertEquals(1, dailySummaries!!.size)
+                    dailySummaries.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1629244800000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1629331200000 -> {
+                    val dailySummaries = groupedDailySummary[dateMillisSinceEpoch]
+                    Assert.assertNotNull(dailySummaries)
+
+                    Assert.assertEquals(1, dailySummaries!!.size)
+                    dailySummaries.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1629331200000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1628985600000 -> {
+                    val dailySummaries = groupedDailySummary[dateMillisSinceEpoch]
+                    Assert.assertNotNull(dailySummaries)
+
+                    Assert.assertEquals(1, dailySummaries!!.size)
+                    dailySummaries.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1628985600000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                else -> Assert.fail()
+            }
+        }
+
+    }
+
+    @Test
     fun findGroupedExposureWindowListByTest(): Unit = runBlocking {
         val mockPathSource =
             mock<PathSource> {
@@ -146,6 +299,8 @@ class ExposureDataRepositoryTest {
         Assert.assertNotNull(groupedExposureWindow)
         Assert.assertEquals(2, groupedExposureWindow.keys.size)
 
+        println(groupedExposureWindow.keys)
+
         groupedExposureWindow.keys.forEach { dateMillisSinceEpoch ->
             when (dateMillisSinceEpoch) {
                 1634169600000 -> {
@@ -177,6 +332,144 @@ class ExposureDataRepositoryTest {
                 else -> Assert.fail()
             }
         }
+    }
 
+    @Test
+    fun findGroupedExposureInformationListByTest(): Unit = runBlocking {
+        val mockPathSource =
+            mock<PathSource> {
+                on { diagnosisKeysFileDir() } doReturn tmpFolder.root
+            }
+        val mockDateTimeSource =
+            mock<DateTimeSource> {
+                on { utcNow() } doReturn dummyNow
+            }
+        val mockExposureDataDao =
+            mock<ExposureDataDao> {
+            }
+        val mockExposureInformationDao =
+            mock<ExposureInformationDao> {
+                onBlocking { findBy(any()) } doReturn exposureInformationModelList
+            }
+        val mockDailySummaryDao =
+            mock<DailySummaryDao> {
+                onBlocking { findBy(any()) } doReturn dailySummaryModelList
+            }
+        val mockExposureWindowDao =
+            mock<ExposureWindowDao> {
+                onBlocking { findBy(any()) } doReturn exposureWindowAndScanInstancesList
+            }
+
+        val repository = ExposureDataRepositoryImpl(
+            mockPathSource,
+            mockDateTimeSource,
+            mockExposureDataDao,
+            mockExposureInformationDao,
+            mockDailySummaryDao,
+            mockExposureWindowDao,
+        )
+
+        val groupedExposureInformation = repository.findGroupedExposureInformationListBy(dummyNow)
+        Assert.assertNotNull(groupedExposureInformation)
+        Assert.assertEquals(7, groupedExposureInformation.keys.size)
+
+        println(groupedExposureInformation.keys)
+
+        groupedExposureInformation.keys.forEach { dateMillisSinceEpoch ->
+            when (dateMillisSinceEpoch) {
+                1629331200000 -> {
+                    val exposureInformations = groupedExposureInformation[dateMillisSinceEpoch]
+                    Assert.assertNotNull(exposureInformations)
+
+                    Assert.assertEquals(1, exposureInformations!!.size)
+                    exposureInformations.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1629331200000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1630281600000 -> {
+                    val exposureInformations = groupedExposureInformation[dateMillisSinceEpoch]
+                    Assert.assertNotNull(exposureInformations)
+
+                    Assert.assertEquals(5, exposureInformations!!.size)
+                    exposureInformations.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1630281600000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1629244800000 -> {
+                    val exposureInformations = groupedExposureInformation[dateMillisSinceEpoch]
+                    Assert.assertNotNull(exposureInformations)
+
+                    Assert.assertEquals(1, exposureInformations!!.size)
+                    exposureInformations.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1629244800000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1629158400000 -> {
+                    val exposureInformations = groupedExposureInformation[dateMillisSinceEpoch]
+                    Assert.assertNotNull(exposureInformations)
+
+                    Assert.assertEquals(1, exposureInformations!!.size)
+                    exposureInformations.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1629158400000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1629072000000 -> {
+                    val exposureInformations = groupedExposureInformation[dateMillisSinceEpoch]
+                    Assert.assertNotNull(exposureInformations)
+
+                    Assert.assertEquals(1, exposureInformations!!.size)
+                    exposureInformations.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1629072000000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1630195200000 -> {
+                    val exposureInformations = groupedExposureInformation[dateMillisSinceEpoch]
+                    Assert.assertNotNull(exposureInformations)
+
+                    Assert.assertEquals(1, exposureInformations!!.size)
+                    exposureInformations.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1630195200000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                1630108800000 -> {
+                    val exposureInformations = groupedExposureInformation[dateMillisSinceEpoch]
+                    Assert.assertNotNull(exposureInformations)
+
+                    Assert.assertEquals(1, exposureInformations!!.size)
+                    exposureInformations.forEach { exposureInformation ->
+                        Assert.assertEquals(
+                            1630108800000,
+                            exposureInformation.dateMillisSinceEpoch
+                        )
+                        println(exposureInformation.dateTime.toRFC3339Format())
+                    }
+                }
+                else -> Assert.fail()
+            }
+        }
     }
 }
