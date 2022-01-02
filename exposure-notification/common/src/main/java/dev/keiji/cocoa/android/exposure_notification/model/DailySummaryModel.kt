@@ -12,7 +12,7 @@ import org.joda.time.DateTimeZone
 @Entity(tableName = "daily_summaries")
 class DailySummaryModel(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    var id: Long,
 
     @ColumnInfo(name = "exposure_data_id")
     var exposureDataId: Long,

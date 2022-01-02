@@ -12,7 +12,7 @@ import org.joda.time.DateTimeZone
 
 @Entity(tableName = "exposure_windows")
 data class ExposureWindowModel(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) var id: Long,
 
     @ColumnInfo(name = "exposure_data_id")
     var exposureDataId: Long,

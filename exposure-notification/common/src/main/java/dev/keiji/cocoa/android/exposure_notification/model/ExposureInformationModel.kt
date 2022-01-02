@@ -9,7 +9,7 @@ import org.joda.time.DateTimeZone
 
 @Entity(tableName = "exposure_informations")
 data class ExposureInformationModel(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) var id: Long,
 
     @ColumnInfo(name = "exposure_data_id")
     var exposureDataId: Long,

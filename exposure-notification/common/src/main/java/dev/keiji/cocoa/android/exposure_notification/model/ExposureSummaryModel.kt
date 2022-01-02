@@ -7,7 +7,7 @@ import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureS
 
 @Entity(tableName = "exposure_summaries")
 data class ExposureSummaryModel(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) var id: Long,
 
     @ColumnInfo(name = "exposure_data_id")
     var exposureDataId: Long,

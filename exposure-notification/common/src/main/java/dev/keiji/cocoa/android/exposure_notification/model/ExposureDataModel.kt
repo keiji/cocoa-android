@@ -9,7 +9,7 @@ import androidx.room.Relation
 @Entity(tableName = "exposure_data")
 data class ExposureDataBaseModel(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    var id: Long,
 
     @ColumnInfo(name = "region")
     val region: String,

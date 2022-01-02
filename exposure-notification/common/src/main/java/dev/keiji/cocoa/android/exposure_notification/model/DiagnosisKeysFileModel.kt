@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "diagnosis_keys_files")
 data class DiagnosisKeysFileModel(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    var id: Long,
 
     @ColumnInfo(name = "exposure_data_id")
     var exposureDataId: Long,
