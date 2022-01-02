@@ -38,6 +38,32 @@ class DailySummary(
             )
         ),
     )
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as DailySummary
+
+        if (dateMillisSinceEpoch != other.dateMillisSinceEpoch) return false
+        if (summaryData != other.summaryData) return false
+        if (confirmedClinicalDiagnosisSummary != other.confirmedClinicalDiagnosisSummary) return false
+        if (confirmedTestSummary != other.confirmedTestSummary) return false
+        if (recursiveSummary != other.recursiveSummary) return false
+        if (selfReportedSummary != other.selfReportedSummary) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = dateMillisSinceEpoch.hashCode()
+        result = 31 * result + (summaryData?.hashCode() ?: 0)
+        result = 31 * result + (confirmedClinicalDiagnosisSummary?.hashCode() ?: 0)
+        result = 31 * result + (confirmedTestSummary?.hashCode() ?: 0)
+        result = 31 * result + (recursiveSummary?.hashCode() ?: 0)
+        result = 31 * result + (selfReportedSummary?.hashCode() ?: 0)
+        return result
+    }
 }
 
 @Serializable
