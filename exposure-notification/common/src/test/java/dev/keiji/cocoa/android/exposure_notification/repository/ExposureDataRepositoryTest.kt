@@ -10,9 +10,12 @@ import dev.keiji.cocoa.android.exposure_notification.dao.ExposureDataDao
 import dev.keiji.cocoa.android.exposure_notification.dao.ExposureInformationDao
 import dev.keiji.cocoa.android.exposure_notification.dao.ExposureWindowDao
 import dev.keiji.cocoa.android.exposure_notification.model.DailySummaryModel
+import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataBaseModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureInformationModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureSummaryModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowAndScanInstancesModel
+import dev.keiji.cocoa.android.exposure_notification.model.State
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.toRFC3339Format
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +39,8 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import java.io.InputStreamReader
 
 @ExperimentalCoroutinesApi
@@ -62,10 +67,14 @@ class ExposureDataRepositoryTest {
         return Json.decodeFromString(jsonText)
     }
 
+    private lateinit var exposureSummary: ExposureSummary
+    private lateinit var exposureInformationList: List<ExposureInformation>
+    private lateinit var dailySummaryList: List<DailySummary>
+    private lateinit var exposureWindowList: List<ExposureWindow>
+
     private lateinit var exposureSummaryModel: ExposureSummaryModel
     private lateinit var exposureInformationModelList: List<ExposureInformationModel>
     private lateinit var dailySummaryModelList: List<DailySummaryModel>
-
     private lateinit var exposureWindowAndScanInstancesList: List<ExposureWindowAndScanInstancesModel>
 
     @Before
@@ -76,11 +85,10 @@ class ExposureDataRepositoryTest {
             it.create()
         }
 
-        val exposureSummary: ExposureSummary = loadObject(FILENAME_EXPOSURE_SUMMARY)
-        val exposureInformationList: List<ExposureInformation> =
-            loadObject(FILENAME_EXPOSURE_INFORMATIONS)
-        val dailySummaryList: List<DailySummary> = loadObject(FILENAME_DAILY_SUMMARIES)
-        val exposureWindowList: List<ExposureWindow> = loadObject(FILENAME_EXPOSURE_WINDOWS)
+        exposureSummary = loadObject(FILENAME_EXPOSURE_SUMMARY)
+        exposureInformationList = loadObject(FILENAME_EXPOSURE_INFORMATIONS)
+        dailySummaryList = loadObject(FILENAME_DAILY_SUMMARIES)
+        exposureWindowList = loadObject(FILENAME_EXPOSURE_WINDOWS)
 
         exposureSummaryModel = ExposureSummaryModel(exposureSummary)
         exposureInformationModelList = exposureInformationList
@@ -106,6 +114,74 @@ class ExposureDataRepositoryTest {
         129,
         DateTimeZone.UTC
     )
+
+    @Test
+    fun saveTest1(): Unit = runBlocking {
+        val mockPathSource =
+            mock<PathSource> {
+                on { diagnosisKeysFileDir() } doReturn tmpFolder.root
+            }
+        val mockDateTimeSource =
+            mock<DateTimeSource> {
+                on { utcNow() } doReturn dummyNow
+            }
+        val mockExposureDataDao =
+            mock<ExposureDataDao> {
+            }
+        val mockExposureInformationDao =
+            mock<ExposureInformationDao> {
+            }
+        val mockDailySummaryDao =
+            mock<DailySummaryDao> {
+            }
+        val mockExposureWindowDao =
+            mock<ExposureWindowDao> {
+            }
+
+        val repository = ExposureDataRepositoryImpl(
+            mockPathSource,
+            mockDateTimeSource,
+            mockExposureDataDao,
+            mockExposureInformationDao,
+            mockDailySummaryDao,
+            mockExposureWindowDao,
+        )
+
+        val exposureDataBaseModel = ExposureDataBaseModel(
+            0, "reGiOn", null, "vERsion", 123232, 321231
+        )
+
+        val diagnosisKeysFileList = listOf(
+            DiagnosisKeysFileModel(
+                0,
+                0,
+                "regioN",
+                "sUbRegion",
+                "https://example.com/a/bb/c/",
+                122333,
+                State.None.value,
+                true
+            )
+        )
+
+        repository.save(
+            exposureBaseData = exposureDataBaseModel,
+            diagnosisKeysFileList = diagnosisKeysFileList,
+            exposureSummary = exposureSummary,
+            exposureInformationList = exposureInformationList,
+            dailySummaryList = dailySummaryList,
+            exposureWindowList = exposureWindowList,
+        )
+
+        verify(mockExposureDataDao, times(1)).insert(
+            exposureBaseData = exposureDataBaseModel,
+            diagnosisKeysFileList = diagnosisKeysFileList,
+            exposureSummary = exposureSummaryModel,
+            exposureInformationList = exposureInformationModelList,
+            dailySummaryList = dailySummaryModelList,
+            exposureWindowList = exposureWindowAndScanInstancesList,
+        )
+    }
 
     @Test
     fun findGroupedDailySummaryListByTest(): Unit = runBlocking {
@@ -257,7 +333,6 @@ class ExposureDataRepositoryTest {
                 else -> Assert.fail()
             }
         }
-
     }
 
     @Test

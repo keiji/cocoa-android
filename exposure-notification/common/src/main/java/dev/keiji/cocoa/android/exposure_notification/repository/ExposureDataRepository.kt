@@ -23,7 +23,7 @@ import org.joda.time.DateTime
 
 interface ExposureDataRepository {
     suspend fun save(
-        baseData: ExposureDataBaseModel,
+        exposureBaseData: ExposureDataBaseModel,
         diagnosisKeysFileList: List<DiagnosisKeysFileModel>,
         exposureSummary: ExposureSummary,
         exposureInformationList: List<ExposureInformation>,
@@ -56,7 +56,7 @@ class ExposureDataRepositoryImpl(
 ) : ExposureDataRepository {
 
     override suspend fun save(
-        baseData: ExposureDataBaseModel,
+        exposureBaseData: ExposureDataBaseModel,
         diagnosisKeysFileList: List<DiagnosisKeysFileModel>,
         exposureSummary: ExposureSummary,
         exposureInformationList: List<ExposureInformation>,
@@ -64,7 +64,7 @@ class ExposureDataRepositoryImpl(
         exposureWindowList: List<ExposureWindow>
     ) = withContext(Dispatchers.IO) {
         return@withContext exposureDataDao.insert(
-            exposureBaseData = baseData,
+            exposureBaseData = exposureBaseData,
             diagnosisKeysFileList = diagnosisKeysFileList,
             exposureSummary = ExposureSummaryModel(exposureSummary),
             exposureInformationList = exposureInformationList
