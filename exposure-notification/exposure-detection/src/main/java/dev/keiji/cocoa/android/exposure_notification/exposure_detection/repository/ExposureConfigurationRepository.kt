@@ -58,11 +58,11 @@ class ExposureConfigurationRepositoryImpl(
                     tmpFile.delete()
 
                 } catch (e: SerializationException) {
-                    Timber.e("SerializationException", e)
+                    Timber.e(e, "SerializationException")
                 } catch (e: IOException) {
-                    Timber.e("exposureConfigurationApi.getConfiguration", e)
+                    Timber.e(e, "exposureConfigurationApi.getConfiguration")
                 } catch (e: Exception) {
-                    Timber.e("exposureConfigurationApi.getConfiguration", e)
+                    Timber.e(e, "exposureConfigurationApi.getConfiguration")
                 }
             }
 
@@ -72,9 +72,9 @@ class ExposureConfigurationRepositoryImpl(
                 try {
                     exposureConfiguration = loadExposureConfiguration(exposureConfigurationFile)
                 } catch (e: SerializationException) {
-                    Timber.e("SerializationException", e)
+                    Timber.e(e, "SerializationException")
                 } catch (e: IOException) {
-                    Timber.e("IOException", e)
+                    Timber.e(e, "IOException")
                 }
             }
 
