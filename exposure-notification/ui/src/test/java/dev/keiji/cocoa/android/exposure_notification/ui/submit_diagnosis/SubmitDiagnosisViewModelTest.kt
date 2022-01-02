@@ -1,14 +1,12 @@
 package dev.keiji.cocoa.android.exposure_notification.ui.submit_diagnosis
 
 import android.app.Application
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import dev.keiji.cocoa.android.common.attestation.AttestationApi
 import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.V3DiagnosisSubmissionRequest
 import dev.keiji.cocoa.android.exposure_notification.diagnosis_submission.api.V3SubmitDiagnosisApi
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
-import junit.framework.Assert.assertFalse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -17,6 +15,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -86,21 +85,21 @@ class SubmitDiagnosisViewModelTest {
                 mockAttestationApi,
             )
 
-        assertFalse(viewModel.isSubmittable())
+        Assert.assertFalse(viewModel.isSubmittable())
 
         viewModel.clearHasSymptom()
         viewModel.clearProcessNumber()
 
         viewModel.setHasSymptom(true)
         assert(viewModel.isShowCalendar)
-        assertFalse(viewModel.isSubmittable())
+        Assert.assertFalse(viewModel.isSubmittable())
 
         viewModel.clearHasSymptom()
         viewModel.clearProcessNumber()
 
         viewModel.setHasSymptom(false)
         assert(viewModel.isShowCalendar)
-        assertFalse(viewModel.isSubmittable())
+        Assert.assertFalse(viewModel.isSubmittable())
 
         viewModel.clearHasSymptom()
         viewModel.clearProcessNumber()
@@ -121,13 +120,13 @@ class SubmitDiagnosisViewModelTest {
 
         viewModel.setHasSymptom(false)
         viewModel.setProcessNumber("1234567")
-        assertFalse(viewModel.isSubmittable())
+        Assert.assertFalse(viewModel.isSubmittable())
 
         viewModel.clearHasSymptom()
         viewModel.clearProcessNumber()
 
         viewModel.setHasSymptom(true)
         viewModel.setProcessNumber("1234567890")
-        assertFalse(viewModel.isSubmittable())
+        Assert.assertFalse(viewModel.isSubmittable())
     }
 }
