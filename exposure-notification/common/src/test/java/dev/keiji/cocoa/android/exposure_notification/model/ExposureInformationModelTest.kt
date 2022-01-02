@@ -8,7 +8,7 @@ class ExposureInformationModelTest {
     private fun generateExposureInformationModel() = ExposureInformationModel(
         id = 0,
         exposureDataId = 0,
-        attenuationDurationsInMillis = IntArray(8) { index -> index /* dummy values */ },
+        attenuationDurationsInMillis = IntArray(4) { index -> index /* dummy values */ },
         attenuationValue = 6,
         dateMillisSinceEpoch = 423423,
         durationInMillis = 5234.03,
@@ -49,7 +49,7 @@ class ExposureInformationModelTest {
         val model2 = ExposureInformationModel(
             id = 0,
             exposureDataId = 0,
-            attenuationDurationsInMillis = IntArray(8) { index -> index + 1 },
+            attenuationDurationsInMillis = IntArray(4) { index -> index + 1 },
             attenuationValue = 6,
             dateMillisSinceEpoch = 423423,
             durationInMillis = 5234.03,
@@ -67,7 +67,7 @@ class ExposureInformationModelTest {
         val model2 = ExposureInformationModel(
             id = 0,
             exposureDataId = 0,
-            attenuationDurationsInMillis = IntArray(8) { index -> index },
+            attenuationDurationsInMillis = IntArray(4) { index -> index },
             attenuationValue = 7,
             dateMillisSinceEpoch = 423423,
             durationInMillis = 5234.03,
@@ -85,7 +85,7 @@ class ExposureInformationModelTest {
         val model2 = ExposureInformationModel(
             id = 0,
             exposureDataId = 0,
-            attenuationDurationsInMillis = IntArray(8) { index -> index },
+            attenuationDurationsInMillis = IntArray(4) { index -> index },
             attenuationValue = 6,
             dateMillisSinceEpoch = 1423423,
             durationInMillis = 5234.03,
@@ -103,7 +103,7 @@ class ExposureInformationModelTest {
         val model2 = ExposureInformationModel(
             id = 0,
             exposureDataId = 0,
-            attenuationDurationsInMillis = IntArray(8) { index -> index },
+            attenuationDurationsInMillis = IntArray(4) { index -> index },
             attenuationValue = 6,
             dateMillisSinceEpoch = 423423,
             durationInMillis = 15234.03,
@@ -121,7 +121,7 @@ class ExposureInformationModelTest {
         val model2 = ExposureInformationModel(
             id = 0,
             exposureDataId = 0,
-            attenuationDurationsInMillis = IntArray(8) { index -> index },
+            attenuationDurationsInMillis = IntArray(4) { index -> index },
             attenuationValue = 6,
             dateMillisSinceEpoch = 423423,
             durationInMillis = 5234.03,
@@ -139,7 +139,7 @@ class ExposureInformationModelTest {
         val model2 = ExposureInformationModel(
             id = 0,
             exposureDataId = 0,
-            attenuationDurationsInMillis = IntArray(8) { index -> index },
+            attenuationDurationsInMillis = IntArray(4) { index -> index },
             attenuationValue = 6,
             dateMillisSinceEpoch = 423423,
             durationInMillis = 5234.03,

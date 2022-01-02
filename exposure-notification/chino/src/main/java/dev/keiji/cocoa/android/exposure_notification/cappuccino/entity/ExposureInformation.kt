@@ -30,4 +30,30 @@ data class ExposureInformation(
         transmissionRiskLevel = exposureInformation.transmissionRiskLevel
     )
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ExposureInformation
+
+        if (!attenuationDurationsInMillis.contentEquals(other.attenuationDurationsInMillis)) return false
+        if (attenuationValue != other.attenuationValue) return false
+        if (dateMillisSinceEpoch != other.dateMillisSinceEpoch) return false
+        if (durationInMillis != other.durationInMillis) return false
+        if (totalRiskScore != other.totalRiskScore) return false
+        if (transmissionRiskLevel != other.transmissionRiskLevel) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = attenuationDurationsInMillis.contentHashCode()
+        result = 31 * result + attenuationValue
+        result = 31 * result + dateMillisSinceEpoch.hashCode()
+        result = 31 * result + durationInMillis.hashCode()
+        result = 31 * result + totalRiskScore
+        result = 31 * result + transmissionRiskLevel
+        return result
+    }
+
 }
