@@ -7,7 +7,6 @@ import dev.keiji.cocoa.android.exposure_notification.dao.DiagnosisKeysFileDao
 import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApi
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyListApi
-import dev.keiji.cocoa.android.exposure_notification.model.State
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert
@@ -52,22 +51,22 @@ class DiagnosisKeysFileRepositoryTest {
         val existDiagnosisKeysFileList = listOf(
             DiagnosisKeysFileModel(
                 1, 1, "987", null, "https://example.org/1.zip", 23123,
-                state = State.Completed.value,
+                state = DiagnosisKeysFileModel.State.Completed.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 2, 1, "987", null, "https://example.org/2.zip", 23128,
-                state = State.Completed.value,
+                state = DiagnosisKeysFileModel.State.Completed.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 3, 1, "987", null, "https://example.org/3.zip", 23132,
-                state = State.None.value,
+                state = DiagnosisKeysFileModel.State.None.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 4, 1, "987", null, "https://example.org/4.zip", 23144,
-                state = State.None.value,
+                state = DiagnosisKeysFileModel.State.None.value,
                 isListed = true
             ),
         )
@@ -98,22 +97,22 @@ class DiagnosisKeysFileRepositoryTest {
         val expectedDiagnosisKeysFileList = listOf(
             DiagnosisKeysFileModel(
                 2, 1, "987", null, "https://example.org/2.zip", 23128,
-                state = State.Completed.value,
+                state = DiagnosisKeysFileModel.State.Completed.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 3, 1, "987", null, "https://example.org/3.zip", 23132,
-                state = State.None.value,
+                state = DiagnosisKeysFileModel.State.None.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 4, 1, "987", null, "https://example.org/4.zip", 23144,
-                state = State.None.value,
+                state = DiagnosisKeysFileModel.State.None.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 5, 0, "987", null, "https://example.org/5.zip", 23177,
-                state = State.None.value,
+                state = DiagnosisKeysFileModel.State.None.value,
                 isListed = true
             ),
         )
@@ -174,8 +173,8 @@ class DiagnosisKeysFileRepositoryTest {
         verify(mockDiagnosisKeysFileDao, times(1)).insertAll(
             listOf(
                 DiagnosisKeysFileModel(
-                    0, 0,"987", null, "https://example.org/5.zip", 23177,
-                    state = State.None.value,
+                    0, 0, "987", null, "https://example.org/5.zip", 23177,
+                    state = DiagnosisKeysFileModel.State.None.value,
                     isListed = true
                 ),
             )
@@ -184,22 +183,22 @@ class DiagnosisKeysFileRepositoryTest {
             listOf(
                 DiagnosisKeysFileModel(
                     1, 1, "987", null, "https://example.org/1.zip", 23123,
-                    state = State.Completed.value,
+                    state = DiagnosisKeysFileModel.State.Completed.value,
                     isListed = false
                 ),
                 DiagnosisKeysFileModel(
                     2, 1, "987", null, "https://example.org/2.zip", 23128,
-                    state = State.Completed.value,
+                    state = DiagnosisKeysFileModel.State.Completed.value,
                     isListed = true
                 ),
                 DiagnosisKeysFileModel(
                     3, 1, "987", null, "https://example.org/3.zip", 23132,
-                    state = State.None.value,
+                    state = DiagnosisKeysFileModel.State.None.value,
                     isListed = true
                 ),
                 DiagnosisKeysFileModel(
                     4, 1, "987", null, "https://example.org/4.zip", 23144,
-                    state = State.None.value,
+                    state = DiagnosisKeysFileModel.State.None.value,
                     isListed = true
                 ),
             )
@@ -207,8 +206,8 @@ class DiagnosisKeysFileRepositoryTest {
         verify(mockDiagnosisKeysFileDao, times(1)).deleteAll(
             listOf(
                 DiagnosisKeysFileModel(
-                    1, 1,"987", null, "https://example.org/1.zip", 23123,
-                    state = State.Completed.value,
+                    1, 1, "987", null, "https://example.org/1.zip", 23123,
+                    state = DiagnosisKeysFileModel.State.Completed.value,
                     isListed = false
                 ),
             )
@@ -221,22 +220,22 @@ class DiagnosisKeysFileRepositoryTest {
         val existDiagnosisKeysFileList = listOf(
             DiagnosisKeysFileModel(
                 1, 1, "987", "443214", "https://example.org/1.zip", 23123,
-                state = State.Completed.value,
+                state = DiagnosisKeysFileModel.State.Completed.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 2, 1, "987", "443214", "https://example.org/2.zip", 23128,
-                state = State.Completed.value,
+                state = DiagnosisKeysFileModel.State.Completed.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 3, 1, "987", "443214", "https://example.org/3.zip", 23132,
-                state = State.None.value,
+                state = DiagnosisKeysFileModel.State.None.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 4, 1, "987", "443214", "https://example.org/4.zip", 23144,
-                state = State.None.value,
+                state = DiagnosisKeysFileModel.State.None.value,
                 isListed = true
             ),
         )
@@ -267,22 +266,22 @@ class DiagnosisKeysFileRepositoryTest {
         val expectedDiagnosisKeysFileList = listOf(
             DiagnosisKeysFileModel(
                 2, 1, "987", "443214", "https://example.org/2.zip", 23128,
-                state = State.None.value,
+                state = DiagnosisKeysFileModel.State.None.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 3, 1, "987", "443214", "https://example.org/3.zip", 23132,
-                state = State.None.value,
+                state = DiagnosisKeysFileModel.State.None.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 4, 1, "987", "443214", "https://example.org/4.zip", 23144,
-                state = State.None.value,
+                state = DiagnosisKeysFileModel.State.None.value,
                 isListed = true
             ),
             DiagnosisKeysFileModel(
                 5, 1, "987", "443214", "https://example.org/5.zip", 23177,
-                state = State.None.value,
+                state = DiagnosisKeysFileModel.State.None.value,
                 isListed = true
             ),
         )
@@ -347,7 +346,7 @@ class DiagnosisKeysFileRepositoryTest {
             listOf(
                 DiagnosisKeysFileModel(
                     0, 0, "987", "443214", "https://example.org/5.zip", 23177,
-                    state = State.None.value,
+                    state = DiagnosisKeysFileModel.State.None.value,
                     isListed = true
                 ),
             )
@@ -356,22 +355,22 @@ class DiagnosisKeysFileRepositoryTest {
             listOf(
                 DiagnosisKeysFileModel(
                     1, 1, "987", "443214", "https://example.org/1.zip", 23123,
-                    state = State.Completed.value,
+                    state = DiagnosisKeysFileModel.State.Completed.value,
                     isListed = false
                 ),
                 DiagnosisKeysFileModel(
                     2, 1, "987", "443214", "https://example.org/2.zip", 23128,
-                    state = State.Completed.value,
+                    state = DiagnosisKeysFileModel.State.Completed.value,
                     isListed = true
                 ),
                 DiagnosisKeysFileModel(
                     3, 1, "987", "443214", "https://example.org/3.zip", 23132,
-                    state = State.None.value,
+                    state = DiagnosisKeysFileModel.State.None.value,
                     isListed = true
                 ),
                 DiagnosisKeysFileModel(
                     4, 1, "987", "443214", "https://example.org/4.zip", 23144,
-                    state = State.None.value,
+                    state = DiagnosisKeysFileModel.State.None.value,
                     isListed = true
                 ),
             )
@@ -380,7 +379,7 @@ class DiagnosisKeysFileRepositoryTest {
             listOf(
                 DiagnosisKeysFileModel(
                     1, 1, "987", "443214", "https://example.org/1.zip", 23123,
-                    state = State.Completed.value,
+                    state = DiagnosisKeysFileModel.State.Completed.value,
                     isListed = false
                 ),
             )

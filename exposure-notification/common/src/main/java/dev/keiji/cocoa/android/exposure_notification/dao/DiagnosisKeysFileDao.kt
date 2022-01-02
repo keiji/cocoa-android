@@ -3,10 +3,10 @@ package dev.keiji.cocoa.android.exposure_notification.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
-import dev.keiji.cocoa.android.exposure_notification.model.State
 
 @Dao
 abstract class DiagnosisKeysFileDao {
@@ -44,14 +44,18 @@ abstract class DiagnosisKeysFileDao {
     open suspend fun findNotCompleted(
         region: String,
     ): List<DiagnosisKeysFileModel> {
-        return findAllByLessThanState(region, State.Completed.value)
+        return findAllByLessThanState(region, DiagnosisKeysFileModel.State.Completed.value)
     }
 
     open suspend fun findNotCompleted(
         region: String,
         subregion: String?,
     ): List<DiagnosisKeysFileModel> {
-        return findAllByLessThanState(region, subregion, State.Completed.value)
+        return findAllByLessThanState(
+            region,
+            subregion,
+            DiagnosisKeysFileModel.State.Completed.value
+        )
     }
 
     @Query("SELECT * FROM diagnosis_keys_files WHERE region = :region AND state < :stateValue")
@@ -66,6 +70,12 @@ abstract class DiagnosisKeysFileDao {
         subregion: String?,
         stateValue: Int,
     ): List<DiagnosisKeysFileModel>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun upsert(diagnosisKeysFileModel: DiagnosisKeysFileModel): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun upsert(diagnosisKeysFileModelList: List<DiagnosisKeysFileModel>): List<Long>
 
     @Insert
     abstract suspend fun insertAll(diagnosisKeysFileModelList: List<DiagnosisKeysFileModel>): List<Long>

@@ -21,16 +21,21 @@ import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 
 interface ExposureDataRepository {
-    suspend fun save(
+
+    suspend fun upsert(exposureDataModel: ExposureDataModel): Long
+
+    suspend fun upsert(
         exposureBaseData: ExposureDataBaseModel,
-        diagnosisKeysFileList: List<DiagnosisKeysFileModel> = emptyList(),
+        diagnosisKeysFileList: List<DiagnosisKeysFileModel> = listOf(),
         exposureSummary: ExposureSummary? = null,
-        exposureInformationList: List<ExposureInformation> = emptyList(),
-        dailySummaryList: List<DailySummary> = emptyList(),
-        exposureWindowList: List<ExposureWindow> = emptyList()
+        exposureInformationList: List<ExposureInformation> = mutableListOf(),
+        dailySummaryList: List<DailySummary> = mutableListOf(),
+        exposureWindowList: List<ExposureWindow> = mutableListOf()
     ): ExposureDataModel
 
     suspend fun loadExposureDataAll(): List<ExposureDataModel>
+
+    suspend fun findBy(state: ExposureDataBaseModel.State): List<ExposureDataModel>
 
     suspend fun findExposureInformationListBy(fromDate: DateTime): List<ExposureInformationModel>
 
@@ -43,6 +48,8 @@ interface ExposureDataRepository {
     suspend fun findExposureWindowListBy(fromDate: DateTime): List<ExposureWindowAndScanInstancesModel>
 
     suspend fun findGroupedExposureWindowListBy(fromDate: DateTime): Map<Long, List<ExposureWindowAndScanInstancesModel>>
+
+    suspend fun setTimeout(baseTime: Long, state: ExposureDataBaseModel.State): List<ExposureDataModel>
 }
 
 class ExposureDataRepositoryImpl(
@@ -53,7 +60,13 @@ class ExposureDataRepositoryImpl(
     private val exposureWindowDao: ExposureWindowDao,
 ) : ExposureDataRepository {
 
-    override suspend fun save(
+    override suspend fun upsert(exposureDataModel: ExposureDataModel): Long =
+        withContext(Dispatchers.IO) {
+            val updatedModel = exposureDataDao.upsert(exposureDataModel)
+            return@withContext updatedModel.exposureBaseData.id
+        }
+
+    override suspend fun upsert(
         exposureBaseData: ExposureDataBaseModel,
         diagnosisKeysFileList: List<DiagnosisKeysFileModel>,
         exposureSummary: ExposureSummary?,
@@ -67,22 +80,30 @@ class ExposureDataRepositoryImpl(
         } else {
             null
         }
-        return@withContext exposureDataDao.insert(
+        return@withContext exposureDataDao.upsert(
             exposureBaseData = exposureBaseData,
             diagnosisKeysFileList = diagnosisKeysFileList,
             exposureSummary = exposureSummaryModel,
             exposureInformationList = exposureInformationList
-                .map { obj -> ExposureInformationModel(obj) },
+                .map { obj -> ExposureInformationModel(obj) }
+                .toMutableList(),
             dailySummaryList = dailySummaryList
-                .map { obj -> DailySummaryModel(obj) },
+                .map { obj -> DailySummaryModel(obj) }
+                .toMutableList(),
             exposureWindowList = exposureWindowList
-                .map { obj -> ExposureWindowAndScanInstancesModel(obj) },
+                .map { obj -> ExposureWindowAndScanInstancesModel(obj) }
+                .toMutableList(),
         )
     }
 
     override suspend fun loadExposureDataAll(): List<ExposureDataModel> =
         withContext(Dispatchers.IO) {
             return@withContext exposureDataDao.getAll()
+        }
+
+    override suspend fun findBy(state: ExposureDataBaseModel.State): List<ExposureDataModel> =
+        withContext(Dispatchers.IO) {
+            return@withContext exposureDataDao.findBy(state.value)
         }
 
     override suspend fun findDailySummaryListBy(fromDate: DateTime): List<DailySummaryModel> =
@@ -107,6 +128,11 @@ class ExposureDataRepositoryImpl(
             return@withContext exposureWindowDao.findBy(fromDate.millis).groupBy(
                 { it.exposureWindowModel.dateMillisSinceEpoch }, { it }
             )
+        }
+
+    override suspend fun setTimeout(baseTime: Long, state: ExposureDataBaseModel.State): List<ExposureDataModel> =
+        withContext(Dispatchers.IO) {
+            return@withContext exposureDataDao.setTimeout(baseTime, state.value)
         }
 
     override suspend fun findExposureInformationListBy(fromDate: DateTime): List<ExposureInformationModel> =

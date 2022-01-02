@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowAndScanInstancesModel
 import dev.keiji.cocoa.android.exposure_notification.model.ScanInstanceModel

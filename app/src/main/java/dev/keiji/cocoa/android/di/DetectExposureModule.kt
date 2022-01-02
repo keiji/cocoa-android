@@ -25,6 +25,7 @@ import dev.keiji.cocoa.android.exposure_notification.source.DatabaseSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApiImpl
 import dev.keiji.cocoa.android.common.source.DateTimeSource
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.dao.DailySummaryDao
 import dev.keiji.cocoa.android.exposure_notification.dao.ExposureDataDao
 import dev.keiji.cocoa.android.exposure_notification.dao.ExposureInformationDao
@@ -66,14 +67,22 @@ object ExposureDetectionServiceModule {
     @Singleton
     @Provides
     fun provideDiagnosisKeyFileProvideServiceApi(
+        dateTimeSource: DateTimeSource,
         exposureConfigurationRepository: ExposureConfigurationRepository,
+        exposureDataRepository: ExposureDataRepository,
         exposureDataCollectionApi: ExposureDataCollectionApi,
+        diagnosisKeysFileRepository: DiagnosisKeysFileRepository,
         configurationSource: ConfigurationSource,
+        exposureNotificationWrapper: ExposureNotificationWrapper,
     ): ExposureDetectionService {
         return ExposureDetectionServiceImpl(
+            dateTimeSource,
             exposureConfigurationRepository,
+            exposureDataRepository,
             exposureDataCollectionApi,
-            configurationSource
+            diagnosisKeysFileRepository,
+            configurationSource,
+            exposureNotificationWrapper,
         )
     }
 }

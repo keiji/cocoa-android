@@ -5,7 +5,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import dev.keiji.cocoa.android.exposure_notification.AppDatabase
 import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
-import dev.keiji.cocoa.android.exposure_notification.model.State
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert
@@ -48,7 +47,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion",
                 url = "https://examaple.com/a/b/c/",
                 created = 11112222,
-                state = State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Processing.value,
                 isListed = true,
             )
         )
@@ -65,8 +64,12 @@ class DiagnosisKeysFileDaoTest {
             Assert.assertEquals("regIon", diagnosisKeysFileModel.region)
             Assert.assertEquals("subrEgion", diagnosisKeysFileModel.subregion)
             Assert.assertEquals("https://examaple.com/a/b/c/", diagnosisKeysFileModel.url)
+            Assert.assertNull(diagnosisKeysFileModel.filePath)
             Assert.assertEquals(11112222, diagnosisKeysFileModel.created)
-            Assert.assertEquals(State.Processing.value, diagnosisKeysFileModel.state)
+            Assert.assertEquals(
+                DiagnosisKeysFileModel.State.Processing.value,
+                diagnosisKeysFileModel.state
+            )
             Assert.assertEquals(true, diagnosisKeysFileModel.isListed)
         }
     }
@@ -82,7 +85,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion",
                 url = "https://examaple.com/a/b/c/1",
                 created = 11112222,
-                state = State.Completed.value,
+                state = DiagnosisKeysFileModel.State.Completed.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -92,7 +95,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = null,
                 url = "https://examaple.com/a/b/c/1",
                 created = 11112222,
-                state = State.Completed.value,
+                state = DiagnosisKeysFileModel.State.Completed.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -102,7 +105,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion1",
                 url = "https://examaple.com/a/b/c/2",
                 created = 11112222,
-                state = State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Processing.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -112,7 +115,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion1",
                 url = "https://examaple.com/a/b/c/3",
                 created = 11112222,
-                state = State.Completed.value,
+                state = DiagnosisKeysFileModel.State.Completed.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -122,7 +125,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion2",
                 url = "https://examaple.com/a/b/c/4",
                 created = 11112222,
-                state = State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Processing.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -132,7 +135,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion3",
                 url = "https://examaple.com/a/b/c/5",
                 created = 11112222,
-                state = State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Processing.value,
                 isListed = true,
             ),
         )
@@ -178,7 +181,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion",
                 url = "https://examaple.com/a/b/c/1",
                 created = 11112222,
-                state = State.Completed.value,
+                state = DiagnosisKeysFileModel.State.Completed.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -188,7 +191,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion",
                 url = "https://examaple.com/a/b/c/2",
                 created = 11112222,
-                state = State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Processing.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -198,7 +201,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion",
                 url = "https://examaple.com/a/b/c/3",
                 created = 11112222,
-                state = State.Completed.value,
+                state = DiagnosisKeysFileModel.State.Completed.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -208,7 +211,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion",
                 url = "https://examaple.com/a/b/c/4",
                 created = 11112222,
-                state = State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Processing.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -218,7 +221,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion",
                 url = "https://examaple.com/a/b/c/5",
                 created = 11112222,
-                state = State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Processing.value,
                 isListed = true,
             ),
         )
@@ -230,7 +233,7 @@ class DiagnosisKeysFileDaoTest {
         Assert.assertEquals(3, allList.size)
 
         allList.forEach { diagnosisKeysFileModel ->
-            Assert.assertTrue(State.Completed.value > diagnosisKeysFileModel.state)
+            Assert.assertTrue(DiagnosisKeysFileModel.State.Completed.value > diagnosisKeysFileModel.state)
         }
     }
 }

@@ -48,4 +48,16 @@ class ConfigurationSourceImpl(
     override val subregions = subregionsArray
 
     override fun isEnabledExposureWindowMode(): Boolean = isEnabledExposureWindowMode
+
+    init {
+        Timber.d("isEnabledExposureWindowMode: $isEnabledExposureWindowMode")
+
+        Timber.d("diagnosisKeysApiEndpoint: $diagnosisKeysApiEndpoint")
+        Timber.d("exposureConfigurationUrl: $exposureConfigurationUrl")
+        Timber.d("regions: $regions")
+        Timber.d("subregions: $subregions")
+
+        Timber.d("submitDiagnosisApiEndpoint: $submitDiagnosisApiEndpoint")
+        Timber.d("exposureDataCollectionApiEndpoint: $exposureDataCollectionApiEndpoint")
+    }
 }

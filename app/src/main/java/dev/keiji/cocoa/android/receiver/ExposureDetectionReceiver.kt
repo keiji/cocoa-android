@@ -5,11 +5,13 @@ import android.content.Context
 import android.content.Intent
 import androidx.work.WorkManager
 import dagger.hilt.android.AndroidEntryPoint
+import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.work.V1ExposureDetectionWorker
 import dev.keiji.cocoa.android.work.V2ExposureDetectionWorker
 import dev.keiji.cocoa.android.work.NoExposureDetectionWorker
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -17,17 +19,25 @@ import javax.inject.Inject
 class ExposureDetectionReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var exposureDetectionService: ExposureDetectionService
+    lateinit var dateTimeSource: DateTimeSource
+
+    @Inject
+    lateinit var exposureNotificationService: ExposureDetectionService
 
     override fun onReceive(context: Context?, intent: Intent?) {
         Timber.i("ExposureDetectionReceiver.onReceive")
 
         context ?: return
         intent ?: return
+        val intentAction = intent.action ?: return
+
+        runBlocking {
+            exposureNotificationService.onResultReceived(intentAction)
+        }
 
         val workManager = WorkManager.getInstance(context)
 
-        when (intent.action) {
+        when (intentAction) {
             ExposureNotificationWrapper.ACTION_EXPOSURE_NOT_FOUND -> {
                 onNotDetectExposure(workManager)
             }

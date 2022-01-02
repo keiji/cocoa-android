@@ -2,6 +2,7 @@ package dev.keiji.cocoa.android.exposure_notification.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import dev.keiji.cocoa.android.exposure_notification.model.DailySummaryModel
@@ -21,46 +22,60 @@ abstract class ExposureDataDao {
     @Query("SELECT * FROM exposure_data")
     abstract suspend fun getAll(): List<ExposureDataModel>
 
-    @Insert
-    abstract suspend fun insert(exposureDataBaseModel: ExposureDataBaseModel): Long
+    @Query("SELECT * FROM exposure_data WHERE state = :stateValue")
+    abstract suspend fun findBy(stateValue: Int): List<ExposureDataModel>
 
-    @Insert
-    abstract suspend fun insertAll(exposureDataModelList: List<ExposureDataBaseModel>): List<Long>
+    @Query("SELECT * FROM exposure_data WHERE start_epoch < :baseTime AND state = :stateValue ORDER BY start_epoch ASC")
+    abstract suspend fun findTimeout(
+        baseTime: Long,
+        stateValue: Int = ExposureDataBaseModel.State.Started.value
+    ): List<ExposureDataModel>
+
+    open suspend fun upsert(
+        exposureBaseData: ExposureDataModel,
+    ): ExposureDataModel = upsert(
+        exposureBaseData.exposureBaseData,
+        exposureBaseData.diagnosisKeysFileList,
+        exposureBaseData.exposureSummary,
+        exposureBaseData.exposureInformationList,
+        exposureBaseData.dailySummaryList,
+        exposureBaseData.exposureWindowList,
+    )
 
     @Transaction
-    @Insert
-    open suspend fun insert(
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    open suspend fun upsert(
         exposureBaseData: ExposureDataBaseModel,
-        diagnosisKeysFileList: List<DiagnosisKeysFileModel> = emptyList(),
+        diagnosisKeysFileList: List<DiagnosisKeysFileModel> = listOf(),
         exposureSummary: ExposureSummaryModel? = null,
-        exposureInformationList: List<ExposureInformationModel> = emptyList(),
-        dailySummaryList: List<DailySummaryModel> = emptyList(),
-        exposureWindowList: List<ExposureWindowAndScanInstancesModel> = emptyList(),
+        exposureInformationList: MutableList<ExposureInformationModel> = mutableListOf(),
+        dailySummaryList: MutableList<DailySummaryModel> = mutableListOf(),
+        exposureWindowList: MutableList<ExposureWindowAndScanInstancesModel> = mutableListOf(),
     ): ExposureDataModel {
-        val exposureDataId = insert(exposureBaseData)
+        val exposureDataId = upsert(exposureBaseData)
 
         diagnosisKeysFileList.forEach { model ->
             model.exposureDataId = exposureDataId
         }
-        insertDiagnosisKeysFileList(diagnosisKeysFileList)
+        upsertDiagnosisKeysFileList(diagnosisKeysFileList)
 
         exposureSummary?.also { model ->
             model.exposureDataId = exposureDataId
-            insert(model)
+            upsert(model)
         }
         exposureInformationList.also { modelList ->
             modelList.forEach { model -> model.exposureDataId = exposureDataId }
-            insert(modelList)
+            upsert(modelList)
         }
 
         dailySummaryList.forEach { model ->
             model.exposureDataId = exposureDataId
         }
-        insertDailySummaryList(dailySummaryList)
+        upsertDailySummaryList(dailySummaryList)
 
         exposureWindowList.forEach { model ->
             model.exposureWindowModel.exposureDataId = exposureDataId
-            insert(model.exposureWindowModel, model.scanInstances)
+            upsert(model.exposureWindowModel, model.scanInstances)
         }
 
         return ExposureDataModel(
@@ -73,48 +88,60 @@ abstract class ExposureDataDao {
         )
     }
 
-    @Insert
-    abstract suspend fun insertDiagnosisKeysFileList(
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsert(exposureDataBaseModel: ExposureDataBaseModel): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsertDiagnosisKeysFileList(
         diagnosisKeysFileList: List<DiagnosisKeysFileModel>
     ): List<Long>
 
-    @Insert
-    abstract suspend fun insert(dailySummaryModel: DailySummaryModel): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsert(dailySummaryModel: DailySummaryModel): Long
 
-    @Insert
-    abstract suspend fun insertDailySummaryList(
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsertDailySummaryList(
         dailySummaryList: List<DailySummaryModel>
     ): List<Long>
 
-    @Insert
-    abstract suspend fun insert(exposureWindowModel: ExposureWindowModel): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsert(exposureWindowModel: ExposureWindowModel): Long
 
-    @Insert
-    abstract suspend fun insertScanInstances(
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsertScanInstances(
         scanInstanceModelList: List<ScanInstanceModel>
     ): List<Long>
 
     @Transaction
-    @Insert
-    open suspend fun insert(
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    open suspend fun upsert(
         exposureWindowModel: ExposureWindowModel,
         scanInstanceModels: List<ScanInstanceModel>
     ): Long {
-        val exposureWindowId = insert(exposureWindowModel)
+        val exposureWindowId = upsert(exposureWindowModel)
 
         scanInstanceModels.forEach { scanInstanceModel ->
             scanInstanceModel.exposureWindowId = exposureWindowId
         }
 
-        insertScanInstances(scanInstanceModels)
+        upsertScanInstances(scanInstanceModels)
 
         return exposureWindowId
     }
 
-    @Insert
-    abstract suspend fun insert(exposureSummaryModel: ExposureSummaryModel): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsert(exposureSummaryModel: ExposureSummaryModel): Long
 
-    @Insert
-    abstract suspend fun insert(exposureInformationList: List<ExposureInformationModel>): List<Long>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsert(exposureInformationList: List<ExposureInformationModel>): List<Long>
 
+    @Transaction
+    open suspend fun setTimeout(baseTime: Long, state: Int): List<ExposureDataModel> {
+        val timeoutDataList = findTimeout(baseTime, state)
+        timeoutDataList.forEach { data ->
+            data.exposureBaseData.state = ExposureDataBaseModel.State.Timeout
+            upsert(data)
+        }
+        return timeoutDataList
+    }
 }

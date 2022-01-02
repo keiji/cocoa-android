@@ -19,7 +19,6 @@ class V1ExposureDetectionWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val exposureDetectionService: ExposureDetectionService,
-    private val exposureNotificationWrapper: ExposureNotificationWrapper,
 ) : CoroutineWorker(appContext, workerParams) {
 
     companion object {
@@ -42,6 +41,6 @@ class V1ExposureDetectionWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         val token = inputData.getString(WORKER_PARAM_KEY_TOKEN) ?: return Result.failure()
-        return exposureDetectionService.v1ExposureDetectedWork(token, exposureNotificationWrapper)
+        return exposureDetectionService.v1ExposureDetectedWork(token)
     }
 }

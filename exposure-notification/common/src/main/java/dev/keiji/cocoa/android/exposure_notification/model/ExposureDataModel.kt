@@ -20,14 +20,39 @@ data class ExposureDataBaseModel(
     @ColumnInfo(name = "en_version")
     val enVersion: String,
 
+    @ColumnInfo(name = "state")
+    var stateValue: Int = State.None.value,
+
     @ColumnInfo(name = "start_epoch")
     val startEpoch: Long,
 
     @ColumnInfo(name = "finish_epoch")
-    val finishEpoch: Long = -1,
+    var finishEpoch: Long = -1,
 ) {
     @ColumnInfo(name = "platform")
     var platform: String = "android"
+
+    var state: State
+        get() = when (stateValue) {
+            State.Timeout.value -> State.Timeout
+            State.Started.value -> State.Started
+            State.ResultReceived.value -> State.ResultReceived
+            State.Finished.value -> State.Finished
+            else -> State.None
+        }
+        set(value) {
+            stateValue = value.value
+        }
+
+    enum class State(
+        val value: Int
+    ) {
+        Timeout(-1),
+        None(0),
+        Started(1),
+        ResultReceived(2),
+        Finished(3)
+    }
 }
 
 data class ExposureDataModel(
@@ -43,24 +68,24 @@ data class ExposureDataModel(
         parentColumn = "id",
         entityColumn = "exposure_data_id"
     )
-    val dailySummaryList: List<DailySummaryModel>,
+    val dailySummaryList: MutableList<DailySummaryModel>,
 
     @Relation(
         entity = ExposureWindowModel::class,
         parentColumn = "id",
         entityColumn = "exposure_data_id"
     )
-    val exposureWindowList: List<ExposureWindowAndScanInstancesModel>,
+    val exposureWindowList: MutableList<ExposureWindowAndScanInstancesModel>,
 
     @Relation(
         parentColumn = "id",
         entityColumn = "exposure_data_id"
     )
-    val exposureSummary: ExposureSummaryModel?,
+    var exposureSummary: ExposureSummaryModel?,
 
     @Relation(
         parentColumn = "id",
         entityColumn = "exposure_data_id"
     )
-    val exposureInformationList: List<ExposureInformationModel>,
+    val exposureInformationList: MutableList<ExposureInformationModel>,
 )

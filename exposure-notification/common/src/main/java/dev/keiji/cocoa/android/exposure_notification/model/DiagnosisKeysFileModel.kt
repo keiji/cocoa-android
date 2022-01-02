@@ -27,13 +27,17 @@ data class DiagnosisKeysFileModel(
     @ColumnInfo(name = "state")
     var state: Int = State.None.ordinal,
 
+    @ColumnInfo(name = "file_path")
+    var filePath: String? = null,
+
     @ColumnInfo(name = "is_listed")
     var isListed: Boolean,
-)
+) {
 
-enum class State(val value: Int) {
-    None(0),
-    Downloaded(1),
-    Processing(2),
-    Completed(3),
+    enum class State(val value: Int) {
+        None(0),
+        Downloaded(1),
+        Processing(2),
+        Completed(3),
+    }
 }
