@@ -124,7 +124,7 @@ class ExposureDataDaoTest {
         val exposureDataBaseModel = ExposureDataBaseModel(
             id = 0,
             region = "rEgion",
-            subregion = "subregGion",
+            subregionList = listOf("subregGion"),
             enVersion = "verSion",
             startEpoch = 123456,
             finishEpoch = 456780,
@@ -147,7 +147,7 @@ class ExposureDataDaoTest {
             exposureDataAndAllModel.exposureBaseData.also { exposureBaseData ->
                 Assert.assertTrue(exposureBaseData.id > 0)
                 Assert.assertEquals("rEgion", exposureBaseData.region)
-                Assert.assertEquals("subregGion", exposureBaseData.subregion)
+                Assert.assertEquals(listOf("subregGion"), exposureBaseData.subregionList)
                 Assert.assertEquals("android", exposureBaseData.platform)
                 Assert.assertEquals("verSion", exposureBaseData.enVersion)
                 Assert.assertEquals(123456, exposureBaseData.startEpoch)
@@ -238,7 +238,7 @@ class ExposureDataDaoTest {
         val exposureDataBaseModel = ExposureDataBaseModel(
             id = 0,
             region = "rEgion",
-            subregion = "subregGion",
+            subregionList = listOf("subregGion"),
             enVersion = "verSion",
             startEpoch = 123456,
             finishEpoch = 456780,
@@ -314,7 +314,7 @@ class ExposureDataDaoTest {
         val exposureDataBaseModel = ExposureDataBaseModel(
             id = 0,
             region = "rEgion",
-            subregion = "subregGion",
+            subregionList = listOf("subregGion"),
             enVersion = "verSion",
             startEpoch = 123456,
             finishEpoch = 456780,

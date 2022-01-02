@@ -16,7 +16,6 @@ import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureInformationModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureSummaryModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowAndScanInstancesModel
-import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
@@ -24,11 +23,11 @@ import org.joda.time.DateTime
 interface ExposureDataRepository {
     suspend fun save(
         exposureBaseData: ExposureDataBaseModel,
-        diagnosisKeysFileList: List<DiagnosisKeysFileModel>,
-        exposureSummary: ExposureSummary,
-        exposureInformationList: List<ExposureInformation>,
-        dailySummaryList: List<DailySummary>,
-        exposureWindowList: List<ExposureWindow>
+        diagnosisKeysFileList: List<DiagnosisKeysFileModel> = emptyList(),
+        exposureSummary: ExposureSummary? = null,
+        exposureInformationList: List<ExposureInformation> = emptyList(),
+        dailySummaryList: List<DailySummary> = emptyList(),
+        exposureWindowList: List<ExposureWindow> = emptyList()
     ): ExposureDataModel
 
     suspend fun loadExposureDataAll(): List<ExposureDataModel>
@@ -47,7 +46,6 @@ interface ExposureDataRepository {
 }
 
 class ExposureDataRepositoryImpl(
-    private val pathSource: PathSource,
     private val dateTimeSource: DateTimeSource,
     private val exposureDataDao: ExposureDataDao,
     private val exposureInformationDao: ExposureInformationDao,
@@ -58,15 +56,21 @@ class ExposureDataRepositoryImpl(
     override suspend fun save(
         exposureBaseData: ExposureDataBaseModel,
         diagnosisKeysFileList: List<DiagnosisKeysFileModel>,
-        exposureSummary: ExposureSummary,
+        exposureSummary: ExposureSummary?,
         exposureInformationList: List<ExposureInformation>,
         dailySummaryList: List<DailySummary>,
         exposureWindowList: List<ExposureWindow>
     ) = withContext(Dispatchers.IO) {
+
+        val exposureSummaryModel = if (exposureSummary != null) {
+            ExposureSummaryModel(exposureSummary)
+        } else {
+            null
+        }
         return@withContext exposureDataDao.insert(
             exposureBaseData = exposureBaseData,
             diagnosisKeysFileList = diagnosisKeysFileList,
-            exposureSummary = ExposureSummaryModel(exposureSummary),
+            exposureSummary = exposureSummaryModel,
             exposureInformationList = exposureInformationList
                 .map { obj -> ExposureInformationModel(obj) },
             dailySummaryList = dailySummaryList

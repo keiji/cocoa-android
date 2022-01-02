@@ -14,8 +14,8 @@ data class ExposureDataBaseModel(
     @ColumnInfo(name = "region")
     val region: String,
 
-    @ColumnInfo(name = "subregion")
-    val subregion: String?,
+    @ColumnInfo(name = "subregions")
+    val subregionList: List<String>,
 
     @ColumnInfo(name = "en_version")
     val enVersion: String,

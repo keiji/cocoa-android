@@ -25,12 +25,39 @@ import dev.keiji.cocoa.android.exposure_notification.source.DatabaseSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApiImpl
 import dev.keiji.cocoa.android.common.source.DateTimeSource
+import dev.keiji.cocoa.android.exposure_notification.dao.DailySummaryDao
+import dev.keiji.cocoa.android.exposure_notification.dao.ExposureDataDao
+import dev.keiji.cocoa.android.exposure_notification.dao.ExposureInformationDao
+import dev.keiji.cocoa.android.exposure_notification.dao.ExposureWindowDao
+import dev.keiji.cocoa.android.exposure_notification.repository.ExposureDataRepository
+import dev.keiji.cocoa.android.exposure_notification.repository.ExposureDataRepositoryImpl
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
+
+@Module
+@InstallIn(SingletonComponent::class)
+object ExposureDataRepositoryModule {
+
+    @Singleton
+    @Provides
+    fun provideExposureDataRepository(
+        databaseSource: DatabaseSource,
+        dateTimeSource: DateTimeSource,
+    ): ExposureDataRepository {
+        val db = databaseSource.dbInstance()
+        return ExposureDataRepositoryImpl(
+            dateTimeSource,
+            db.exposureDataDao(),
+            db.exposureInformationDao(),
+            db.dailySummaryDao(),
+            db.exposureWindowDao(),
+        )
+    }
+}
 
 @Module
 @InstallIn(SingletonComponent::class)

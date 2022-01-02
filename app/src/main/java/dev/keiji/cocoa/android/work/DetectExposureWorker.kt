@@ -6,13 +6,16 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureNotificationStatus
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.DiagnosisKeysFileRepository
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.ExposureConfigurationRepository
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataBaseModel
 import dev.keiji.cocoa.android.exposure_notification.model.State
+import dev.keiji.cocoa.android.exposure_notification.repository.ExposureDataRepository
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -22,8 +25,10 @@ import java.util.*
 class DetectExposureWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
+    private val dateTimeSource: DateTimeSource,
     private val diagnosisKeysFileRepository: DiagnosisKeysFileRepository,
     private val exposureConfigurationRepository: ExposureConfigurationRepository,
+    private val exposureDataRepository: ExposureDataRepository,
     private val exposureNotificationWrapper: ExposureNotificationWrapper,
     private val configurationSource: ConfigurationSource,
 ) : CoroutineWorker(appContext, workerParams) {
@@ -46,20 +51,30 @@ class DetectExposureWorker @AssistedInject constructor(
         try {
             configurationSource.regions.forEach { region ->
                 // Sub-region
+                val subregions = mutableListOf<String>()
                 val subRegionDiagnosisKeyFiles = mutableListOf<DiagnosisKeysContainer>()
                 configurationSource.subregions.forEach { subregion ->
-                    subRegionDiagnosisKeyFiles.addAll(
-                        downloadDiagnosisKeys(region.toString(), subregion)
-                    )
+                    val list = downloadDiagnosisKeys(region.toString(), subregion)
+                    if (list.isNotEmpty()) {
+                        subregions.add(subregion)
+                        subRegionDiagnosisKeyFiles.addAll(list)
+                    }
                 }
-                detectExposure(subRegionDiagnosisKeyFiles)
+                detectExposure(
+                    region = region.toString(),
+                    subregionList = subregions,
+                    diagnosisKeysFileContainerList = subRegionDiagnosisKeyFiles,
+                )
 
                 // Region
                 val diagnosisKeyFiles = downloadDiagnosisKeys(
                     region.toString(),
                     null
                 )
-                detectExposure(diagnosisKeyFiles)
+                detectExposure(
+                    region = region.toString(),
+                    diagnosisKeysFileContainerList = diagnosisKeyFiles,
+                )
             }
             return Result.success();
         } catch (e: IOException) {
@@ -73,20 +88,48 @@ class DetectExposureWorker @AssistedInject constructor(
         }
     }
 
-    private suspend fun detectExposure(diagnosisKeys: List<DiagnosisKeysContainer>) {
-        if (configurationSource.isEnabledExposureWindowMode()) {
-            detectExposureExposureWindowMode(diagnosisKeys)
-        } else {
-            detectExposureLegacyV1(diagnosisKeys)
-        }
-
-        diagnosisKeys.forEach { container ->
-            container.file.delete()
-        }
+    private suspend fun saveExposureData(
+        region: String,
+        subregionList: List<String> = emptyList(),
+        diagnosisKeysFileList: List<DiagnosisKeysFileModel>
+    ) {
+        val exposureDataBaseModel = ExposureDataBaseModel(
+            id = 0,
+            region = region,
+            subregionList = subregionList,
+            enVersion = exposureNotificationWrapper.getVersion().toString(),
+            startEpoch = dateTimeSource.epoch(),
+        )
+        exposureDataRepository.save(
+            exposureDataBaseModel,
+            diagnosisKeysFileList = diagnosisKeysFileList,
+        )
         diagnosisKeysFileRepository.setState(
-            diagnosisKeys.map { container -> container.diagnosisKeysFileModel },
+            diagnosisKeysFileList,
             State.Processing
         )
+    }
+
+    private suspend fun detectExposure(
+        region: String,
+        subregionList: List<String> = emptyList(),
+        diagnosisKeysFileContainerList: List<DiagnosisKeysContainer>
+    ) {
+        saveExposureData(
+            region,
+            subregionList,
+            diagnosisKeysFileContainerList.map { container -> container.diagnosisKeysFileModel },
+        )
+
+        if (configurationSource.isEnabledExposureWindowMode()) {
+            detectExposureExposureWindowMode(diagnosisKeysFileContainerList)
+        } else {
+            detectExposureLegacyV1(diagnosisKeysFileContainerList)
+        }
+
+        diagnosisKeysFileContainerList.forEach { container ->
+            container.file.delete()
+        }
     }
 
     private suspend fun downloadDiagnosisKeys(
