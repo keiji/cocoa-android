@@ -97,6 +97,8 @@ object DiagnosisKeyFileProvideApiModule {
 @InstallIn(SingletonComponent::class)
 object DiagnosisKeyListProvideApiModule {
 
+    private val json = Json { ignoreUnknownKeys = true }
+
     @Singleton
     @Provides
     fun provideDiagnosisKeyListProvideApi(
@@ -107,7 +109,7 @@ object DiagnosisKeyListProvideApiModule {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(BuildConfig.DIAGNOSIS_KEY_API_ENDPOINT)
-            .addConverterFactory(Json.asConverterFactory(contentType))
+            .addConverterFactory(json.asConverterFactory(contentType))
             .build()
             .create(DiagnosisKeyListApi::class.java)
     }
