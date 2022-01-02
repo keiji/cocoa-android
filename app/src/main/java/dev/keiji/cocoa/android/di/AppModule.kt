@@ -83,7 +83,7 @@ object UserDataRepositoryModule {
             applicationContext,
             dateTimeSource,
             applicationContext.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE),
-            databaseSource.dbInstance().diagnosisKeyFileDao()
+            databaseSource.dbInstance().diagnosisKeysFileDao()
         )
     }
 }

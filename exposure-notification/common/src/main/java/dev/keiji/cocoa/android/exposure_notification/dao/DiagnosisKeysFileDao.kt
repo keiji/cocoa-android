@@ -5,35 +5,77 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import dev.keiji.cocoa.android.exposure_notification.entity.DiagnosisKeysFile
+import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
+import dev.keiji.cocoa.android.exposure_notification.model.State
 
 @Dao
-interface DiagnosisKeysFileDao {
+abstract class DiagnosisKeysFileDao {
 
-    @Query("SELECT * FROM diagnosiskeysfile")
-    suspend fun getAll(): List<DiagnosisKeysFile>
+    @Query("SELECT * FROM diagnosis_keys_files")
+    abstract suspend fun getAll(): List<DiagnosisKeysFileModel>
 
-    @Query("SELECT * FROM diagnosiskeysfile WHERE region = :region AND subregion = :subregion")
-    suspend fun findAllByRegionAndSubregion(
+    @Query("SELECT * FROM diagnosis_keys_files WHERE region = :region")
+    abstract suspend fun findAllBy(
+        region: String
+    ): List<DiagnosisKeysFileModel>
+
+    open suspend fun findAllBy(
         region: String,
         subregion: String?,
-    ): List<DiagnosisKeysFile>
+    ): List<DiagnosisKeysFileModel> {
+        return if (subregion != null) {
+            findAllByRegion(region, subregion)
+        } else {
+            findAllByRegionAndSubregionNull(region)
+        }
+    }
 
-    @Query("SELECT * FROM diagnosiskeysfile WHERE region = :region AND subregion = :subregion AND is_processed = 1")
-    suspend fun findAllByRegionAndSubregionNotProcessed(
+    @Query("SELECT * FROM diagnosis_keys_files WHERE region = :region AND subregion = :subregion")
+    abstract suspend fun findAllByRegion(
+        region: String,
+        subregion: String
+    ): List<DiagnosisKeysFileModel>
+
+    @Query("SELECT * FROM diagnosis_keys_files WHERE region = :region AND subregion is null")
+    abstract suspend fun findAllByRegionAndSubregionNull(
+        region: String,
+    ): List<DiagnosisKeysFileModel>
+
+    open suspend fun findNotCompleted(
+        region: String,
+    ): List<DiagnosisKeysFileModel> {
+        return findAllByLessThanState(region, State.Completed.value)
+    }
+
+    open suspend fun findNotCompleted(
         region: String,
         subregion: String?,
-    ): List<DiagnosisKeysFile>
+    ): List<DiagnosisKeysFileModel> {
+        return findAllByLessThanState(region, subregion, State.Completed.value)
+    }
+
+    @Query("SELECT * FROM diagnosis_keys_files WHERE region = :region AND state < :stateValue")
+    abstract suspend fun findAllByLessThanState(
+        region: String,
+        stateValue: Int,
+    ): List<DiagnosisKeysFileModel>
+
+    @Query("SELECT * FROM diagnosis_keys_files WHERE region = :region AND subregion = :subregion AND state < :stateValue")
+    abstract suspend fun findAllByLessThanState(
+        region: String,
+        subregion: String?,
+        stateValue: Int,
+    ): List<DiagnosisKeysFileModel>
 
     @Insert
-    suspend fun insertAll(diagnosisKeysFileList: List<DiagnosisKeysFile>)
+    abstract suspend fun insertAll(diagnosisKeysFileModelList: List<DiagnosisKeysFileModel>): List<Long>
 
     @Update
-    suspend fun updateAll(diagnosisKeysFileList: List<DiagnosisKeysFile>)
+    abstract suspend fun updateAll(diagnosisKeysFileModelList: List<DiagnosisKeysFileModel>)
 
     @Delete
-    suspend fun delete(diagnosisKeysFile: DiagnosisKeysFile)
+    abstract suspend fun delete(diagnosisKeysFileModel: DiagnosisKeysFileModel)
 
     @Delete
-    suspend fun deleteAll(diagnosisKeysFileList: List<DiagnosisKeysFile>)
+    abstract suspend fun deleteAll(diagnosisKeysFileModelList: List<DiagnosisKeysFileModel>)
 }

@@ -4,9 +4,10 @@ import android.content.Context
 import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.dao.DiagnosisKeysFileDao
-import dev.keiji.cocoa.android.exposure_notification.entity.DiagnosisKeysFile
+import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApi
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyListApi
+import dev.keiji.cocoa.android.exposure_notification.model.State
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert
@@ -49,24 +50,24 @@ class DiagnosisKeysFileRepositoryTest {
     fun getDiagnosisKeysFileListTest_region(): Unit = runBlocking {
 
         val existDiagnosisKeysFileList = listOf(
-            DiagnosisKeysFile(
-                1, "987", null, "https://example.org/1.zip", 23123,
-                isProcessed = true,
+            DiagnosisKeysFileModel(
+                1, 1, "987", null, "https://example.org/1.zip", 23123,
+                state = State.Completed.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                2, "987", null, "https://example.org/2.zip", 23128,
-                isProcessed = true,
+            DiagnosisKeysFileModel(
+                2, 1, "987", null, "https://example.org/2.zip", 23128,
+                state = State.Completed.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                3, "987", null, "https://example.org/3.zip", 23132,
-                isProcessed = false,
+            DiagnosisKeysFileModel(
+                3, 1, "987", null, "https://example.org/3.zip", 23132,
+                state = State.None.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                4, "987", null, "https://example.org/4.zip", 23144,
-                isProcessed = false,
+            DiagnosisKeysFileModel(
+                4, 1, "987", null, "https://example.org/4.zip", 23144,
+                state = State.None.value,
                 isListed = true
             ),
         )
@@ -95,24 +96,24 @@ class DiagnosisKeysFileRepositoryTest {
         )
 
         val expectedDiagnosisKeysFileList = listOf(
-            DiagnosisKeysFile(
-                2, "987", null, "https://example.org/2.zip", 23128,
-                isProcessed = true,
+            DiagnosisKeysFileModel(
+                2, 1, "987", null, "https://example.org/2.zip", 23128,
+                state = State.Completed.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                3, "987", null, "https://example.org/3.zip", 23132,
-                isProcessed = false,
+            DiagnosisKeysFileModel(
+                3, 1, "987", null, "https://example.org/3.zip", 23132,
+                state = State.None.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                4, "987", null, "https://example.org/4.zip", 23144,
-                isProcessed = false,
+            DiagnosisKeysFileModel(
+                4, 1, "987", null, "https://example.org/4.zip", 23144,
+                state = State.None.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                5, "987", null, "https://example.org/5.zip", 23177,
-                isProcessed = false,
+            DiagnosisKeysFileModel(
+                5, 0, "987", null, "https://example.org/5.zip", 23177,
+                state = State.None.value,
                 isListed = true
             ),
         )
@@ -127,13 +128,13 @@ class DiagnosisKeysFileRepositoryTest {
         val mockDiagnosisKeysFileDao =
             mock<DiagnosisKeysFileDao> {
                 onBlocking {
-                    findAllByRegionAndSubregion(
+                    findAllBy(
                         any(),
                         anyOrNull()
                     )
                 } doReturn existDiagnosisKeysFileList
                 onBlocking {
-                    findAllByRegionAndSubregionNotProcessed(
+                    findNotCompleted(
                         any(),
                         anyOrNull()
                     )
@@ -165,49 +166,49 @@ class DiagnosisKeysFileRepositoryTest {
         verify(mockDiagnosisKeyListProvideServiceApi, times(1)).getList(eq("987"))
         verify(mockDiagnosisKeyListProvideServiceApi, never()).getList(eq("987"), any())
 
-        verify(mockDiagnosisKeysFileDao, times(1)).findAllByRegionAndSubregion(eq("987"), eq(null))
+        verify(mockDiagnosisKeysFileDao, times(1)).findAllBy(eq("987"), eq(null))
         verify(
             mockDiagnosisKeysFileDao,
             times(1)
-        ).findAllByRegionAndSubregionNotProcessed(eq("987"), eq(null))
+        ).findNotCompleted(eq("987"), eq(null))
         verify(mockDiagnosisKeysFileDao, times(1)).insertAll(
             listOf(
-                DiagnosisKeysFile(
-                    0, "987", null, "https://example.org/5.zip", 23177,
-                    isProcessed = false,
+                DiagnosisKeysFileModel(
+                    0, 0,"987", null, "https://example.org/5.zip", 23177,
+                    state = State.None.value,
                     isListed = true
                 ),
             )
         )
         verify(mockDiagnosisKeysFileDao, times(1)).updateAll(
             listOf(
-                DiagnosisKeysFile(
-                    1, "987", null, "https://example.org/1.zip", 23123,
-                    isProcessed = true,
+                DiagnosisKeysFileModel(
+                    1, 1, "987", null, "https://example.org/1.zip", 23123,
+                    state = State.Completed.value,
                     isListed = false
                 ),
-                DiagnosisKeysFile(
-                    2, "987", null, "https://example.org/2.zip", 23128,
-                    isProcessed = true,
+                DiagnosisKeysFileModel(
+                    2, 1, "987", null, "https://example.org/2.zip", 23128,
+                    state = State.Completed.value,
                     isListed = true
                 ),
-                DiagnosisKeysFile(
-                    3, "987", null, "https://example.org/3.zip", 23132,
-                    isProcessed = false,
+                DiagnosisKeysFileModel(
+                    3, 1, "987", null, "https://example.org/3.zip", 23132,
+                    state = State.None.value,
                     isListed = true
                 ),
-                DiagnosisKeysFile(
-                    4, "987", null, "https://example.org/4.zip", 23144,
-                    isProcessed = false,
+                DiagnosisKeysFileModel(
+                    4, 1, "987", null, "https://example.org/4.zip", 23144,
+                    state = State.None.value,
                     isListed = true
                 ),
             )
         )
         verify(mockDiagnosisKeysFileDao, times(1)).deleteAll(
             listOf(
-                DiagnosisKeysFile(
-                    1, "987", null, "https://example.org/1.zip", 23123,
-                    isProcessed = true,
+                DiagnosisKeysFileModel(
+                    1, 1,"987", null, "https://example.org/1.zip", 23123,
+                    state = State.Completed.value,
                     isListed = false
                 ),
             )
@@ -218,24 +219,24 @@ class DiagnosisKeysFileRepositoryTest {
     fun getDiagnosisKeysFileListTest_region_subregion(): Unit = runBlocking {
 
         val existDiagnosisKeysFileList = listOf(
-            DiagnosisKeysFile(
-                1, "987", "443214", "https://example.org/1.zip", 23123,
-                isProcessed = true,
+            DiagnosisKeysFileModel(
+                1, 1, "987", "443214", "https://example.org/1.zip", 23123,
+                state = State.Completed.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                2, "987", "443214", "https://example.org/2.zip", 23128,
-                isProcessed = true,
+            DiagnosisKeysFileModel(
+                2, 1, "987", "443214", "https://example.org/2.zip", 23128,
+                state = State.Completed.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                3, "987", "443214", "https://example.org/3.zip", 23132,
-                isProcessed = false,
+            DiagnosisKeysFileModel(
+                3, 1, "987", "443214", "https://example.org/3.zip", 23132,
+                state = State.None.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                4, "987", "443214", "https://example.org/4.zip", 23144,
-                isProcessed = false,
+            DiagnosisKeysFileModel(
+                4, 1, "987", "443214", "https://example.org/4.zip", 23144,
+                state = State.None.value,
                 isListed = true
             ),
         )
@@ -264,24 +265,24 @@ class DiagnosisKeysFileRepositoryTest {
         )
 
         val expectedDiagnosisKeysFileList = listOf(
-            DiagnosisKeysFile(
-                2, "987", "443214", "https://example.org/2.zip", 23128,
-                isProcessed = true,
+            DiagnosisKeysFileModel(
+                2, 1, "987", "443214", "https://example.org/2.zip", 23128,
+                state = State.None.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                3, "987", "443214", "https://example.org/3.zip", 23132,
-                isProcessed = false,
+            DiagnosisKeysFileModel(
+                3, 1, "987", "443214", "https://example.org/3.zip", 23132,
+                state = State.None.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                4, "987", "443214", "https://example.org/4.zip", 23144,
-                isProcessed = false,
+            DiagnosisKeysFileModel(
+                4, 1, "987", "443214", "https://example.org/4.zip", 23144,
+                state = State.None.value,
                 isListed = true
             ),
-            DiagnosisKeysFile(
-                5, "987", "443214", "https://example.org/5.zip", 23177,
-                isProcessed = false,
+            DiagnosisKeysFileModel(
+                5, 1, "987", "443214", "https://example.org/5.zip", 23177,
+                state = State.None.value,
                 isListed = true
             ),
         )
@@ -296,13 +297,13 @@ class DiagnosisKeysFileRepositoryTest {
         val mockDiagnosisKeysFileDao =
             mock<DiagnosisKeysFileDao> {
                 onBlocking {
-                    findAllByRegionAndSubregion(
+                    findAllBy(
                         any(),
                         anyOrNull()
                     )
                 } doReturn existDiagnosisKeysFileList
                 onBlocking {
-                    findAllByRegionAndSubregionNotProcessed(
+                    findNotCompleted(
                         any(),
                         anyOrNull()
                     )
@@ -334,52 +335,52 @@ class DiagnosisKeysFileRepositoryTest {
         verify(mockDiagnosisKeyListProvideServiceApi, never()).getList(eq("987"))
         verify(mockDiagnosisKeyListProvideServiceApi, times(1)).getList(eq("987"), eq("443214"))
 
-        verify(mockDiagnosisKeysFileDao, times(1)).findAllByRegionAndSubregion(
+        verify(mockDiagnosisKeysFileDao, times(1)).findAllBy(
             eq("987"),
             eq("443214")
         )
         verify(
             mockDiagnosisKeysFileDao,
             times(1)
-        ).findAllByRegionAndSubregionNotProcessed(eq("987"), eq("443214"))
+        ).findNotCompleted(eq("987"), eq("443214"))
         verify(mockDiagnosisKeysFileDao, times(1)).insertAll(
             listOf(
-                DiagnosisKeysFile(
-                    0, "987", "443214", "https://example.org/5.zip", 23177,
-                    isProcessed = false,
+                DiagnosisKeysFileModel(
+                    0, 0, "987", "443214", "https://example.org/5.zip", 23177,
+                    state = State.None.value,
                     isListed = true
                 ),
             )
         )
         verify(mockDiagnosisKeysFileDao, times(1)).updateAll(
             listOf(
-                DiagnosisKeysFile(
-                    1, "987", "443214", "https://example.org/1.zip", 23123,
-                    isProcessed = true,
+                DiagnosisKeysFileModel(
+                    1, 1, "987", "443214", "https://example.org/1.zip", 23123,
+                    state = State.Completed.value,
                     isListed = false
                 ),
-                DiagnosisKeysFile(
-                    2, "987", "443214", "https://example.org/2.zip", 23128,
-                    isProcessed = true,
+                DiagnosisKeysFileModel(
+                    2, 1, "987", "443214", "https://example.org/2.zip", 23128,
+                    state = State.Completed.value,
                     isListed = true
                 ),
-                DiagnosisKeysFile(
-                    3, "987", "443214", "https://example.org/3.zip", 23132,
-                    isProcessed = false,
+                DiagnosisKeysFileModel(
+                    3, 1, "987", "443214", "https://example.org/3.zip", 23132,
+                    state = State.None.value,
                     isListed = true
                 ),
-                DiagnosisKeysFile(
-                    4, "987", "443214", "https://example.org/4.zip", 23144,
-                    isProcessed = false,
+                DiagnosisKeysFileModel(
+                    4, 1, "987", "443214", "https://example.org/4.zip", 23144,
+                    state = State.None.value,
                     isListed = true
                 ),
             )
         )
         verify(mockDiagnosisKeysFileDao, times(1)).deleteAll(
             listOf(
-                DiagnosisKeysFile(
-                    1, "987", "443214", "https://example.org/1.zip", 23123,
-                    isProcessed = true,
+                DiagnosisKeysFileModel(
+                    1, 1, "987", "443214", "https://example.org/1.zip", 23123,
+                    state = State.Completed.value,
                     isListed = false
                 ),
             )

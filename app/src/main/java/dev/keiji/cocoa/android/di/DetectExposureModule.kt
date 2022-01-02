@@ -8,7 +8,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.BuildConfig
-import dev.keiji.cocoa.android.exposure_notification.AnonymousInterceptorOkHttpClient
 import dev.keiji.cocoa.android.exposure_notification.DefaultInterceptorOkHttpClient
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionServiceImpl
@@ -121,7 +120,7 @@ object DiagnosisKeysFileRepositoryModule {
             applicationContext,
             pathSource,
             dateTimeSource,
-            databaseSource.dbInstance().diagnosisKeyFileDao(),
+            databaseSource.dbInstance().diagnosisKeysFileDao(),
             diagnosisKeyListApi,
             diagnosisKeyFileApi
         )

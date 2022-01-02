@@ -1,27 +1,27 @@
-package dev.keiji.cocoa.android.exposure_notification.cappuccino.entity
+package dev.keiji.cocoa.android.exposure_notification.model
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureSummary
 
-import com.google.android.gms.nearby.exposurenotification.ExposureSummary as NativeExposureSummary
+@Entity(tableName = "exposure_summaries")
+data class ExposureSummaryModel(
+    @PrimaryKey(autoGenerate = true) var id: Long,
 
-@Serializable
-data class ExposureSummary(
-    @SerialName("AttenuationDurationsInMillis") val attenuationDurationsInMillis: IntArray,
-    @SerialName("DaysSinceLastExposure") val daysSinceLastExposure: Int,
-    @SerialName("MatchedKeyCount") val matchedKeyCount: Int,
-    @SerialName("MaximumRiskScore") val maximumRiskScore: Int,
-    @SerialName("SummationRiskScore") val summationRiskScore: Int,
+    @ColumnInfo(name = "exposure_data_id")
+    var exposureDataId: Long,
+
+    @ColumnInfo(name = "attenuation_durations_in_millis") val attenuationDurationsInMillis: IntArray,
+    @ColumnInfo(name = "days_since_last_exposure") val daysSinceLastExposure: Int,
+    @ColumnInfo(name = "matched_key_count") val matchedKeyCount: Int,
+    @ColumnInfo(name = "maximum_risk_score") val maximumRiskScore: Int,
+    @ColumnInfo(name = "summation_risk_score") val summationRiskScore: Int,
 ) {
-    companion object {
-        private const val ONE_MINUTE_IN_MILLIS = 1000 * 60
-
-        private fun convertToMillis(array: IntArray): IntArray =
-            array.map { it * ONE_MINUTE_IN_MILLIS }.toIntArray()
-    }
-
-    constructor(exposureSummary: NativeExposureSummary) : this(
-        attenuationDurationsInMillis = convertToMillis(exposureSummary.attenuationDurationsInMinutes),
+    constructor(exposureSummary: ExposureSummary) : this(
+        id = 0,
+        exposureDataId = 0,
+        attenuationDurationsInMillis = exposureSummary.attenuationDurationsInMillis,
         daysSinceLastExposure = exposureSummary.daysSinceLastExposure,
         matchedKeyCount = exposureSummary.matchedKeyCount,
         maximumRiskScore = exposureSummary.maximumRiskScore,
@@ -32,7 +32,7 @@ data class ExposureSummary(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as ExposureSummary
+        other as ExposureSummaryModel
 
         if (!attenuationDurationsInMillis.contentEquals(other.attenuationDurationsInMillis)) return false
         if (daysSinceLastExposure != other.daysSinceLastExposure) return false
