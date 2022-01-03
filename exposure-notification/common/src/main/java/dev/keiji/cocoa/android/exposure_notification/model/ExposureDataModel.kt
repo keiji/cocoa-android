@@ -11,6 +11,9 @@ data class ExposureDataBaseModel(
     @PrimaryKey(autoGenerate = true)
     var id: Long,
 
+    @ColumnInfo(name = "priority")
+    var priority: Int = 10,
+
     @ColumnInfo(name = "region")
     val region: String,
 
@@ -23,17 +26,20 @@ data class ExposureDataBaseModel(
     @ColumnInfo(name = "state")
     var stateValue: Int = State.Planned.value,
 
-    @ColumnInfo(name = "start_uptime")
-    var startUptime: Long,
-
     @ColumnInfo(name = "planned_epoch")
-    val plannedEpoch: Long = -1,
+    val plannedEpoch: Long,
+
+    @ColumnInfo(name = "start_uptime")
+    var startUptime: Long = -1,
 
     @ColumnInfo(name = "started_epoch")
     var startedEpoch: Long = -1,
 
     @ColumnInfo(name = "finished_epoch")
     var finishedEpoch: Long = -1,
+
+    @ColumnInfo(name = "message")
+    var message: String? = null,
 ) {
     @ColumnInfo(name = "platform")
     var platform: String = "android"

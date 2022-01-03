@@ -130,6 +130,7 @@ class ExposureDataDaoTest {
             startedEpoch = 123456,
             plannedEpoch = 356742,
             finishedEpoch = 456780,
+            message = "hello",
         )
 
         exposureDataDao.upsert(
@@ -156,6 +157,7 @@ class ExposureDataDaoTest {
                 Assert.assertEquals(356742, exposureBaseData.plannedEpoch)
                 Assert.assertEquals(123456, exposureBaseData.startedEpoch)
                 Assert.assertEquals(456780, exposureBaseData.finishedEpoch)
+                Assert.assertEquals("hello", exposureBaseData.message)
             }
 
             Assert.assertNotNull(exposureDataAndAllModel.diagnosisKeysFileList)
@@ -462,6 +464,129 @@ class ExposureDataDaoTest {
 
     @Test
     @Throws(IOException::class)
+    fun getByTest(): Unit = runBlocking {
+
+        val diagnosisKeysFileModel = DiagnosisKeysFileModel(
+            id = 0,
+            exposureDataId = 0,
+            region = "Region",
+            subregion = "suBregion",
+            url = "https://example.com/1234567890",
+            created = 121212,
+            state = DiagnosisKeysFileModel.State.Downloaded.ordinal,
+            isListed = true,
+        )
+
+        val exposureDataBaseModels = listOf(
+            ExposureDataBaseModel(
+                id = 0,
+                priority = 10,
+                region = "rEgion",
+                subregionList = listOf("subregGion"),
+                enVersion = "verSion",
+                stateValue = ExposureDataBaseModel.State.Finished.value,
+                startUptime = 234324,
+                plannedEpoch = 15834,
+                startedEpoch = 223456,
+                finishedEpoch = 456783,
+            ),
+            ExposureDataBaseModel(
+                id = 0,
+                priority = 10,
+                region = "rEgion",
+                subregionList = listOf("subregGion"),
+                enVersion = "verSion",
+                stateValue = ExposureDataBaseModel.State.ResultReceived.value,
+                startUptime = 5943823,
+                plannedEpoch = 1583,
+                startedEpoch = 123456,
+                finishedEpoch = -1,
+            ),
+            ExposureDataBaseModel(
+                id = 0,
+                priority = 0,
+                region = "rEgion",
+                subregionList = listOf("subregGion"),
+                enVersion = "verSion",
+                stateValue = ExposureDataBaseModel.State.Started.value,
+                startUptime = 242344,
+                plannedEpoch = 9158340,
+                startedEpoch = 364543,
+                finishedEpoch = -1,
+            ),
+            ExposureDataBaseModel(
+                id = 0,
+                priority = 10,
+                region = "rEgion",
+                subregionList = listOf("subregGion"),
+                enVersion = "verSion",
+                stateValue = ExposureDataBaseModel.State.Started.value,
+                startUptime = 1242344,
+                plannedEpoch = 19158340,
+                startedEpoch = 1364543,
+                finishedEpoch = -1,
+            ),
+            ExposureDataBaseModel(
+                id = 0,
+                priority = 9,
+                region = "rEgion",
+                subregionList = listOf("subregGion"),
+                enVersion = "verSion",
+                stateValue = ExposureDataBaseModel.State.Finished.value,
+                startUptime = 897935,
+                plannedEpoch = 758340,
+                startedEpoch = 123456,
+                finishedEpoch = 456780,
+            ),
+        )
+
+        exposureDataBaseModels.forEach { model ->
+            exposureDataDao.upsert(
+                exposureBaseData = model,
+                diagnosisKeysFileList = mutableListOf(diagnosisKeysFileModel),
+            )
+        }
+
+        val object0 = exposureDataDao.getBy(ExposureDataBaseModel.State.Started.value)
+        object0?.also { obj ->
+            Assert.assertEquals(ExposureDataBaseModel.State.Started, obj.exposureBaseData.state)
+            Assert.assertEquals(10, obj.exposureBaseData.priority)
+            Assert.assertEquals(1242344, obj.exposureBaseData.startUptime)
+            Assert.assertEquals(19158340, obj.exposureBaseData.plannedEpoch)
+            Assert.assertEquals(1364543, obj.exposureBaseData.startedEpoch)
+            Assert.assertEquals(-1, obj.exposureBaseData.finishedEpoch)
+        }
+
+        val object1 = exposureDataDao.getBy(ExposureDataBaseModel.State.ResultReceived.value)
+        object1?.also { obj ->
+            Assert.assertEquals(
+                ExposureDataBaseModel.State.ResultReceived,
+                obj.exposureBaseData.state
+            )
+            Assert.assertEquals(10, obj.exposureBaseData.priority)
+            Assert.assertEquals(5943823, obj.exposureBaseData.startUptime)
+            Assert.assertEquals(1583, obj.exposureBaseData.plannedEpoch)
+            Assert.assertEquals(123456, obj.exposureBaseData.startedEpoch)
+            Assert.assertEquals(-1, obj.exposureBaseData.finishedEpoch)
+        }
+
+        val object2 = exposureDataDao.getBy(ExposureDataBaseModel.State.Finished.value)
+        object2?.also { obj ->
+            Assert.assertEquals(ExposureDataBaseModel.State.Finished, obj.exposureBaseData.state)
+            Assert.assertEquals(10, obj.exposureBaseData.priority)
+            Assert.assertEquals(234324, obj.exposureBaseData.startUptime)
+            Assert.assertEquals(15834, obj.exposureBaseData.plannedEpoch)
+            Assert.assertEquals(223456, obj.exposureBaseData.startedEpoch)
+            Assert.assertEquals(456783, obj.exposureBaseData.finishedEpoch)
+        }
+
+        val object3 = exposureDataDao.getBy(ExposureDataBaseModel.State.Planned.value)
+        Assert.assertNull(object3)
+//        Assert.assertNotNull(object3)
+    }
+
+    @Test
+    @Throws(IOException::class)
     fun updateTest(): Unit = runBlocking {
         val dateMillisSinceEpoch = DateTime.now(DateTimeZone.UTC).millis
 
@@ -634,9 +759,9 @@ class ExposureDataDaoTest {
                 subregionList = listOf("subregGion"),
                 enVersion = "verSion",
                 stateValue = ExposureDataBaseModel.State.Started.value,
+                plannedEpoch = baseTimeInMillis + 1,
                 startUptime = 24325,
-                plannedEpoch = 158340,
-                startedEpoch = baseTimeInMillis + 1,
+                startedEpoch = 158340,
                 finishedEpoch = -1,
             ),
             ExposureDataBaseModel(
@@ -645,9 +770,9 @@ class ExposureDataDaoTest {
                 subregionList = listOf("subregGion"),
                 enVersion = "verSion",
                 stateValue = ExposureDataBaseModel.State.Started.value,
+                plannedEpoch = baseTimeInMillis,
                 startUptime = 24325,
-                plannedEpoch = 158340,
-                startedEpoch = baseTimeInMillis,
+                startedEpoch = 158340,
                 finishedEpoch = -1,
             ),
             ExposureDataBaseModel(
@@ -656,31 +781,33 @@ class ExposureDataDaoTest {
                 subregionList = listOf("subregGion"),
                 enVersion = "verSion",
                 stateValue = ExposureDataBaseModel.State.Started.value,
+                plannedEpoch = baseTimeInMillis,
                 startUptime = 24325,
-                plannedEpoch = 158340,
-                startedEpoch = baseTimeInMillis,
+                startedEpoch = 158340,
                 finishedEpoch = -1,
             ),
             ExposureDataBaseModel(
                 id = 0,
+                priority = 10,
                 region = "rEgion",
                 subregionList = listOf("subregGion"),
                 enVersion = "verSion",
                 stateValue = ExposureDataBaseModel.State.Started.value,
+                plannedEpoch = baseTimeInMillis - 1,
                 startUptime = 24325,
-                plannedEpoch = 158340,
-                startedEpoch = baseTimeInMillis - 1,
+                startedEpoch = 158340,
                 finishedEpoch = -1,
             ),
             ExposureDataBaseModel(
                 id = 0,
+                priority = 9,
                 region = "rEgion",
                 subregionList = listOf("subregGion"),
                 enVersion = "verSion",
                 stateValue = ExposureDataBaseModel.State.Started.value,
+                plannedEpoch = baseTimeInMillis - 2,
                 startUptime = 24325,
-                plannedEpoch = 158340,
-                startedEpoch = baseTimeInMillis - 2,
+                startedEpoch = 158340,
                 finishedEpoch = -1,
             ),
         )
@@ -699,11 +826,11 @@ class ExposureDataDaoTest {
         Assert.assertEquals(2, timeoutDataList.size)
 
         timeoutDataList[0].also { model ->
-            Assert.assertEquals(baseTimeInMillis - 2, model.exposureBaseData.startedEpoch)
+            Assert.assertEquals(baseTimeInMillis - 1, model.exposureBaseData.plannedEpoch)
             Assert.assertEquals(-1, model.exposureBaseData.finishedEpoch)
         }
         timeoutDataList[1].also { model ->
-            Assert.assertEquals(baseTimeInMillis - 1, model.exposureBaseData.startedEpoch)
+            Assert.assertEquals(baseTimeInMillis - 2, model.exposureBaseData.plannedEpoch)
             Assert.assertEquals(-1, model.exposureBaseData.finishedEpoch)
         }
     }
@@ -733,9 +860,9 @@ class ExposureDataDaoTest {
                 subregionList = listOf("subregGion"),
                 enVersion = "verSion",
                 stateValue = ExposureDataBaseModel.State.Finished.value,
+                plannedEpoch = baseTimeInMillis,
                 startUptime = 24325,
-                plannedEpoch = 158340,
-                startedEpoch = baseTimeInMillis,
+                startedEpoch = 158340,
                 finishedEpoch = 456783,
             ),
             ExposureDataBaseModel(
@@ -744,9 +871,9 @@ class ExposureDataDaoTest {
                 subregionList = listOf("subregGion"),
                 enVersion = "verSion",
                 stateValue = ExposureDataBaseModel.State.ResultReceived.value,
+                plannedEpoch = baseTimeInMillis,
                 startUptime = 24325,
-                plannedEpoch = 158340,
-                startedEpoch = baseTimeInMillis,
+                startedEpoch = 158340,
                 finishedEpoch = -1,
             ),
             ExposureDataBaseModel(
@@ -755,31 +882,33 @@ class ExposureDataDaoTest {
                 subregionList = listOf("subregGion"),
                 enVersion = "verSion",
                 stateValue = ExposureDataBaseModel.State.Started.value,
+                plannedEpoch = baseTimeInMillis,
                 startUptime = 24325,
-                plannedEpoch = 158340,
-                startedEpoch = baseTimeInMillis,
+                startedEpoch = 158340,
                 finishedEpoch = -1,
             ),
             ExposureDataBaseModel(
                 id = 0,
+                priority = 10,
                 region = "rEgion",
                 subregionList = listOf("subregGion"),
                 enVersion = "verSion",
                 stateValue = ExposureDataBaseModel.State.Started.value,
+                plannedEpoch = baseTimeInMillis - 1,
                 startUptime = 24325,
-                plannedEpoch = 158340,
-                startedEpoch = baseTimeInMillis - 1,
+                startedEpoch = 158340,
                 finishedEpoch = -1,
             ),
             ExposureDataBaseModel(
                 id = 0,
+                priority = 11,
                 region = "rEgion",
                 subregionList = listOf("subregGion"),
                 enVersion = "verSion",
                 stateValue = ExposureDataBaseModel.State.Finished.value,
+                plannedEpoch = baseTimeInMillis - 1,
                 startUptime = 24325,
-                plannedEpoch = 158340,
-                startedEpoch = baseTimeInMillis - 1,
+                startedEpoch = 158340,
                 finishedEpoch = 456780,
             ),
         )
@@ -798,7 +927,7 @@ class ExposureDataDaoTest {
         Assert.assertEquals(1, timeoutDataList.size)
 
         timeoutDataList[0].also { model ->
-            Assert.assertEquals(baseTimeInMillis - 1, model.exposureBaseData.startedEpoch)
+            Assert.assertEquals(baseTimeInMillis - 1, model.exposureBaseData.plannedEpoch)
             Assert.assertEquals(-1, model.exposureBaseData.finishedEpoch)
         }
 
@@ -808,7 +937,7 @@ class ExposureDataDaoTest {
         Assert.assertEquals(1, filteredList.size)
 
         filteredList[0].also { model ->
-            Assert.assertEquals(baseTimeInMillis, model.exposureBaseData.startedEpoch)
+            Assert.assertEquals(baseTimeInMillis, model.exposureBaseData.plannedEpoch)
             Assert.assertEquals(-1, model.exposureBaseData.finishedEpoch)
         }
 

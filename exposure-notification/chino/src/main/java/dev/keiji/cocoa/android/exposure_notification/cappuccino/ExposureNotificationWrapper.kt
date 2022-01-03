@@ -66,6 +66,9 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
 
     companion object {
         private val TAG = ExposureNotificationWrapper::class.java.simpleName
+
+        private const val API_STATUS_CODE_NO_KEY_FILE_IS_INCLUDED = 10
+
     }
 
     private val exposureNotificationClient =
@@ -175,11 +178,34 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
     }
 
     override suspend fun provideDiagnosisKeys(diagnosisKeyFileList: List<File>) {
-        provideDiagnosisKeys(DiagnosisKeyFileProvider(diagnosisKeyFileList))
+        try {
+            provideDiagnosisKeys(DiagnosisKeyFileProvider(diagnosisKeyFileList))
+        } catch (exception: ApiException) {
+            Timber.e(exception, exception.status.statusMessage)
+
+            if (exception.statusCode == API_STATUS_CODE_NO_KEY_FILE_IS_INCLUDED) {
+                throw ExposureNotificationException(
+                    ExposureNotificationException.Code.NoKeyFileIsIncluded,
+                    "com.google.android.gms.common.api.ApiException: 10: No key file is included"
+                )
+            }
+        }
     }
 
     override suspend fun provideDiagnosisKeys(diagnosisKeyFileProvider: DiagnosisKeyFileProvider) {
-        exposureNotificationClient.provideDiagnosisKeys(diagnosisKeyFileProvider.toNative()).await()
+        try {
+            exposureNotificationClient.provideDiagnosisKeys(diagnosisKeyFileProvider.toNative())
+                .await()
+        } catch (exception: ApiException) {
+            Timber.e(exception, exception.status.statusMessage)
+
+            if (exception.statusCode == API_STATUS_CODE_NO_KEY_FILE_IS_INCLUDED) {
+                throw ExposureNotificationException(
+                    ExposureNotificationException.Code.NoKeyFileIsIncluded,
+                    "com.google.android.gms.common.api.ApiException: 10: No key file is included"
+                )
+            }
+        }
     }
 
     override suspend fun provideDiagnosisKeys(
@@ -187,11 +213,22 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
         exposureConfiguration: ExposureConfiguration.V1Config,
         token: String
     ) {
-        exposureNotificationClient.provideDiagnosisKeys(
-            diagnosisKeyFileList,
-            exposureConfiguration.toNative(),
-            token
-        ).await()
+        try {
+            exposureNotificationClient.provideDiagnosisKeys(
+                diagnosisKeyFileList,
+                exposureConfiguration.toNative(),
+                token
+            ).await()
+        } catch (exception: ApiException) {
+            Timber.e(exception, exception.status.statusMessage)
+
+            if (exception.statusCode == API_STATUS_CODE_NO_KEY_FILE_IS_INCLUDED) {
+                throw ExposureNotificationException(
+                    ExposureNotificationException.Code.NoKeyFileIsIncluded,
+                    "com.google.android.gms.common.api.ApiException: 10: No key file is included"
+                )
+            }
+        }
     }
 
     override suspend fun requestPreAuthorizedTemporaryExposureKeyHistory(activity: Activity) {

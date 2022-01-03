@@ -1,6 +1,7 @@
 package dev.keiji.cocoa.android.exposure_notification.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,15 +20,19 @@ import dev.keiji.cocoa.android.exposure_notification.model.ScanInstanceModel
 abstract class ExposureDataDao {
 
     @Transaction
-    @Query("SELECT * FROM exposure_data")
+    @Query("SELECT * FROM exposure_data ORDER BY priority DESC")
     abstract suspend fun getAll(): List<ExposureDataModel>
 
     @Transaction
-    @Query("SELECT * FROM exposure_data WHERE state = :stateValue")
+    @Query("SELECT * FROM exposure_data WHERE state = :stateValue ORDER BY priority DESC LIMIT 1")
+    abstract suspend fun getBy(stateValue: Int): ExposureDataModel?
+
+    @Transaction
+    @Query("SELECT * FROM exposure_data WHERE state = :stateValue ORDER BY priority DESC")
     abstract suspend fun findBy(stateValue: Int): List<ExposureDataModel>
 
     @Transaction
-    @Query("SELECT * FROM exposure_data WHERE started_epoch < :baseTime AND state = :stateValue ORDER BY started_epoch ASC")
+    @Query("SELECT * FROM exposure_data WHERE planned_epoch < :baseTime AND state = :stateValue ORDER BY priority DESC")
     abstract suspend fun findTimeout(
         baseTime: Long,
         stateValue: Int = ExposureDataBaseModel.State.Started.value
@@ -146,4 +151,7 @@ abstract class ExposureDataDao {
         }
         return timeoutDataList
     }
+
+    @Query("DELETE FROM exposure_data WHERE state = :stateValue")
+    abstract fun cleanup(stateValue: Int)
 }

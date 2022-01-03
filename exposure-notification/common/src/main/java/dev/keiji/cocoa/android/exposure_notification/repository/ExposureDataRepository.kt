@@ -35,6 +35,8 @@ interface ExposureDataRepository {
 
     suspend fun loadExposureDataAll(): List<ExposureDataModel>
 
+    suspend fun getBy(state: ExposureDataBaseModel.State): ExposureDataModel?
+
     suspend fun findBy(state: ExposureDataBaseModel.State): List<ExposureDataModel>
 
     suspend fun findExposureInformationListBy(fromDate: DateTime): List<ExposureInformationModel>
@@ -53,6 +55,8 @@ interface ExposureDataRepository {
         baseTime: Long,
         state: ExposureDataBaseModel.State
     ): List<ExposureDataModel>
+
+    suspend fun cleanupTimeout()
 }
 
 class ExposureDataRepositoryImpl(
@@ -104,6 +108,11 @@ class ExposureDataRepositoryImpl(
             return@withContext exposureDataDao.getAll()
         }
 
+    override suspend fun getBy(state: ExposureDataBaseModel.State): ExposureDataModel? =
+        withContext(Dispatchers.IO) {
+            return@withContext exposureDataDao.getBy(state.value)
+        }
+
     override suspend fun findBy(state: ExposureDataBaseModel.State): List<ExposureDataModel> =
         withContext(Dispatchers.IO) {
             return@withContext exposureDataDao.findBy(state.value)
@@ -139,6 +148,11 @@ class ExposureDataRepositoryImpl(
     ): List<ExposureDataModel> =
         withContext(Dispatchers.IO) {
             return@withContext exposureDataDao.setTimeout(baseTime, state.value)
+        }
+
+    override suspend fun cleanupTimeout() =
+        withContext(Dispatchers.IO) {
+            exposureDataDao.cleanup(ExposureDataBaseModel.State.Timeout.value)
         }
 
     override suspend fun findExposureInformationListBy(fromDate: DateTime): List<ExposureInformationModel> =

@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.SystemClock
 import androidx.work.ListenableWorker
 import dev.keiji.cocoa.android.common.source.DateTimeSource
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationException
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureNotificationStatus
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureDataCollectionApi
@@ -13,6 +14,7 @@ import dev.keiji.cocoa.android.exposure_notification.exposure_detection.reposito
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.ExposureConfigurationRepository
 import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataBaseModel
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataModel
 import dev.keiji.cocoa.android.exposure_notification.repository.ExposureDataRepository
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import timber.log.Timber
@@ -52,7 +54,91 @@ class ExposureDetectionServiceImpl(
     override fun isExposureNotificationEnabled(intent: Intent): Boolean =
         intent.getBooleanExtra(ExposureNotificationWrapper.EXTRA_SERVICE_STATE, false)
 
+    private suspend fun reloadFileList(): List<DiagnosisKeysFileModel> {
+        val diagnosisKeyList = mutableListOf<DiagnosisKeysFileModel>()
+        configurationSource.regions.forEach { region ->
+            configurationSource.subregions.forEach { subregion ->
+                val list = diagnosisKeysFileRepository.getDiagnosisKeysFileList(
+                    region.toString(),
+                    subregion
+                )
+                diagnosisKeyList.addAll(list)
+            }
+
+            val list = diagnosisKeysFileRepository.getDiagnosisKeysFileList(
+                region.toString(),
+                null,
+            )
+            diagnosisKeyList.addAll(list)
+        }
+        return diagnosisKeyList
+    }
+
+    private suspend fun planExposureDetection(
+        enVersion: String,
+        diagnosisKeysFileList: List<DiagnosisKeysFileModel>
+    ) {
+        // Timeout
+        exposureDataRepository.setTimeout(
+            dateTimeSource.epochInMillis() - TIMEOUT_INTERVAL_IN_MILLIS,
+            ExposureDataBaseModel.State.Planned
+        )
+
+        val newDiagnosisKeysFileList = diagnosisKeysFileList
+            .filter { diagnosisKeysFile -> diagnosisKeysFile.exposureDataId == 0L }
+
+        val regions = newDiagnosisKeysFileList
+            .filter { diagnosisKeysFile -> diagnosisKeysFile.subregion == null }
+            .map { diagnosisKeysFile -> diagnosisKeysFile.region }
+            .distinct()
+
+        regions.forEach { region ->
+
+            // region
+            val regionDiagnosisKeysFileList = newDiagnosisKeysFileList
+                .filter { diagnosisKeysFile -> diagnosisKeysFile.region == region }
+                .filter { diagnosisKeysFile -> diagnosisKeysFile.subregion == null }
+
+            val exposureData = ExposureDataBaseModel(
+                id = 0,
+                region = region,
+                subregionList = emptyList(),
+                enVersion = enVersion,
+                stateValue = ExposureDataBaseModel.State.Planned.value,
+                plannedEpoch = dateTimeSource.epochInMillis(),
+            )
+            exposureDataRepository.upsert(exposureData, regionDiagnosisKeysFileList)
+
+            // subregion
+            val subregions = newDiagnosisKeysFileList
+                .filter { diagnosisKeysFile -> diagnosisKeysFile.region == region }
+                .filter { diagnosisKeysFile -> diagnosisKeysFile.subregion != null }
+                .mapNotNull { diagnosisKeysFile -> diagnosisKeysFile.subregion }
+                .distinct()
+
+            subregions.forEach { subregion ->
+                val subregionDiagnosisKeysFileList = newDiagnosisKeysFileList
+                    .filter { diagnosisKeysFile -> diagnosisKeysFile.region == region }
+                    .filter { diagnosisKeysFile -> diagnosisKeysFile.subregion == subregion }
+
+                val exposureData = ExposureDataBaseModel(
+                    id = 0,
+                    region = region,
+                    subregionList = listOf(subregion),
+                    enVersion = enVersion,
+                    stateValue = ExposureDataBaseModel.State.Planned.value,
+                    plannedEpoch = dateTimeSource.epochInMillis(),
+                )
+                exposureDataRepository.upsert(exposureData, subregionDiagnosisKeysFileList)
+            }
+        }
+    }
+
     override suspend fun detectExposure(): ListenableWorker.Result {
+        Timber.d("start: detectExposure().")
+
+        exposureDataRepository.cleanupTimeout()
+
         if (!exposureNotificationWrapper.isEnabled()) {
             Timber.w("ExposureNotification is disabled.")
             return ListenableWorker.Result.failure()
@@ -65,53 +151,77 @@ class ExposureDetectionServiceImpl(
             return ListenableWorker.Result.failure()
         }
 
-        // Sub-region
-        val subregions = mutableListOf<String>()
-        val subRegionDiagnosisKeyFiles = mutableListOf<DiagnosisKeysContainer>()
+        val enVersion = exposureNotificationWrapper.getVersion().toString()
+        Timber.d("EN Version: $enVersion")
 
-        configurationSource.regions.forEach { region ->
-            configurationSource.subregions.forEach { subregion ->
-                val list = downloadDiagnosisKeys(region.toString(), subregion)
-                if (list.isNotEmpty()) {
-                    subregions.add(subregion)
-                    subRegionDiagnosisKeyFiles.addAll(list)
-                }
-            }
-            if (subRegionDiagnosisKeyFiles.isNotEmpty()) {
-                Timber.i("subregion DiagnosisKeys found. ${subRegionDiagnosisKeyFiles.size}")
-                detectExposure(
-                    region = region.toString(),
-                    subregionList = subregions,
-                    diagnosisKeysFileContainerList = subRegionDiagnosisKeyFiles,
-                )
-            }
+        val diagnosisKeysFileList = reloadFileList()
+        planExposureDetection(enVersion, diagnosisKeysFileList)
 
-            // Region
-            val diagnosisKeyFiles = downloadDiagnosisKeys(
-                region.toString(),
-                null
-            )
-            if (diagnosisKeyFiles.isNotEmpty()) {
-                Timber.i("region DiagnosisKeys found. ${subRegionDiagnosisKeyFiles.size}")
-                detectExposure(
-                    region = region.toString(),
-                    diagnosisKeysFileContainerList = diagnosisKeyFiles,
-                )
-            }
+        exposureDataRepository.setTimeout(
+            dateTimeSource.epochInMillis() - TIMEOUT_INTERVAL_IN_MILLIS,
+            ExposureDataBaseModel.State.Started
+        )
+
+        val taskStarted = exposureDataRepository.getBy(ExposureDataBaseModel.State.Started)
+        val taskReceived = exposureDataRepository.getBy(ExposureDataBaseModel.State.ResultReceived)
+        if (taskStarted != null || taskReceived != null) {
+            Timber.w("Task already in progress.")
+            return ListenableWorker.Result.retry()
         }
+
+        var taskPlanned = exposureDataRepository
+            .findBy(ExposureDataBaseModel.State.Planned)
+            .firstOrNull { taskPlanned -> taskPlanned.exposureBaseData.subregionList.isNotEmpty() }
+        if (taskPlanned == null) {
+            taskPlanned = exposureDataRepository.getBy(ExposureDataBaseModel.State.Planned)
+        }
+        taskPlanned ?: return ListenableWorker.Result.success()
+
+        startExposure(taskPlanned)
+
+        Timber.w("Task started. $taskPlanned")
+
+        Timber.d("finish: detectExposure().")
         return ListenableWorker.Result.success()
     }
 
+    private suspend fun startExposure(exposureDataModel: ExposureDataModel) {
+        Timber.d("start: startExposure")
+
+        val diagnosisKeysFileContainerList =
+            downloadDiagnosisKeys(exposureDataModel.diagnosisKeysFileList)
+
+        try {
+            if (configurationSource.isEnabledExposureWindowMode()) {
+                detectExposureExposureWindowMode(diagnosisKeysFileContainerList)
+            } else {
+                detectExposureLegacyV1(diagnosisKeysFileContainerList)
+            }
+
+            onStarted(exposureDataModel)
+
+            diagnosisKeysFileContainerList.forEach { container ->
+                container.file.delete()
+            }
+        } catch (exception: ExposureNotificationException) {
+            Timber.d(exposureDataModel.toString())
+
+            exposureDataModel.exposureBaseData.also { exposureBaseData ->
+                exposureBaseData.priority -= 10
+                exposureBaseData.message = exception.message
+            }
+            exposureDataRepository.upsert(exposureDataModel)
+
+            Timber.d(exposureDataModel.toString())
+        }
+
+        Timber.d("finish: startExposure")
+    }
+
     private suspend fun downloadDiagnosisKeys(
-        region: String,
-        subregion: String?
+        diagnosisKeyList: List<DiagnosisKeysFileModel>
     ): List<DiagnosisKeysContainer> {
-        val diagnosisKeyList =
-            diagnosisKeysFileRepository.getDiagnosisKeysFileList(region, subregion)
-
-        Timber.d("Region:$region, Subregion:${subregion}, diagnosisKeyList: ${diagnosisKeyList.size}")
-
-        val diagnosisKeysContainers: MutableList<DiagnosisKeysContainer> = mutableListOf()
+        val diagnosisKeysContainerList: MutableList<DiagnosisKeysContainer> = mutableListOf()
 
         diagnosisKeyList.forEach { diagnosisKeyEntry ->
             Timber.d(diagnosisKeyEntry.toString())
@@ -124,7 +234,7 @@ class ExposureDetectionServiceImpl(
                 diagnosisKeysFileRepository.upsert(model)
             }
 
-            diagnosisKeysContainers.add(
+            diagnosisKeysContainerList.add(
                 DiagnosisKeysContainer(
                     diagnosisKeyEntry,
                     downloadedFile
@@ -132,62 +242,38 @@ class ExposureDetectionServiceImpl(
             )
         }
 
-        return diagnosisKeysContainers
+        return diagnosisKeysContainerList
     }
 
-    suspend fun onStarted(
-        exposureNotificationWrapper: ExposureNotificationWrapper,
-        region: String,
-        subregionList: List<String>,
-        diagnosisKeysFileContainerList: List<DiagnosisKeysContainer>,
-    ) {
+    private suspend fun onStarted(exposureDataModel: ExposureDataModel) {
         Timber.d("started: onStarted ${dateTimeSource.epochInMillis()}")
 
-        val baseTimeInMillis = dateTimeSource.epochInMillis() - TIMEOUT_INTERVAL_IN_MILLIS
-
         exposureDataRepository.setTimeout(
-            baseTimeInMillis,
+            dateTimeSource.epochInMillis() - TIMEOUT_INTERVAL_IN_MILLIS,
             ExposureDataBaseModel.State.Started
         )
-        exposureDataRepository.setTimeout(
-            baseTimeInMillis,
-            ExposureDataBaseModel.State.ResultReceived
-        )
 
-        val exposureDataBaseModel = ExposureDataBaseModel(
-            id = 0,
-            region = region,
-            subregionList = subregionList,
-            enVersion = exposureNotificationWrapper.getVersion().toString(),
-            stateValue = ExposureDataBaseModel.State.Started.value,
-            startedEpoch = dateTimeSource.epochInMillis(),
-            startUptime = SystemClock.uptimeMillis(),
-        )
-
-        val diagnosisKeysFileList = diagnosisKeysFileContainerList.map { container ->
-            container.diagnosisKeysFileModel.state = DiagnosisKeysFileModel.State.Completed.value
-            container.diagnosisKeysFileModel.filePath = null
-            return@map container.diagnosisKeysFileModel
+        exposureDataModel.exposureBaseData.also { exposureBaseData ->
+            exposureBaseData.startUptime = SystemClock.uptimeMillis()
+            exposureBaseData.startedEpoch = dateTimeSource.epochInMillis()
+            exposureBaseData.state = ExposureDataBaseModel.State.Started
         }
-        diagnosisKeysFileRepository.upsertDiagnosisKeysFile(diagnosisKeysFileList)
-
-        exposureDataRepository.upsert(
-            exposureDataBaseModel,
-            diagnosisKeysFileList = diagnosisKeysFileList,
-        )
+        exposureDataModel.diagnosisKeysFileList.forEach { diagnosisKeysFileModel ->
+            diagnosisKeysFileModel.state = DiagnosisKeysFileModel.State.Completed.value
+            diagnosisKeysFileModel.filePath = null
+        }
+        exposureDataRepository.upsert(exposureDataModel)
 
         Timber.d("finished: onStarted ${dateTimeSource.epochInMillis()}")
     }
 
-    override suspend fun onResultReceived(
-        intentAction: String
-    ) {
+    override suspend fun onResultReceived(intentAction: String) {
         Timber.d("started: onResultReceived ${dateTimeSource.epochInMillis()}")
 
         val epochInMillis = dateTimeSource.epochInMillis()
         exposureDataRepository.setTimeout(
             epochInMillis - TIMEOUT_INTERVAL_IN_MILLIS,
-            ExposureDataBaseModel.State.Started
+            ExposureDataBaseModel.State.ResultReceived
         )
 
         val exposureDataStartedList =
@@ -203,123 +289,153 @@ class ExposureDetectionServiceImpl(
             exposureDataStartedList.first()
         }
 
-        exposureDataStarted.exposureBaseData.state = ExposureDataBaseModel.State.ResultReceived
+        exposureDataStarted.exposureBaseData.also { exposureBaseData ->
+            exposureBaseData.state = ExposureDataBaseModel.State.ResultReceived
+        }
         exposureDataRepository.upsert(exposureDataStarted)
 
         Timber.d("finished: onResultReceived ${dateTimeSource.epochInMillis()}")
     }
 
     override suspend fun noExposureDetectedWork(): ListenableWorker.Result {
-        val enVersion = exposureNotificationWrapper.getVersion()
-        val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
+        Timber.d("started: noExposureDetectedWork ${dateTimeSource.epochInMillis()}")
 
-        try {
-            configurationSource.regions.forEach { region ->
-                exposureDataCollectionApi.submit(
-                    region.toString(),
-                    ExposureDataRequest(
-                        device = Build.MODEL,
-                        enVersion = enVersion.toString(),
-                        exposureConfiguration = exposureConfiguration,
-                        null,
-                        null,
-                        null,
-                        null
-                    )
-                )
-            }
-            exposureResultService.onNoExposureDetected()
-        } catch (exception: Exception) {
-            Timber.e(exception)
+        val taskResultReceived =
+            exposureDataRepository.getBy(ExposureDataBaseModel.State.ResultReceived)
+        if (taskResultReceived == null) {
+            Timber.w("taskResultReceived not found.")
+            return ListenableWorker.Result.success()
         }
-        return ListenableWorker.Result.success()
-    }
 
-    override suspend fun v1ExposureDetectedWork(
-        token: String,
-    ): ListenableWorker.Result {
         val enVersion = exposureNotificationWrapper.getVersion()
-        val exposureSummary = exposureNotificationWrapper.getExposureSummary(token)
-        val exposureInformationList = exposureNotificationWrapper.getExposureInformation(token)
         val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
 
         try {
-            configurationSource.regions.forEach { region ->
-                exposureDataCollectionApi.submit(
-                    region.toString(),
-                    ExposureDataRequest(
-                        device = Build.MODEL,
-                        enVersion = enVersion.toString(),
-                        exposureConfiguration = exposureConfiguration,
-                        exposureSummary = exposureSummary,
-                        exposureInformationList = exposureInformationList,
-                        dailySummaryList = null,
-                        exposureWindowList = null
-                    )
-                )
-            }
+            exposureResultService.onExposureNotDetected()
 
-            exposureResultService.onExposureDetected(
-                exposureInformationList = exposureInformationList,
+            exposureDataCollectionApi.submit(
+                taskResultReceived.exposureBaseData.region,
+                ExposureDataRequest(
+                    device = Build.MODEL,
+                    enVersion = enVersion.toString(),
+                    exposureConfiguration = exposureConfiguration,
+                    null,
+                    null,
+                    null,
+                    null
+                )
             )
         } catch (exception: Exception) {
             Timber.e(exception)
         }
 
-        return ListenableWorker.Result.success()
+        Timber.d("finished: noExposureDetectedWork ${dateTimeSource.epochInMillis()}")
+
+        taskResultReceived.exposureBaseData.also { exposureDataBaseModel ->
+            exposureDataBaseModel.finishedEpoch = dateTimeSource.epochInMillis()
+            exposureDataBaseModel.state = ExposureDataBaseModel.State.Finished
+        }
+        exposureDataRepository.upsert(taskResultReceived)
+
+        return detectExposure()
+    }
+
+    override suspend fun v1ExposureDetectedWork(
+        token: String,
+    ): ListenableWorker.Result {
+        Timber.d("started: v1ExposureDetectedWork ${dateTimeSource.epochInMillis()}")
+
+        val taskResultReceived =
+            exposureDataRepository.getBy(ExposureDataBaseModel.State.ResultReceived)
+        if (taskResultReceived == null) {
+            Timber.w("taskResultReceived not found.")
+            return ListenableWorker.Result.success()
+        }
+
+        val exposureSummary = exposureNotificationWrapper.getExposureSummary(token)
+        val exposureInformationList = exposureNotificationWrapper.getExposureInformation(token)
+        val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
+
+        try {
+            exposureResultService.onExposureDetected(
+                exposureSummary = exposureSummary,
+                exposureInformationList = exposureInformationList,
+            )
+
+            exposureDataCollectionApi.submit(
+                taskResultReceived.exposureBaseData.region,
+                ExposureDataRequest(
+                    device = Build.MODEL,
+                    enVersion = taskResultReceived.exposureBaseData.enVersion,
+                    exposureConfiguration = exposureConfiguration,
+                    exposureSummary = exposureSummary,
+                    exposureInformationList = exposureInformationList,
+                    dailySummaryList = null,
+                    exposureWindowList = null
+                )
+            )
+        } catch (exception: Exception) {
+            Timber.e(exception)
+        }
+
+        Timber.d("finished: v1ExposureDetectedWork ${dateTimeSource.epochInMillis()}")
+
+        taskResultReceived.exposureBaseData.also { exposureDataBaseModel ->
+            exposureDataBaseModel.finishedEpoch = dateTimeSource.epochInMillis()
+            exposureDataBaseModel.state = ExposureDataBaseModel.State.Finished
+        }
+        exposureDataRepository.upsert(taskResultReceived)
+
+        return detectExposure()
     }
 
     override suspend fun v2ExposureDetectedWork(): ListenableWorker.Result {
-        val enVersion = exposureNotificationWrapper.getVersion()
-        val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
+        Timber.d("started: v2ExposureDetectedWork ${dateTimeSource.epochInMillis()}")
 
+        val taskResultReceived =
+            exposureDataRepository.getBy(ExposureDataBaseModel.State.ResultReceived)
+        if (taskResultReceived == null) {
+            Timber.w("taskResultReceived not found.")
+            return ListenableWorker.Result.success()
+        }
+
+        val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
         val dailySummaryList =
             exposureNotificationWrapper.getDailySummary(exposureConfiguration.dailySummaryConfig)
         val exposureWindowList = exposureNotificationWrapper.getExposureWindow()
 
         try {
-            configurationSource.regions.forEach { region ->
-                exposureDataCollectionApi.submit(
-                    region.toString(),
-                    ExposureDataRequest(
-                        device = Build.MODEL,
-                        enVersion = enVersion.toString(),
-                        exposureConfiguration = exposureConfiguration,
-                        exposureSummary = null,
-                        exposureInformationList = null,
-                        dailySummaryList = dailySummaryList,
-                        exposureWindowList = exposureWindowList
-                    )
+            exposureResultService.onExposureDetected(
+                dailySummaryList = dailySummaryList,
+                exposureWindowList = exposureWindowList,
+            )
+
+            exposureDataCollectionApi.submit(
+                taskResultReceived.exposureBaseData.region,
+                ExposureDataRequest(
+                    device = Build.MODEL,
+                    enVersion = taskResultReceived.exposureBaseData.enVersion,
+                    exposureConfiguration = exposureConfiguration,
+                    exposureSummary = null,
+                    exposureInformationList = null,
+                    dailySummaryList = dailySummaryList,
+                    exposureWindowList = exposureWindowList
                 )
-            }
+            )
+
         } catch (exception: Exception) {
             Timber.e(exception)
         }
 
-        return ListenableWorker.Result.success()
-    }
+        Timber.d("finished: v2ExposureDetectedWork ${dateTimeSource.epochInMillis()}")
 
-    private suspend fun detectExposure(
-        region: String,
-        subregionList: List<String> = emptyList(),
-        diagnosisKeysFileContainerList: List<DiagnosisKeysContainer>
-    ) {
-        if (configurationSource.isEnabledExposureWindowMode()) {
-            detectExposureExposureWindowMode(diagnosisKeysFileContainerList)
-        } else {
-            detectExposureLegacyV1(diagnosisKeysFileContainerList)
+        taskResultReceived.exposureBaseData.also { exposureDataBaseModel ->
+            exposureDataBaseModel.finishedEpoch = dateTimeSource.epochInMillis()
+            exposureDataBaseModel.state = ExposureDataBaseModel.State.Finished
         }
+        exposureDataRepository.upsert(taskResultReceived)
 
-        onStarted(
-            exposureNotificationWrapper,
-            region,
-            subregionList,
-            diagnosisKeysFileContainerList,
-        )
-
-        diagnosisKeysFileContainerList.forEach { container ->
-            container.file.delete()
-        }
+        return detectExposure()
     }
 
     private suspend fun detectExposureExposureWindowMode(diagnosisKeys: List<DiagnosisKeysContainer>) {

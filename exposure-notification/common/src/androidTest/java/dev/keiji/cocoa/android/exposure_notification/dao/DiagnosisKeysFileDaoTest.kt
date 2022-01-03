@@ -15,10 +15,6 @@ import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
 class DiagnosisKeysFileDaoTest {
-    companion object {
-        private const val DELTA = 0.0000001
-    }
-
     private lateinit var db: AppDatabase
 
     private lateinit var diagnosisKeysFileDao: DiagnosisKeysFileDao
@@ -47,7 +43,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion",
                 url = "https://examaple.com/a/b/c/",
                 created = 11112222,
-                state = DiagnosisKeysFileModel.State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Downloaded.value,
                 isListed = true,
             )
         )
@@ -67,7 +63,7 @@ class DiagnosisKeysFileDaoTest {
             Assert.assertNull(diagnosisKeysFileModel.filePath)
             Assert.assertEquals(11112222, diagnosisKeysFileModel.created)
             Assert.assertEquals(
-                DiagnosisKeysFileModel.State.Processing.value,
+                DiagnosisKeysFileModel.State.Downloaded.value,
                 diagnosisKeysFileModel.state
             )
             Assert.assertEquals(true, diagnosisKeysFileModel.isListed)
@@ -105,7 +101,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion1",
                 url = "https://examaple.com/a/b/c/2",
                 created = 11112222,
-                state = DiagnosisKeysFileModel.State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Downloaded.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -125,7 +121,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion2",
                 url = "https://examaple.com/a/b/c/4",
                 created = 11112222,
-                state = DiagnosisKeysFileModel.State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Downloaded.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -135,7 +131,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion3",
                 url = "https://examaple.com/a/b/c/5",
                 created = 11112222,
-                state = DiagnosisKeysFileModel.State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Downloaded.value,
                 isListed = true,
             ),
         )
@@ -191,7 +187,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion",
                 url = "https://examaple.com/a/b/c/2",
                 created = 11112222,
-                state = DiagnosisKeysFileModel.State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Downloaded.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -211,7 +207,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion",
                 url = "https://examaple.com/a/b/c/4",
                 created = 11112222,
-                state = DiagnosisKeysFileModel.State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Downloaded.value,
                 isListed = true,
             ),
             DiagnosisKeysFileModel(
@@ -221,7 +217,7 @@ class DiagnosisKeysFileDaoTest {
                 subregion = "subrEgion",
                 url = "https://examaple.com/a/b/c/5",
                 created = 11112222,
-                state = DiagnosisKeysFileModel.State.Processing.value,
+                state = DiagnosisKeysFileModel.State.Downloaded.value,
                 isListed = true,
             ),
         )

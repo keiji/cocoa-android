@@ -14,7 +14,7 @@ import timber.log.Timber
  * TODO: Change name more appropriately.
  */
 interface ExposureResultService {
-    suspend fun onNoExposureDetected()
+    suspend fun onExposureNotDetected()
 
     suspend fun onExposureDetected(
         exposureSummary: ExposureSummary? = null,
@@ -33,7 +33,7 @@ class ExposureResultServiceImpl(
         private const val TIMEOUT_INTERVAL_IN_MILLIS = 1000 * 60 * 60 * 2
     }
 
-    override suspend fun onNoExposureDetected() {
+    override suspend fun onExposureNotDetected() {
         val epochInMillis = dateTimeSource.epochInMillis()
 
         Timber.d("onNoExposureDetected ${dateTimeSource.epochInMillis()}")

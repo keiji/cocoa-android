@@ -141,7 +141,7 @@ class ExposureDataRepositoryTest {
         )
 
         val exposureDataBaseModel = ExposureDataBaseModel(
-            0, "reGiOn", emptyList(), "vERsion", 123232, 242328, 321231
+            0, 0, "reGiOn", emptyList(), "vERsion", 123232, 242328, 321231
         )
 
         val diagnosisKeysFileList = listOf(

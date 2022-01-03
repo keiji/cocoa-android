@@ -2,6 +2,8 @@ package dev.keiji.cocoa.android.exposure_notification.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "diagnosis_keys_files")
@@ -37,7 +39,6 @@ data class DiagnosisKeysFileModel(
     enum class State(val value: Int) {
         None(0),
         Downloaded(1),
-        Processing(2),
-        Completed(3),
+        Completed(2),
     }
 }
