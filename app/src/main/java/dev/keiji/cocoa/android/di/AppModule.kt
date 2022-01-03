@@ -1,5 +1,6 @@
 package dev.keiji.cocoa.android.di
 
+import android.app.PendingIntent
 import android.content.Context
 import dagger.Module
 import dagger.Provides
@@ -8,6 +9,7 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.keiji.cocoa.android.BuildConfig
+import dev.keiji.cocoa.android.R
 import dev.keiji.cocoa.android.exposure_notification.AnonymousInterceptor
 import dev.keiji.cocoa.android.exposure_notification.AnonymousInterceptorOkHttpClient
 import dev.keiji.cocoa.android.exposure_notification.DefaultInterceptorOkHttpClient
@@ -22,8 +24,39 @@ import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSourceImpl
 import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.common.source.DateTimeSourceImpl
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.LocalNotificationManager
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.LocalNotificationManagerImpl
+import dev.keiji.cocoa.android.ui.MainActivity
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+class LocalNotificationManagerModule {
+    companion object {
+        private const val REQUEST_CODE = 0x01
+    }
+
+    @Singleton
+    @Provides
+    fun provideLocalNotificationManager(
+        @ApplicationContext applicationContext: Context,
+    ): LocalNotificationManager {
+        return LocalNotificationManagerImpl(
+            applicationContext,
+            R.mipmap.ic_launcher,
+        ) {
+            val intent = MainActivity.newIntent(applicationContext)
+            PendingIntent.getActivity(
+                applicationContext,
+                REQUEST_CODE,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        }
+    }
+}
+
 
 @Module
 @InstallIn(SingletonComponent::class)

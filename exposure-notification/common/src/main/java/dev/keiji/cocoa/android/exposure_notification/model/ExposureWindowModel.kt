@@ -7,12 +7,17 @@ import androidx.room.PrimaryKey
 import androidx.room.Relation
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureWindow
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ScanInstance
+import dev.keiji.cocoa.android.exposure_notification.uniqueKey
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
+import java.security.MessageDigest
 
 @Entity(tableName = "exposure_windows")
 data class ExposureWindowModel(
     @PrimaryKey(autoGenerate = true) var id: Long,
+
+    @ColumnInfo(name = "unique_key")
+    val uniqueKey: String,
 
     @ColumnInfo(name = "exposure_data_id")
     var exposureDataId: Long,
@@ -29,6 +34,7 @@ data class ExposureWindowModel(
         exposureWindow: ExposureWindow
     ) : this(
         id = 0,
+        uniqueKey = exposureWindow.uniqueKey(),
         exposureDataId = 0,
         calibrationConfidence = exposureWindow.calibrationConfidence,
         dateMillisSinceEpoch = exposureWindow.dateMillisSinceEpoch,

@@ -8,6 +8,7 @@ class ExposureNotificationException(
     enum class Code {
         ApiNotConnected,
         ResolutionRequired,
+        NoKeyFileIsIncluded,
         Unknown
     }
 }

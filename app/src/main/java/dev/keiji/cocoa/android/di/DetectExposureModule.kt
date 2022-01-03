@@ -25,6 +25,12 @@ import dev.keiji.cocoa.android.exposure_notification.source.DatabaseSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApiImpl
 import dev.keiji.cocoa.android.common.source.DateTimeSource
+import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureResultService
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureResultServiceImpl
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.LocalNotificationManager
+import dev.keiji.cocoa.android.exposure_notification.repository.ExposureDataRepository
+import dev.keiji.cocoa.android.exposure_notification.repository.ExposureDataRepositoryImpl
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
@@ -34,19 +40,70 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
+object ExposureDataRepositoryModule {
+
+    @Singleton
+    @Provides
+    fun provideExposureDataRepository(
+        databaseSource: DatabaseSource,
+        dateTimeSource: DateTimeSource,
+    ): ExposureDataRepository {
+        val db = databaseSource.dbInstance()
+        return ExposureDataRepositoryImpl(
+            dateTimeSource,
+            db.exposureDataDao(),
+            db.exposureInformationDao(),
+            db.dailySummaryDao(),
+            db.exposureWindowDao(),
+        )
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object ExposureResultServiceImplModule {
+
+    @Singleton
+    @Provides
+    fun provideExposureResultServiceImpl(
+        dateTimeSource: DateTimeSource,
+        exposureDataRepository: ExposureDataRepository,
+        localNotificationManager: LocalNotificationManager,
+    ): ExposureResultService {
+        return ExposureResultServiceImpl(
+            dateTimeSource,
+            exposureDataRepository,
+            localNotificationManager,
+        )
+    }
+}
+
+
+@Module
+@InstallIn(SingletonComponent::class)
 object ExposureDetectionServiceModule {
 
     @Singleton
     @Provides
-    fun provideDiagnosisKeyFileProvideServiceApi(
+    fun provideExposureDetectionService(
+        dateTimeSource: DateTimeSource,
         exposureConfigurationRepository: ExposureConfigurationRepository,
+        exposureDataRepository: ExposureDataRepository,
         exposureDataCollectionApi: ExposureDataCollectionApi,
+        diagnosisKeysFileRepository: DiagnosisKeysFileRepository,
         configurationSource: ConfigurationSource,
+        exposureResultService: ExposureResultService,
+        exposureNotificationWrapper: ExposureNotificationWrapper,
     ): ExposureDetectionService {
         return ExposureDetectionServiceImpl(
+            dateTimeSource,
             exposureConfigurationRepository,
+            exposureDataRepository,
             exposureDataCollectionApi,
-            configurationSource
+            diagnosisKeysFileRepository,
+            configurationSource,
+            exposureResultService,
+            exposureNotificationWrapper
         )
     }
 }
@@ -70,6 +127,8 @@ object DiagnosisKeyFileProvideApiModule {
 @InstallIn(SingletonComponent::class)
 object DiagnosisKeyListProvideApiModule {
 
+    private val json = Json { ignoreUnknownKeys = true }
+
     @Singleton
     @Provides
     fun provideDiagnosisKeyListProvideApi(
@@ -80,7 +139,7 @@ object DiagnosisKeyListProvideApiModule {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(BuildConfig.DIAGNOSIS_KEY_API_ENDPOINT)
-            .addConverterFactory(Json.asConverterFactory(contentType))
+            .addConverterFactory(json.asConverterFactory(contentType))
             .build()
             .create(DiagnosisKeyListApi::class.java)
     }

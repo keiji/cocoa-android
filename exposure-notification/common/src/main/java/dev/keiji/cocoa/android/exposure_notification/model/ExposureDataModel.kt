@@ -11,23 +11,60 @@ data class ExposureDataBaseModel(
     @PrimaryKey(autoGenerate = true)
     var id: Long,
 
+    @ColumnInfo(name = "priority")
+    var priority: Int = 10,
+
     @ColumnInfo(name = "region")
     val region: String,
 
-    @ColumnInfo(name = "subregion")
-    val subregion: String?,
+    @ColumnInfo(name = "subregions")
+    val subregionList: List<String>,
 
     @ColumnInfo(name = "en_version")
     val enVersion: String,
 
-    @ColumnInfo(name = "start_epoch")
-    val startEpoch: Long,
+    @ColumnInfo(name = "state")
+    var stateValue: Int = State.Planned.value,
 
-    @ColumnInfo(name = "finish_epoch")
-    val finishEpoch: Long = -1,
+    @ColumnInfo(name = "planned_epoch")
+    val plannedEpoch: Long,
+
+    @ColumnInfo(name = "start_uptime")
+    var startUptime: Long = -1,
+
+    @ColumnInfo(name = "started_epoch")
+    var startedEpoch: Long = -1,
+
+    @ColumnInfo(name = "finished_epoch")
+    var finishedEpoch: Long = -1,
+
+    @ColumnInfo(name = "message")
+    var message: String? = null,
 ) {
     @ColumnInfo(name = "platform")
     var platform: String = "android"
+
+    var state: State
+        get() = when (stateValue) {
+            State.Timeout.value -> State.Timeout
+            State.Started.value -> State.Started
+            State.ResultReceived.value -> State.ResultReceived
+            State.Finished.value -> State.Finished
+            else -> State.Planned
+        }
+        set(value) {
+            stateValue = value.value
+        }
+
+    enum class State(
+        val value: Int
+    ) {
+        Timeout(-1),
+        Planned(0),
+        Started(1),
+        ResultReceived(2),
+        Finished(3)
+    }
 }
 
 data class ExposureDataModel(
@@ -43,24 +80,24 @@ data class ExposureDataModel(
         parentColumn = "id",
         entityColumn = "exposure_data_id"
     )
-    val dailySummaryList: List<DailySummaryModel>,
+    val dailySummaryList: MutableList<DailySummaryModel>,
 
     @Relation(
         entity = ExposureWindowModel::class,
         parentColumn = "id",
         entityColumn = "exposure_data_id"
     )
-    val exposureWindowList: List<ExposureWindowAndScanInstancesModel>,
+    val exposureWindowList: MutableList<ExposureWindowAndScanInstancesModel>,
 
     @Relation(
         parentColumn = "id",
         entityColumn = "exposure_data_id"
     )
-    val exposureSummary: ExposureSummaryModel?,
+    var exposureSummary: ExposureSummaryModel?,
 
     @Relation(
         parentColumn = "id",
         entityColumn = "exposure_data_id"
     )
-    val exposureInformationList: List<ExposureInformationModel>,
+    val exposureInformationList: MutableList<ExposureInformationModel>,
 )

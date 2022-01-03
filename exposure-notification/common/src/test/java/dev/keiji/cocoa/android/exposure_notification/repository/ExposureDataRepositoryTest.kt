@@ -15,8 +15,6 @@ import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataBaseModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureInformationModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureSummaryModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowAndScanInstancesModel
-import dev.keiji.cocoa.android.exposure_notification.model.State
-import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.toRFC3339Format
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -117,10 +115,6 @@ class ExposureDataRepositoryTest {
 
     @Test
     fun saveTest1(): Unit = runBlocking {
-        val mockPathSource =
-            mock<PathSource> {
-                on { diagnosisKeysFileDir() } doReturn tmpFolder.root
-            }
         val mockDateTimeSource =
             mock<DateTimeSource> {
                 on { utcNow() } doReturn dummyNow
@@ -139,7 +133,6 @@ class ExposureDataRepositoryTest {
             }
 
         val repository = ExposureDataRepositoryImpl(
-            mockPathSource,
             mockDateTimeSource,
             mockExposureDataDao,
             mockExposureInformationDao,
@@ -148,7 +141,7 @@ class ExposureDataRepositoryTest {
         )
 
         val exposureDataBaseModel = ExposureDataBaseModel(
-            0, "reGiOn", null, "vERsion", 123232, 321231
+            0, 0, "reGiOn", emptyList(), "vERsion", 123232, 242328, 321231
         )
 
         val diagnosisKeysFileList = listOf(
@@ -159,36 +152,33 @@ class ExposureDataRepositoryTest {
                 "sUbRegion",
                 "https://example.com/a/bb/c/",
                 122333,
-                State.None.value,
+                DiagnosisKeysFileModel.State.None.value,
+                null,
                 true
             )
         )
 
-        repository.save(
+        repository.upsert(
             exposureBaseData = exposureDataBaseModel,
             diagnosisKeysFileList = diagnosisKeysFileList,
             exposureSummary = exposureSummary,
-            exposureInformationList = exposureInformationList,
-            dailySummaryList = dailySummaryList,
-            exposureWindowList = exposureWindowList,
+            exposureInformationList = exposureInformationList.toMutableList(),
+            dailySummaryList = dailySummaryList.toMutableList(),
+            exposureWindowList = exposureWindowList.toMutableList(),
         )
 
-        verify(mockExposureDataDao, times(1)).insert(
+        verify(mockExposureDataDao, times(1)).upsert(
             exposureBaseData = exposureDataBaseModel,
             diagnosisKeysFileList = diagnosisKeysFileList,
             exposureSummary = exposureSummaryModel,
-            exposureInformationList = exposureInformationModelList,
-            dailySummaryList = dailySummaryModelList,
-            exposureWindowList = exposureWindowAndScanInstancesList,
+            exposureInformationList = exposureInformationModelList.toMutableList(),
+            dailySummaryList = dailySummaryModelList.toMutableList(),
+            exposureWindowList = exposureWindowAndScanInstancesList.toMutableList(),
         )
     }
 
     @Test
     fun findGroupedDailySummaryListByTest(): Unit = runBlocking {
-        val mockPathSource =
-            mock<PathSource> {
-                on { diagnosisKeysFileDir() } doReturn tmpFolder.root
-            }
         val mockDateTimeSource =
             mock<DateTimeSource> {
                 on { utcNow() } doReturn dummyNow
@@ -210,7 +200,6 @@ class ExposureDataRepositoryTest {
             }
 
         val repository = ExposureDataRepositoryImpl(
-            mockPathSource,
             mockDateTimeSource,
             mockExposureDataDao,
             mockExposureInformationDao,
@@ -337,10 +326,6 @@ class ExposureDataRepositoryTest {
 
     @Test
     fun findGroupedExposureWindowListByTest(): Unit = runBlocking {
-        val mockPathSource =
-            mock<PathSource> {
-                on { diagnosisKeysFileDir() } doReturn tmpFolder.root
-            }
         val mockDateTimeSource =
             mock<DateTimeSource> {
                 on { utcNow() } doReturn dummyNow
@@ -362,7 +347,6 @@ class ExposureDataRepositoryTest {
             }
 
         val repository = ExposureDataRepositoryImpl(
-            mockPathSource,
             mockDateTimeSource,
             mockExposureDataDao,
             mockExposureInformationDao,
@@ -411,10 +395,6 @@ class ExposureDataRepositoryTest {
 
     @Test
     fun findGroupedExposureInformationListByTest(): Unit = runBlocking {
-        val mockPathSource =
-            mock<PathSource> {
-                on { diagnosisKeysFileDir() } doReturn tmpFolder.root
-            }
         val mockDateTimeSource =
             mock<DateTimeSource> {
                 on { utcNow() } doReturn dummyNow
@@ -436,7 +416,6 @@ class ExposureDataRepositoryTest {
             }
 
         val repository = ExposureDataRepositoryImpl(
-            mockPathSource,
             mockDateTimeSource,
             mockExposureDataDao,
             mockExposureInformationDao,

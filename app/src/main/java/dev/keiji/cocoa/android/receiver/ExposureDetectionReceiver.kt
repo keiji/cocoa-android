@@ -5,35 +5,52 @@ import android.content.Context
 import android.content.Intent
 import androidx.work.WorkManager
 import dagger.hilt.android.AndroidEntryPoint
+import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.work.V1ExposureDetectionWorker
 import dev.keiji.cocoa.android.work.V2ExposureDetectionWorker
 import dev.keiji.cocoa.android.work.NoExposureDetectionWorker
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import java.lang.Exception
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ExposureDetectionReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var exposureDetectionService: ExposureDetectionService
+    lateinit var dateTimeSource: DateTimeSource
+
+    @Inject
+    lateinit var exposureNotificationService: ExposureDetectionService
 
     override fun onReceive(context: Context?, intent: Intent?) {
         Timber.i("ExposureDetectionReceiver.onReceive")
 
         context ?: return
         intent ?: return
+        val intentAction = intent.action ?: return
 
-        val workManager = WorkManager.getInstance(context)
+        val async = goAsync()
 
-        when (intent.action) {
-            ExposureNotificationWrapper.ACTION_EXPOSURE_NOT_FOUND -> {
-                onNotDetectExposure(workManager)
+        try {
+            runBlocking {
+                exposureNotificationService.onResultReceived(intentAction)
             }
-            ExposureNotificationWrapper.ACTION_EXPOSURE_STATE_UPDATED -> {
-                onDetectExposure(workManager, intent)
+
+            val workManager = WorkManager.getInstance(context)
+
+            when (intentAction) {
+                ExposureNotificationWrapper.ACTION_EXPOSURE_NOT_FOUND -> {
+                    onNotDetectExposure(workManager)
+                }
+                ExposureNotificationWrapper.ACTION_EXPOSURE_STATE_UPDATED -> {
+                    onDetectExposure(workManager, intent)
+                }
             }
+        } finally {
+            async.finish()
         }
     }
 

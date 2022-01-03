@@ -18,6 +18,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object SubmitDiagnosisModule {
 
+    private val json = Json { ignoreUnknownKeys = true }
+
     @Singleton
     @Provides
     fun provideSubmitDiagnosisServiceApi(
@@ -29,7 +31,7 @@ object SubmitDiagnosisModule {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(configurationSource.submitDiagnosisApiEndpoint)
-            .addConverterFactory(Json.asConverterFactory(contentType))
+            .addConverterFactory(json.asConverterFactory(contentType))
             .build()
             .create(V3SubmitDiagnosisApi::class.java)
     }

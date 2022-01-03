@@ -2,9 +2,9 @@ package dev.keiji.cocoa.android
 
 import android.app.Activity
 import android.content.Context
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.common.source.DateTimeSource
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureResultService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -24,7 +24,6 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import java.util.*
 
 @ObsoleteCoroutinesApi
 @ExperimentalCoroutinesApi
@@ -64,8 +63,8 @@ class ExposureNotificationWrapperMockTest {
             mock<DateTimeSource> {
                 on { utcNow() } doReturn DateTime.now(DateTimeZone.UTC)
             }
-        val mockExposureDetectionService =
-            mock<ExposureDetectionService> {
+        val mockExposureResultService =
+            mock<ExposureResultService> {
             }
 
         val mockActivity =
@@ -73,10 +72,9 @@ class ExposureNotificationWrapperMockTest {
             }
 
         val target = ExposureNotificationWrapperMock(
-            mockContext,
             mockDateTimeSource,
             mockPathSource,
-            mockExposureDetectionService
+            mockExposureResultService,
         )
 
         val dummyTemporaryExposureKeyList = target.getTemporaryExposureKeyHistory(mockActivity)

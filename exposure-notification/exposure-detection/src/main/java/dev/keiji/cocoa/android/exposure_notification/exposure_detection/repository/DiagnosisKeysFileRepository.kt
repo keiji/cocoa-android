@@ -7,7 +7,6 @@ import dev.keiji.cocoa.android.exposure_notification.dao.DiagnosisKeysFileDao
 import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApi
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyListApi
-import dev.keiji.cocoa.android.exposure_notification.model.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -22,7 +21,10 @@ interface DiagnosisKeysFileRepository {
     ): List<DiagnosisKeysFileModel>
 
     suspend fun getDiagnosisKeysFile(diagnosisKeyFile: DiagnosisKeysFileModel): File?
-    suspend fun setState(diagnosisKeyFileModelList: List<DiagnosisKeysFileModel>, state: State)
+
+    suspend fun upsert(diagnosisKeysFile: DiagnosisKeysFileModel): Long
+
+    suspend fun upsertDiagnosisKeysFile(diagnosisKeysFileList: List<DiagnosisKeysFileModel>): List<Long>
 }
 
 class DiagnosisKeysFileRepositoryImpl(
@@ -81,7 +83,10 @@ class DiagnosisKeysFileRepositoryImpl(
         diagnosisKeyFileDao.insertAll(newKeyFileList)
 
         // update
-        diagnosisKeyFileDao.updateAll(existKeyFileList)
+        diagnosisKeyFileDao.updateAll(
+            existKeyFileList
+                .filter { keyFile -> keyFile.isListed }
+        )
 
         // remove not-listed(expired) files
         val expiredFileList = existKeyFileList
@@ -111,18 +116,21 @@ class DiagnosisKeysFileRepositoryImpl(
                     outputDir
                 )
             } catch (e: IOException) {
-                Timber.e("Download failed: ${diagnosisKeyFile.url}", e)
+                Timber.e(e, "Download failed: ${diagnosisKeyFile.url}")
             } catch (e: Exception) {
-                Timber.e("Download failed: ${diagnosisKeyFile.url}", e)
+                Timber.e(e, "Download failed: ${diagnosisKeyFile.url}")
             }
 
             return@withContext null
         }
 
-    override suspend fun setState(diagnosisKeyFileModelList: List<DiagnosisKeysFileModel>, state: State) =
+    override suspend fun upsert(diagnosisKeysFile: DiagnosisKeysFileModel) =
         withContext(Dispatchers.IO) {
-            diagnosisKeyFileModelList.forEach { keyFile -> keyFile.state = state.value }
+            return@withContext diagnosisKeyFileDao.upsert(diagnosisKeysFile)
+        }
 
-            diagnosisKeyFileDao.updateAll(diagnosisKeyFileModelList)
+    override suspend fun upsertDiagnosisKeysFile(diagnosisKeysFileList: List<DiagnosisKeysFileModel>) =
+        withContext(Dispatchers.IO) {
+            return@withContext diagnosisKeyFileDao.upsert(diagnosisKeysFileList)
         }
 }

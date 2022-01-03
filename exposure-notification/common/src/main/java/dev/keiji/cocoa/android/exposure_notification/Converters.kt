@@ -7,15 +7,26 @@ import kotlinx.serialization.json.Json
 
 class Converters {
     @TypeConverter
-    fun fromString(value: String?): IntArray? {
+    fun fromStringToIntArray(value: String?): IntArray? {
         value ?: return null
         return Json.decodeFromString<IntArray>(value)
     }
 
     @TypeConverter
-    fun fromArrayList(intArray: IntArray?): String? {
+    fun fromStringIntArray(intArray: IntArray?): String? {
         intArray ?: return null
         return Json.encodeToString(intArray)
     }
 
+    @TypeConverter
+    fun fromStringToStringList(value: String?): List<String>? {
+        value ?: return null
+        return Json.decodeFromString<List<String>>(value)
+    }
+
+    @TypeConverter
+    fun fromStringList(stringList: List<String>?): String? {
+        stringList ?: return null
+        return Json.encodeToString(stringList)
+    }
 }
