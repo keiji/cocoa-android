@@ -2,6 +2,7 @@ package dev.keiji.cocoa.android.exposure_notification.exposure_detection
 
 import android.content.Intent
 import android.os.Build
+import android.os.SystemClock
 import androidx.work.ListenableWorker
 import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
@@ -22,13 +23,6 @@ interface ExposureDetectionService {
     fun isExposureNotificationEnabled(intent: Intent): Boolean
 
     suspend fun detectExposure(): ListenableWorker.Result
-
-    suspend fun onStarted(
-        exposureNotificationWrapper: ExposureNotificationWrapper,
-        region: String,
-        subregionList: List<String>,
-        diagnosisKeysFileList: List<DiagnosisKeysFileModel>,
-    )
 
     suspend fun onResultReceived(intentAction: String)
 
@@ -69,14 +63,6 @@ class ExposureDetectionServiceImpl(
         ) {
             Timber.w("ExposureNotification is not activated.")
             return ListenableWorker.Result.failure()
-        }
-
-        val exposureWindowList = exposureNotificationWrapper.getExposureWindow()
-        if (exposureWindowList.isNotEmpty()) {
-            Timber.w("Current ExposureWindow detected. ${exposureWindowList.size}")
-            Timber.w(exposureWindowList.toString())
-        } else {
-            Timber.w("ExposureWindow not detected.")
         }
 
         // Sub-region
@@ -123,6 +109,8 @@ class ExposureDetectionServiceImpl(
         val diagnosisKeyList =
             diagnosisKeysFileRepository.getDiagnosisKeysFileList(region, subregion)
 
+        Timber.d("Region:$region, Subregion:${subregion}, diagnosisKeyList: ${diagnosisKeyList.size}")
+
         val diagnosisKeysContainers: MutableList<DiagnosisKeysContainer> = mutableListOf()
 
         diagnosisKeyList.forEach { diagnosisKeyEntry ->
@@ -147,15 +135,15 @@ class ExposureDetectionServiceImpl(
         return diagnosisKeysContainers
     }
 
-    override suspend fun onStarted(
+    suspend fun onStarted(
         exposureNotificationWrapper: ExposureNotificationWrapper,
         region: String,
         subregionList: List<String>,
-        diagnosisKeysFileList: List<DiagnosisKeysFileModel>,
+        diagnosisKeysFileContainerList: List<DiagnosisKeysContainer>,
     ) {
-        Timber.d("started: onStarted ${dateTimeSource.epoch()}")
+        Timber.d("started: onStarted ${dateTimeSource.epochInMillis()}")
 
-        val baseTimeInMillis = (dateTimeSource.epoch() * 1000) - TIMEOUT_INTERVAL_IN_MILLIS
+        val baseTimeInMillis = dateTimeSource.epochInMillis() - TIMEOUT_INTERVAL_IN_MILLIS
 
         exposureDataRepository.setTimeout(
             baseTimeInMillis,
@@ -171,22 +159,32 @@ class ExposureDetectionServiceImpl(
             region = region,
             subregionList = subregionList,
             enVersion = exposureNotificationWrapper.getVersion().toString(),
-            startEpoch = dateTimeSource.epoch(),
+            stateValue = ExposureDataBaseModel.State.Started.value,
+            startedEpoch = dateTimeSource.epochInMillis(),
+            startUptime = SystemClock.uptimeMillis(),
         )
+
+        val diagnosisKeysFileList = diagnosisKeysFileContainerList.map { container ->
+            container.diagnosisKeysFileModel.state = DiagnosisKeysFileModel.State.Completed.value
+            container.diagnosisKeysFileModel.filePath = null
+            return@map container.diagnosisKeysFileModel
+        }
+        diagnosisKeysFileRepository.upsertDiagnosisKeysFile(diagnosisKeysFileList)
+
         exposureDataRepository.upsert(
             exposureDataBaseModel,
             diagnosisKeysFileList = diagnosisKeysFileList,
         )
 
-        Timber.d("finished: onStarted ${dateTimeSource.epoch()}")
+        Timber.d("finished: onStarted ${dateTimeSource.epochInMillis()}")
     }
 
     override suspend fun onResultReceived(
         intentAction: String
     ) {
-        Timber.d("started: onResultReceived ${dateTimeSource.epoch()}")
+        Timber.d("started: onResultReceived ${dateTimeSource.epochInMillis()}")
 
-        val epochInMillis = dateTimeSource.epoch() * 1000
+        val epochInMillis = dateTimeSource.epochInMillis()
         exposureDataRepository.setTimeout(
             epochInMillis - TIMEOUT_INTERVAL_IN_MILLIS,
             ExposureDataBaseModel.State.Started
@@ -208,7 +206,7 @@ class ExposureDetectionServiceImpl(
         exposureDataStarted.exposureBaseData.state = ExposureDataBaseModel.State.ResultReceived
         exposureDataRepository.upsert(exposureDataStarted)
 
-        Timber.d("finished: onResultReceived ${dateTimeSource.epoch()}")
+        Timber.d("finished: onResultReceived ${dateTimeSource.epochInMillis()}")
     }
 
     override suspend fun noExposureDetectedWork(): ListenableWorker.Result {
@@ -230,10 +228,7 @@ class ExposureDetectionServiceImpl(
                     )
                 )
             }
-
-            exposureResultService.onExposureDetected(
-                // No data
-            )
+            exposureResultService.onNoExposureDetected()
         } catch (exception: Exception) {
             Timber.e(exception)
         }
@@ -315,18 +310,11 @@ class ExposureDetectionServiceImpl(
             detectExposureLegacyV1(diagnosisKeysFileContainerList)
         }
 
-        val diagnosisKeysFileList = diagnosisKeysFileContainerList.map { container ->
-            container.diagnosisKeysFileModel.state = DiagnosisKeysFileModel.State.Completed.value
-            container.diagnosisKeysFileModel.filePath = null
-            return@map container.diagnosisKeysFileModel
-        }
-        diagnosisKeysFileRepository.upsertDiagnosisKeysFile(diagnosisKeysFileList)
-
         onStarted(
             exposureNotificationWrapper,
             region,
             subregionList,
-            diagnosisKeysFileList,
+            diagnosisKeysFileContainerList,
         )
 
         diagnosisKeysFileContainerList.forEach { container ->
@@ -354,7 +342,7 @@ class ExposureDetectionServiceImpl(
         )
     }
 
-    private data class DiagnosisKeysContainer(
+    data class DiagnosisKeysContainer(
         val diagnosisKeysFileModel: DiagnosisKeysFileModel,
         val file: File,
     )

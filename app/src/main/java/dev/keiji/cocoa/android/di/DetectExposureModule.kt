@@ -28,6 +28,7 @@ import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureResultService
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureResultServiceImpl
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.LocalNotificationManager
 import dev.keiji.cocoa.android.exposure_notification.repository.ExposureDataRepository
 import dev.keiji.cocoa.android.exposure_notification.repository.ExposureDataRepositoryImpl
 import kotlinx.serialization.json.Json
@@ -67,10 +68,12 @@ object ExposureResultServiceImplModule {
     fun provideExposureResultServiceImpl(
         dateTimeSource: DateTimeSource,
         exposureDataRepository: ExposureDataRepository,
+        localNotificationManager: LocalNotificationManager,
     ): ExposureResultService {
         return ExposureResultServiceImpl(
             dateTimeSource,
             exposureDataRepository,
+            localNotificationManager,
         )
     }
 }

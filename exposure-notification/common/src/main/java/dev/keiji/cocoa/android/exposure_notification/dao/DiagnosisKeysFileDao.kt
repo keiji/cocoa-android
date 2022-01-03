@@ -51,11 +51,18 @@ abstract class DiagnosisKeysFileDao {
         region: String,
         subregion: String?,
     ): List<DiagnosisKeysFileModel> {
-        return findAllByLessThanState(
-            region,
-            subregion,
-            DiagnosisKeysFileModel.State.Completed.value
-        )
+        return if (subregion == null) {
+            findAllByLessThanStateAndSubregionNull(
+                region,
+                DiagnosisKeysFileModel.State.Completed.value
+            )
+        } else {
+            findAllByLessThanState(
+                region,
+                subregion,
+                DiagnosisKeysFileModel.State.Completed.value
+            )
+        }
     }
 
     @Query("SELECT * FROM diagnosis_keys_files WHERE region = :region AND state < :stateValue")
@@ -68,6 +75,12 @@ abstract class DiagnosisKeysFileDao {
     abstract suspend fun findAllByLessThanState(
         region: String,
         subregion: String?,
+        stateValue: Int,
+    ): List<DiagnosisKeysFileModel>
+
+    @Query("SELECT * FROM diagnosis_keys_files WHERE region = :region AND subregion is null AND state < :stateValue")
+    abstract suspend fun findAllByLessThanStateAndSubregionNull(
+        region: String,
         stateValue: Int,
     ): List<DiagnosisKeysFileModel>
 

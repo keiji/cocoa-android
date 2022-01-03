@@ -13,6 +13,7 @@ import dev.keiji.cocoa.android.work.V2ExposureDetectionWorker
 import dev.keiji.cocoa.android.work.NoExposureDetectionWorker
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import java.lang.Exception
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,19 +32,25 @@ class ExposureDetectionReceiver : BroadcastReceiver() {
         intent ?: return
         val intentAction = intent.action ?: return
 
-        runBlocking {
-            exposureNotificationService.onResultReceived(intentAction)
-        }
+        val async = goAsync()
 
-        val workManager = WorkManager.getInstance(context)
+        try {
+            runBlocking {
+                exposureNotificationService.onResultReceived(intentAction)
+            }
 
-        when (intentAction) {
-            ExposureNotificationWrapper.ACTION_EXPOSURE_NOT_FOUND -> {
-                onNotDetectExposure(workManager)
+            val workManager = WorkManager.getInstance(context)
+
+            when (intentAction) {
+                ExposureNotificationWrapper.ACTION_EXPOSURE_NOT_FOUND -> {
+                    onNotDetectExposure(workManager)
+                }
+                ExposureNotificationWrapper.ACTION_EXPOSURE_STATE_UPDATED -> {
+                    onDetectExposure(workManager, intent)
+                }
             }
-            ExposureNotificationWrapper.ACTION_EXPOSURE_STATE_UPDATED -> {
-                onDetectExposure(workManager, intent)
-            }
+        } finally {
+            async.finish()
         }
     }
 

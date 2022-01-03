@@ -7,7 +7,9 @@ abstract class DateTimeSource {
 
     abstract fun utcNow(): DateTime
 
-    fun epoch(): Long = utcNow().millis / 1000
+    fun epochInMillis(): Long = utcNow().millis
+
+    fun epoch(): Long = epochInMillis() / 1000
 
     fun today(): DateTime = utcNow()
         .withHourOfDay(0)

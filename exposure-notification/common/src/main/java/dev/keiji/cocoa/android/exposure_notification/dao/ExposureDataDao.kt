@@ -27,7 +27,7 @@ abstract class ExposureDataDao {
     abstract suspend fun findBy(stateValue: Int): List<ExposureDataModel>
 
     @Transaction
-    @Query("SELECT * FROM exposure_data WHERE start_epoch < :baseTime AND state = :stateValue ORDER BY start_epoch ASC")
+    @Query("SELECT * FROM exposure_data WHERE started_epoch < :baseTime AND state = :stateValue ORDER BY started_epoch ASC")
     abstract suspend fun findTimeout(
         baseTime: Long,
         stateValue: Int = ExposureDataBaseModel.State.Started.value

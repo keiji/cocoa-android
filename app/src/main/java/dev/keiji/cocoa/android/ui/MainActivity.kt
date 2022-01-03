@@ -1,6 +1,7 @@
 package dev.keiji.cocoa.android.ui
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,12 @@ import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotifica
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
+    companion object {
+        fun newIntent(context: Context): Intent {
+            return Intent(context, MainActivity::class.java).apply {
+            }
+        }
+    }
 
     private val viewModel: dev.keiji.cocoa.android.exposure_notification.ui.ExposureNotificationViewModel by viewModels()
 

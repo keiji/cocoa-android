@@ -21,13 +21,19 @@ data class ExposureDataBaseModel(
     val enVersion: String,
 
     @ColumnInfo(name = "state")
-    var stateValue: Int = State.None.value,
+    var stateValue: Int = State.Planned.value,
 
-    @ColumnInfo(name = "start_epoch")
-    val startEpoch: Long,
+    @ColumnInfo(name = "start_uptime")
+    var startUptime: Long,
 
-    @ColumnInfo(name = "finish_epoch")
-    var finishEpoch: Long = -1,
+    @ColumnInfo(name = "planned_epoch")
+    val plannedEpoch: Long = -1,
+
+    @ColumnInfo(name = "started_epoch")
+    var startedEpoch: Long = -1,
+
+    @ColumnInfo(name = "finished_epoch")
+    var finishedEpoch: Long = -1,
 ) {
     @ColumnInfo(name = "platform")
     var platform: String = "android"
@@ -38,7 +44,7 @@ data class ExposureDataBaseModel(
             State.Started.value -> State.Started
             State.ResultReceived.value -> State.ResultReceived
             State.Finished.value -> State.Finished
-            else -> State.None
+            else -> State.Planned
         }
         set(value) {
             stateValue = value.value
@@ -48,7 +54,7 @@ data class ExposureDataBaseModel(
         val value: Int
     ) {
         Timeout(-1),
-        None(0),
+        Planned(0),
         Started(1),
         ResultReceived(2),
         Finished(3)

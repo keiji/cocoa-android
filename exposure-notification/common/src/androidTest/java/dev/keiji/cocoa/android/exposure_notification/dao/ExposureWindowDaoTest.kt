@@ -47,6 +47,7 @@ class ExposureWindowDaoTest {
             ExposureWindowModel(
                 id = 0,
                 exposureDataId = 0,
+                uniqueKey = "",
                 calibrationConfidence = 2,
                 dateMillisSinceEpoch = dateMillisSinceEpoch,
                 infectiousness = Infectiousness.STANDARD.ordinal,
@@ -55,6 +56,7 @@ class ExposureWindowDaoTest {
             ExposureWindowModel(
                 id = 0,
                 exposureDataId = 0,
+                uniqueKey = "",
                 calibrationConfidence = 2,
                 dateMillisSinceEpoch = dateMillisSinceEpoch,
                 infectiousness = Infectiousness.HIGH.ordinal,
@@ -110,6 +112,7 @@ class ExposureWindowDaoTest {
         val exposureWindowModel = ExposureWindowModel(
             id = 0,
             exposureDataId = 0,
+            uniqueKey = "",
             calibrationConfidence = 2,
             dateMillisSinceEpoch = dateMillisSinceEpoch,
             infectiousness = Infectiousness.STANDARD.ordinal,

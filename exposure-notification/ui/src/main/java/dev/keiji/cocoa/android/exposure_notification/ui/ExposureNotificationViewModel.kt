@@ -11,6 +11,8 @@ import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotifica
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ReportType
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.LocalNotificationManager
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,7 +20,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ExposureNotificationViewModel @Inject constructor(
     private val state: SavedStateHandle,
-    private val exposureNotificationWrapper: ExposureNotificationWrapper
+    private val exposureDetectionService: ExposureDetectionService,
+    private val exposureNotificationWrapper: ExposureNotificationWrapper,
+    private val localNotificationManager: LocalNotificationManager,
 ) : ViewModel() {
     companion object {
         private const val KEY_STATE_IS_EXPOSURE_NOTIFICATION_EXCEPTION_OCCURRED =
@@ -31,10 +35,15 @@ class ExposureNotificationViewModel @Inject constructor(
     fun start(activity: Activity) {
         Timber.d("Start ExposureNotification.")
 
+//        localNotificationManager.notifyDetectExposureHighRisk()
+
         viewModelScope.launch {
             try {
                 exposureNotificationWrapper.start(activity)
                 state[KEY_STATE_IS_EXPOSURE_NOTIFICATION_EXCEPTION_OCCURRED] = false
+
+                exposureDetectionService.detectExposure()
+
             } catch (exception: ExposureNotificationException) {
                 state[KEY_STATE_IS_EXPOSURE_NOTIFICATION_EXCEPTION_OCCURRED] = true
             }

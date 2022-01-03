@@ -83,7 +83,10 @@ class DiagnosisKeysFileRepositoryImpl(
         diagnosisKeyFileDao.insertAll(newKeyFileList)
 
         // update
-        diagnosisKeyFileDao.updateAll(existKeyFileList)
+        diagnosisKeyFileDao.updateAll(
+            existKeyFileList
+                .filter { keyFile -> keyFile.isListed }
+        )
 
         // remove not-listed(expired) files
         val expiredFileList = existKeyFileList

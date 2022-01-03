@@ -49,6 +49,11 @@ class DateTimeSourceTest {
             }
 
         assertEquals(
+            now.timeInMillis,
+            mockDateTimeProvider.epochInMillis()
+        )
+
+        assertEquals(
             now.timeInMillis / 1000,
             mockDateTimeProvider.epoch()
         )

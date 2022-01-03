@@ -49,7 +49,10 @@ interface ExposureDataRepository {
 
     suspend fun findGroupedExposureWindowListBy(fromDate: DateTime): Map<Long, List<ExposureWindowAndScanInstancesModel>>
 
-    suspend fun setTimeout(baseTime: Long, state: ExposureDataBaseModel.State): List<ExposureDataModel>
+    suspend fun setTimeout(
+        baseTime: Long,
+        state: ExposureDataBaseModel.State
+    ): List<ExposureDataModel>
 }
 
 class ExposureDataRepositoryImpl(
@@ -130,7 +133,10 @@ class ExposureDataRepositoryImpl(
             )
         }
 
-    override suspend fun setTimeout(baseTime: Long, state: ExposureDataBaseModel.State): List<ExposureDataModel> =
+    override suspend fun setTimeout(
+        baseTime: Long,
+        state: ExposureDataBaseModel.State
+    ): List<ExposureDataModel> =
         withContext(Dispatchers.IO) {
             return@withContext exposureDataDao.setTimeout(baseTime, state.value)
         }
