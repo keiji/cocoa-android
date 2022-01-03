@@ -5,11 +5,7 @@ import android.os.Build
 import androidx.work.ListenableWorker
 import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.DailySummary
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureInformation
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureNotificationStatus
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureSummary
-import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureWindow
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureDataCollectionApi
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.ExposureDataRequest
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.repository.DiagnosisKeysFileRepository
@@ -36,13 +32,6 @@ interface ExposureDetectionService {
 
     suspend fun onResultReceived(intentAction: String)
 
-    suspend fun onFinished(
-        exposureSummary: ExposureSummary? = null,
-        exposureInformationList: List<ExposureInformation> = listOf(),
-        dailySummaryList: List<DailySummary> = listOf(),
-        exposureWindowList: List<ExposureWindow> = listOf(),
-    )
-
     suspend fun noExposureDetectedWork(): ListenableWorker.Result
 
     suspend fun v1ExposureDetectedWork(
@@ -59,6 +48,7 @@ class ExposureDetectionServiceImpl(
     private val exposureDataCollectionApi: ExposureDataCollectionApi,
     private val diagnosisKeysFileRepository: DiagnosisKeysFileRepository,
     private val configurationSource: ConfigurationSource,
+    private val exposureResultService: ExposureResultService,
     private val exposureNotificationWrapper: ExposureNotificationWrapper,
 ) : ExposureDetectionService {
     companion object {
@@ -221,45 +211,6 @@ class ExposureDetectionServiceImpl(
         Timber.d("finished: onResultReceived ${dateTimeSource.epoch()}")
     }
 
-    override suspend fun onFinished(
-        exposureSummary: ExposureSummary?,
-        exposureInformationList: List<ExposureInformation>,
-        dailySummaryList: List<DailySummary>,
-        exposureWindowList: List<ExposureWindow>,
-    ) {
-        Timber.d("started: onFinished ${dateTimeSource.epoch()}")
-
-        val epochInMillis = dateTimeSource.epoch() * 1000
-        exposureDataRepository.setTimeout(
-            epochInMillis - TIMEOUT_INTERVAL_IN_MILLIS,
-            ExposureDataBaseModel.State.Started
-        )
-
-        val exposureDataResultReceivedList =
-            exposureDataRepository.findBy(ExposureDataBaseModel.State.ResultReceived)
-
-        val exposureDataResultReceived = if (exposureDataResultReceivedList.isEmpty()) {
-            Timber.e("exposureDataResultReceived object not found.")
-            return
-        } else if (exposureDataResultReceivedList.size > 1) {
-            Timber.w("exposureDataResultReceived found multiple.")
-            exposureDataResultReceivedList.first()
-        } else {
-            exposureDataResultReceivedList.first()
-        }
-
-        exposureDataRepository.upsert(
-            exposureBaseData = exposureDataResultReceived.exposureBaseData,
-            diagnosisKeysFileList = exposureDataResultReceived.diagnosisKeysFileList,
-            exposureSummary = exposureSummary,
-            exposureInformationList = exposureInformationList,
-            dailySummaryList = dailySummaryList,
-            exposureWindowList = exposureWindowList
-        )
-
-        Timber.d("finished: onFinished ${dateTimeSource.epoch()}")
-    }
-
     override suspend fun noExposureDetectedWork(): ListenableWorker.Result {
         val enVersion = exposureNotificationWrapper.getVersion()
         val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
@@ -280,7 +231,7 @@ class ExposureDetectionServiceImpl(
                 )
             }
 
-            onFinished(
+            exposureResultService.onExposureDetected(
                 // No data
             )
         } catch (exception: Exception) {
@@ -313,7 +264,7 @@ class ExposureDetectionServiceImpl(
                 )
             }
 
-            onFinished(
+            exposureResultService.onExposureDetected(
                 exposureInformationList = exposureInformationList,
             )
         } catch (exception: Exception) {

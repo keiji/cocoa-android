@@ -1,7 +1,6 @@
 package dev.keiji.cocoa.android
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.DiagnosisKeyFileProvider
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
@@ -13,20 +12,21 @@ import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureS
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.ExposureWindow
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.PackageConfiguration
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.TemporaryExposureKey
-import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureDetectionService
 import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.toEnTimeWindow
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureResultService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.File
 import kotlin.random.Random
 
 class ExposureNotificationWrapperMock(
-    private val applicationContext: Context,
     private val dateTimeSource: DateTimeSource,
     pathSource: PathSource,
-    private val exposureDetectionService: ExposureDetectionService,
+    private val exposuredaService: ExposureResultService
 ) : ExposureNotificationWrapper {
 
     companion object {
@@ -92,51 +92,60 @@ class ExposureNotificationWrapperMock(
         }
     }
 
-    override suspend fun getExposureWindow(): List<ExposureWindow> {
+    override suspend fun getExposureWindow(): List<ExposureWindow> = withContext(Dispatchers.IO) {
         if (!dummyExposureWindowsFile.exists()) {
-            return emptyList()
+            return@withContext emptyList()
         }
 
         val jsonText = dummyExposureWindowsFile.readText()
-        return Json.decodeFromString(jsonText)
+        return@withContext Json.decodeFromString(jsonText)
     }
 
-    override suspend fun getDailySummary(dailySummariesConfig: ExposureConfiguration.DailySummariesConfig): List<DailySummary> {
-        if (!dummyDailySummariesFile.exists()) {
-            return emptyList()
+    override suspend fun getDailySummary(dailySummariesConfig: ExposureConfiguration.DailySummariesConfig): List<DailySummary> =
+        withContext(Dispatchers.IO) {
+            if (!dummyDailySummariesFile.exists()) {
+                return@withContext emptyList()
+            }
+
+            val jsonText = dummyDailySummariesFile.readText()
+            return@withContext Json.decodeFromString(jsonText)
         }
 
-        val jsonText = dummyDailySummariesFile.readText()
-        return Json.decodeFromString(jsonText)
-    }
+    override suspend fun getExposureSummary(token: String): ExposureSummary =
+        withContext(Dispatchers.IO) {
+            if (!dummyExposureSummaryFile.exists()) {
+                return@withContext ExposureSummary(IntArray(0), 0, 0, 0, 0)
+            }
 
-    override suspend fun getExposureSummary(token: String): ExposureSummary {
-        if (!dummyExposureSummaryFile.exists()) {
-            return ExposureSummary(IntArray(0), 0, 0, 0, 0)
+            val jsonText = dummyExposureSummaryFile.readText()
+            return@withContext Json.decodeFromString(jsonText)
         }
 
-        val jsonText = dummyExposureSummaryFile.readText()
-        return Json.decodeFromString(jsonText)
-    }
+    override suspend fun getExposureInformation(token: String): List<ExposureInformation> =
+        withContext(Dispatchers.IO) {
+            if (!dummyExposureInfosFile.exists()) {
+                return@withContext emptyList()
+            }
 
-    override suspend fun getExposureInformation(token: String): List<ExposureInformation> {
-        if (!dummyExposureInfosFile.exists()) {
-            return emptyList()
+            val jsonText = dummyExposureInfosFile.readText()
+            return@withContext Json.decodeFromString(jsonText)
         }
-
-        val jsonText = dummyExposureInfosFile.readText()
-        return Json.decodeFromString(jsonText)
-    }
 
     override suspend fun provideDiagnosisKeys(diagnosisKeyFileList: List<File>) {
         if (dummyDailySummariesFile.exists()) {
-            exposureDetectionService.v2ExposureDetectedWork(this)
+            exposuredaService.onExposureDetected(
+                dailySummaryList = getDailySummary(ExposureConfiguration.DailySummariesConfig()),
+                exposureWindowList = getExposureWindow(),
+            )
         }
     }
 
     override suspend fun provideDiagnosisKeys(diagnosisKeyFileProvider: DiagnosisKeyFileProvider) {
         if (dummyDailySummariesFile.exists()) {
-            exposureDetectionService.v2ExposureDetectedWork(this)
+            exposuredaService.onExposureDetected(
+                dailySummaryList = getDailySummary(ExposureConfiguration.DailySummariesConfig()),
+                exposureWindowList = getExposureWindow(),
+            )
         }
     }
 
@@ -146,7 +155,10 @@ class ExposureNotificationWrapperMock(
         token: String
     ) {
         if (dummyExposureSummaryFile.exists()) {
-            exposureDetectionService.v1ExposureDetectedWork(token, this)
+            exposuredaService.onExposureDetected(
+                exposureSummary = getExposureSummary(""),
+                exposureInformationList = getExposureInformation(""),
+            )
         }
     }
 

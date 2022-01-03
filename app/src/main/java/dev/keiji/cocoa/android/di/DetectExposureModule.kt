@@ -26,10 +26,8 @@ import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.api.DiagnosisKeyFileApiImpl
 import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.ExposureNotificationWrapper
-import dev.keiji.cocoa.android.exposure_notification.dao.DailySummaryDao
-import dev.keiji.cocoa.android.exposure_notification.dao.ExposureDataDao
-import dev.keiji.cocoa.android.exposure_notification.dao.ExposureInformationDao
-import dev.keiji.cocoa.android.exposure_notification.dao.ExposureWindowDao
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureResultService
+import dev.keiji.cocoa.android.exposure_notification.exposure_detection.ExposureResultServiceImpl
 import dev.keiji.cocoa.android.exposure_notification.repository.ExposureDataRepository
 import dev.keiji.cocoa.android.exposure_notification.repository.ExposureDataRepositoryImpl
 import kotlinx.serialization.json.Json
@@ -62,17 +60,36 @@ object ExposureDataRepositoryModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
+object ExposureResultServiceImplModule {
+
+    @Singleton
+    @Provides
+    fun provideExposureResultServiceImpl(
+        dateTimeSource: DateTimeSource,
+        exposureDataRepository: ExposureDataRepository,
+    ): ExposureResultService {
+        return ExposureResultServiceImpl(
+            dateTimeSource,
+            exposureDataRepository,
+        )
+    }
+}
+
+
+@Module
+@InstallIn(SingletonComponent::class)
 object ExposureDetectionServiceModule {
 
     @Singleton
     @Provides
-    fun provideDiagnosisKeyFileProvideServiceApi(
+    fun provideExposureDetectionService(
         dateTimeSource: DateTimeSource,
         exposureConfigurationRepository: ExposureConfigurationRepository,
         exposureDataRepository: ExposureDataRepository,
         exposureDataCollectionApi: ExposureDataCollectionApi,
         diagnosisKeysFileRepository: DiagnosisKeysFileRepository,
         configurationSource: ConfigurationSource,
+        exposureResultService: ExposureResultService,
         exposureNotificationWrapper: ExposureNotificationWrapper,
     ): ExposureDetectionService {
         return ExposureDetectionServiceImpl(
@@ -82,7 +99,8 @@ object ExposureDetectionServiceModule {
             exposureDataCollectionApi,
             diagnosisKeysFileRepository,
             configurationSource,
-            exposureNotificationWrapper,
+            exposureResultService,
+            exposureNotificationWrapper
         )
     }
 }
