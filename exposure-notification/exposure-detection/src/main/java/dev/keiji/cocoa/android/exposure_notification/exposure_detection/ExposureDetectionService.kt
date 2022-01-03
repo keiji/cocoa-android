@@ -101,6 +101,7 @@ class ExposureDetectionServiceImpl(
 
             val exposureData = ExposureDataBaseModel(
                 id = 0,
+                priority = 0,
                 region = region,
                 subregionList = emptyList(),
                 enVersion = enVersion,
@@ -124,6 +125,7 @@ class ExposureDetectionServiceImpl(
                 val exposureData = ExposureDataBaseModel(
                     id = 0,
                     region = region,
+                    priority = 10,
                     subregionList = listOf(subregion),
                     enVersion = enVersion,
                     stateValue = ExposureDataBaseModel.State.Planned.value,
@@ -169,12 +171,7 @@ class ExposureDetectionServiceImpl(
             return ListenableWorker.Result.retry()
         }
 
-        var taskPlanned = exposureDataRepository
-            .findBy(ExposureDataBaseModel.State.Planned)
-            .firstOrNull { taskPlanned -> taskPlanned.exposureBaseData.subregionList.isNotEmpty() }
-        if (taskPlanned == null) {
-            taskPlanned = exposureDataRepository.getBy(ExposureDataBaseModel.State.Planned)
-        }
+        val taskPlanned = exposureDataRepository.getBy(ExposureDataBaseModel.State.Planned)
         taskPlanned ?: return ListenableWorker.Result.success()
 
         startExposure(taskPlanned)
@@ -191,6 +188,17 @@ class ExposureDetectionServiceImpl(
         val diagnosisKeysFileContainerList =
             downloadDiagnosisKeys(exposureDataModel.diagnosisKeysFileList)
 
+        Timber.d("diagnosisKeysFileContainerList: ${diagnosisKeysFileContainerList.size}")
+
+        if (diagnosisKeysFileContainerList.isEmpty()) {
+            exposureDataModel.exposureBaseData.also { exposureDataBaseModel ->
+                exposureDataBaseModel.state = ExposureDataBaseModel.State.Finished
+                exposureDataBaseModel.finishedEpoch = dateTimeSource.epochInMillis()
+            }
+            exposureDataRepository.upsert(exposureDataModel)
+            return
+        }
+
         try {
             if (configurationSource.isEnabledExposureWindowMode()) {
                 detectExposureExposureWindowMode(diagnosisKeysFileContainerList)
@@ -200,9 +208,6 @@ class ExposureDetectionServiceImpl(
 
             onStarted(exposureDataModel)
 
-            diagnosisKeysFileContainerList.forEach { container ->
-                container.file.delete()
-            }
         } catch (exception: ExposureNotificationException) {
             Timber.d(exposureDataModel.toString())
 
@@ -213,6 +218,10 @@ class ExposureDetectionServiceImpl(
             exposureDataRepository.upsert(exposureDataModel)
 
             Timber.d(exposureDataModel.toString())
+        } finally {
+            diagnosisKeysFileContainerList.forEach { container ->
+                container.file.delete()
+            }
         }
 
         Timber.d("finish: startExposure")
