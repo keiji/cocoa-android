@@ -66,9 +66,6 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
 
     companion object {
         private val TAG = ExposureNotificationWrapper::class.java.simpleName
-
-        private const val API_STATUS_CODE_NO_KEY_FILE_IS_INCLUDED = 10
-
     }
 
     private val exposureNotificationClient =
@@ -183,10 +180,10 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
         } catch (exception: ApiException) {
             Timber.e(exception, exception.status.statusMessage)
 
-            if (exception.statusCode == API_STATUS_CODE_NO_KEY_FILE_IS_INCLUDED) {
+            if (exception.statusCode == CommonStatusCodes.DEVELOPER_ERROR) {
                 throw ExposureNotificationException(
-                    ExposureNotificationException.Code.NoKeyFileIsIncluded,
-                    "com.google.android.gms.common.api.ApiException: 10: No key file is included"
+                    ExposureNotificationException.Code.Error,
+                    "ApiException: 10: ${exception.status.statusMessage}"
                 )
             }
         }
@@ -199,10 +196,10 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
         } catch (exception: ApiException) {
             Timber.e(exception, exception.status.statusMessage)
 
-            if (exception.statusCode == API_STATUS_CODE_NO_KEY_FILE_IS_INCLUDED) {
+            if (exception.statusCode == CommonStatusCodes.DEVELOPER_ERROR) {
                 throw ExposureNotificationException(
-                    ExposureNotificationException.Code.NoKeyFileIsIncluded,
-                    "com.google.android.gms.common.api.ApiException: 10: No key file is included"
+                    ExposureNotificationException.Code.Error,
+                    "ApiException: 10: ${exception.status.statusMessage}"
                 )
             }
         }
@@ -222,10 +219,10 @@ class ExposureNotificationWrapperImpl(applicationContext: Context) : ExposureNot
         } catch (exception: ApiException) {
             Timber.e(exception, exception.status.statusMessage)
 
-            if (exception.statusCode == API_STATUS_CODE_NO_KEY_FILE_IS_INCLUDED) {
+            if (exception.statusCode == CommonStatusCodes.DEVELOPER_ERROR) {
                 throw ExposureNotificationException(
-                    ExposureNotificationException.Code.NoKeyFileIsIncluded,
-                    "com.google.android.gms.common.api.ApiException: 10: No key file is included"
+                    ExposureNotificationException.Code.Error,
+                    "ApiException: 10: ${exception.status.statusMessage}"
                 )
             }
         }
