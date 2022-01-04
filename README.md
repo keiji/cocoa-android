@@ -34,6 +34,15 @@ cp settings-sample.properties settings.properties
 |  WorkManager(Check exposure) interval  |  16 min  |  4 hours  |  4 hours  |
 
 
+## Library
+
+ * Jetpack Compose
+ * Dagger-Hilt
+ * Room
+ * Retrofit
+ * Kotlin coroutines
+
+
 ## License
 
 TBD
