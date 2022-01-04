@@ -24,8 +24,11 @@ import dev.keiji.cocoa.android.exposure_notification.source.PathSource
 import dev.keiji.cocoa.android.exposure_notification.source.PathSourceImpl
 import dev.keiji.cocoa.android.common.source.DateTimeSource
 import dev.keiji.cocoa.android.common.source.DateTimeSourceImpl
+import dev.keiji.cocoa.android.exposure_notification.dao.DailySummaryDao
+import dev.keiji.cocoa.android.exposure_notification.dao.ExposureWindowDao
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.LocalNotificationManager
 import dev.keiji.cocoa.android.exposure_notification.exposure_detection.LocalNotificationManagerImpl
+import dev.keiji.cocoa.android.exposure_notification.repository.RiskEventRepositoryImpl
 import dev.keiji.cocoa.android.ui.MainActivity
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
@@ -127,9 +130,14 @@ object RiskEventRepositoryModule {
 
     @Provides
     fun provideRiskEventRepository(
-        @ApplicationContext applicationContext: Context
+        @ApplicationContext applicationContext: Context,
+        databaseSource: DatabaseSource,
     ): RiskEventRepository {
-        return RiskEventRepository(applicationContext);
+        return RiskEventRepositoryImpl(
+            applicationContext,
+            databaseSource.dbInstance().dailySummaryDao(),
+            databaseSource.dbInstance().exposureWindowDao(),
+        )
     }
 }
 

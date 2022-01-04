@@ -132,12 +132,12 @@ class ExposureDataRepositoryImpl(
 
     override suspend fun findExposureWindowListBy(fromDate: DateTime): List<ExposureWindowAndScanInstancesModel> =
         withContext(Dispatchers.IO) {
-            return@withContext exposureWindowDao.findBy(fromDate.millis)
+            return@withContext exposureWindowDao.findByAfter(fromDate.millis)
         }
 
     override suspend fun findGroupedExposureWindowListBy(fromDate: DateTime): Map<Long, List<ExposureWindowAndScanInstancesModel>> =
         withContext(Dispatchers.IO) {
-            return@withContext exposureWindowDao.findBy(fromDate.millis).groupBy(
+            return@withContext exposureWindowDao.findByAfter(fromDate.millis).groupBy(
                 { it.exposureWindowModel.dateMillisSinceEpoch }, { it }
             )
         }
