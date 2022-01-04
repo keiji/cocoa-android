@@ -182,4 +182,42 @@ class ExposureWindowDaoTest {
             }
         }
     }
+
+    @Test
+    @Throws(IOException::class)
+    fun existTest1(): Unit = runBlocking {
+
+        val dateMillisSinceEpoch = DateTime.now(DateTimeZone.UTC).millis
+
+        val exposureWindowModel = ExposureWindowModel(
+            id = 0,
+            exposureDataId = 0,
+            uniqueKey = "abcdefghijklmn",
+            calibrationConfidence = 2,
+            dateMillisSinceEpoch = dateMillisSinceEpoch,
+            infectiousness = Infectiousness.STANDARD.ordinal,
+            reportType = ReportType.CONFIRMED_TEST.ordinal,
+        )
+        val scanInstanceModels = listOf(
+            ScanInstanceModel(
+                id = 0,
+                exposureWindowId = 0,
+                minAttenuationDb = 10,
+                secondsSinceLastScan = 20,
+                typicalAttenuationDb = 30,
+            ),
+            ScanInstanceModel(
+                id = 0,
+                exposureWindowId = 0,
+                minAttenuationDb = 11,
+                secondsSinceLastScan = 21,
+                typicalAttenuationDb = 31,
+            ),
+        )
+
+        exposureWindowDao.insert(exposureWindowModel, scanInstanceModels)
+
+        Assert.assertTrue(exposureWindowDao.exist("abcdefghijklmn"))
+        Assert.assertFalse(exposureWindowDao.exist("42342342323"))
+    }
 }

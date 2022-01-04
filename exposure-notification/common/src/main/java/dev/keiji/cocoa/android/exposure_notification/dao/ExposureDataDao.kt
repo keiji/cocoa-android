@@ -81,6 +81,10 @@ abstract class ExposureDataDao {
         upsertDailySummaryList(dailySummaryList)
 
         exposureWindowList.forEach { model ->
+            if (isExistExposureWindow(model.exposureWindowModel.uniqueKey)) {
+                return@forEach
+            }
+
             model.exposureWindowModel.exposureDataId = exposureDataId
             upsert(model.exposureWindowModel, model.scanInstances)
         }
@@ -151,6 +155,9 @@ abstract class ExposureDataDao {
         }
         return timeoutDataList
     }
+
+    @Query("SELECT EXISTS(SELECT id FROM exposure_windows WHERE unique_key = :uniqueKey)")
+    abstract suspend fun isExistExposureWindow(uniqueKey: String): Boolean
 
     @Query("DELETE FROM exposure_data WHERE state = :stateValue")
     abstract fun cleanup(stateValue: Int)
