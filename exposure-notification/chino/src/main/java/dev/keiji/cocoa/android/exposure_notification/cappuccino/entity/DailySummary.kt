@@ -15,7 +15,7 @@ class DailySummary(
     @SerialName("ConfirmedTestSummary") val confirmedTestSummary: ExposureSummaryData?,
     @SerialName("RecursiveSummary") val recursiveSummary: ExposureSummaryData?,
     @SerialName("SelfReportedSummary") val selfReportedSummary: ExposureSummaryData?,
-) {
+) : Comparable<DailySummary> {
     constructor(
         dailySummary: NativeDailySummary
     ) : this(
@@ -64,6 +64,26 @@ class DailySummary(
         result = 31 * result + (selfReportedSummary?.hashCode() ?: 0)
         return result
     }
+
+    override fun compareTo(other: DailySummary): Int {
+        return if (dateMillisSinceEpoch < other.dateMillisSinceEpoch) {
+            -1
+        } else if (dateMillisSinceEpoch > other.dateMillisSinceEpoch) {
+            1
+        } else if (summaryData != null && other.summaryData != null) {
+            summaryData.compareTo(other.summaryData)
+        } else if (confirmedTestSummary != null && other.confirmedTestSummary != null) {
+            confirmedTestSummary.compareTo(other.confirmedTestSummary)
+        } else if (confirmedClinicalDiagnosisSummary != null && other.confirmedClinicalDiagnosisSummary != null) {
+            confirmedClinicalDiagnosisSummary.compareTo(other.confirmedClinicalDiagnosisSummary)
+        } else if (recursiveSummary != null && other.recursiveSummary != null) {
+            recursiveSummary.compareTo(other.recursiveSummary)
+        } else if (selfReportedSummary != null && other.selfReportedSummary != null) {
+            selfReportedSummary.compareTo(other.selfReportedSummary)
+        } else {
+            0
+        }
+    }
 }
 
 @Serializable
@@ -71,7 +91,7 @@ data class ExposureSummaryData(
     @SerialName("MaximumScore") val maximumScore: Double,
     @SerialName("ScoreSum") val scoreSum: Double,
     @SerialName("WeightedDurationSum") val weightedDurationSum: Double,
-) {
+) : Comparable<ExposureSummaryData> {
     constructor(
         exposureSummaryData: NativeExposureSummaryData
     ) : this(
@@ -79,4 +99,16 @@ data class ExposureSummaryData(
         scoreSum = exposureSummaryData.scoreSum,
         weightedDurationSum = exposureSummaryData.weightedDurationSum,
     )
+
+    override fun compareTo(other: ExposureSummaryData): Int {
+        return when {
+            maximumScore < other.maximumScore -> +1
+            maximumScore > other.maximumScore -> -1
+            scoreSum < other.scoreSum -> +1
+            scoreSum > other.scoreSum -> -1
+            weightedDurationSum < other.weightedDurationSum -> +1
+            weightedDurationSum > other.weightedDurationSum -> -1
+            else -> 0
+        }
+    }
 }
