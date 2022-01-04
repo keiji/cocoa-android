@@ -70,7 +70,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-base:18.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
 
-    implementation("dev.keiji.rfc4648:rfc4648:1.0.0")
+    implementation("dev.keiji.rfc4648:rfc4648:1.0.1")
 
     testImplementation(
         fileTree(
