@@ -26,7 +26,7 @@ data class ExposureWindowModel(
     @ColumnInfo(name = "date_millis_since_epoch") val dateMillisSinceEpoch: Long,
     @ColumnInfo(name = "infectiousness") val infectiousness: Int,
     @ColumnInfo(name = "report_type") val reportType: Int,
-) {
+) : Comparable<ExposureWindowModel> {
     val dateTime
         get() = DateTime(dateMillisSinceEpoch, DateTimeZone.UTC)
 
@@ -41,6 +41,20 @@ data class ExposureWindowModel(
         infectiousness = exposureWindow.infectiousness,
         reportType = exposureWindow.reportType,
     )
+
+    override fun compareTo(other: ExposureWindowModel): Int {
+        return when {
+            dateMillisSinceEpoch < other.dateMillisSinceEpoch -> -1
+            dateMillisSinceEpoch > other.dateMillisSinceEpoch -> 1
+            reportType < other.reportType -> -1
+            reportType > other.reportType -> 1
+            infectiousness < other.infectiousness -> +1
+            infectiousness > other.infectiousness -> -1
+            calibrationConfidence < other.calibrationConfidence -> +1
+            calibrationConfidence > other.calibrationConfidence -> -1
+            else -> 0
+        }
+    }
 }
 
 @Entity(tableName = "scan_instances")
@@ -50,7 +64,7 @@ data class ScanInstanceModel(
     @ColumnInfo(name = "min_attenuation_db") val minAttenuationDb: Int,
     @ColumnInfo(name = "seconds_since_last_scan") val secondsSinceLastScan: Int,
     @ColumnInfo(name = "typical_attenuation_db") val typicalAttenuationDb: Int,
-) {
+) : Comparable<ScanInstanceModel> {
     constructor(
         scanInstance: ScanInstance
     ) : this(
@@ -60,6 +74,18 @@ data class ScanInstanceModel(
         secondsSinceLastScan = scanInstance.secondsSinceLastScan,
         typicalAttenuationDb = scanInstance.typicalAttenuationDb,
     )
+
+    override fun compareTo(other: ScanInstanceModel): Int {
+        return when {
+            minAttenuationDb < other.minAttenuationDb -> +1
+            minAttenuationDb > other.minAttenuationDb -> -1
+            secondsSinceLastScan < other.secondsSinceLastScan -> +1
+            secondsSinceLastScan > other.secondsSinceLastScan -> -1
+            typicalAttenuationDb < other.typicalAttenuationDb -> +1
+            typicalAttenuationDb > other.typicalAttenuationDb -> -1
+            else -> 0
+        }
+    }
 }
 
 data class ExposureWindowAndScanInstancesModel(

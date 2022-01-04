@@ -151,4 +151,125 @@ class ExposureWindowTest {
             }
         }
     }
+
+    @Test
+    fun compareTest1() {
+        val object1 = ExposureWindow(
+            calibrationConfidence = 0,
+            dateMillisSinceEpoch = 0,
+            infectiousness = 0,
+            reportType = 0,
+            emptyList(),
+        )
+        val object2 = ExposureWindow(
+            calibrationConfidence = 0,
+            dateMillisSinceEpoch = 0,
+            infectiousness = 0,
+            reportType = 0,
+            emptyList(),
+        )
+
+        val result = object1.compareTo(object2)
+        Assert.assertEquals(0, result)
+    }
+
+    @Test
+    fun compareTest2() {
+        val object1 = ExposureWindow(
+            calibrationConfidence = 1,
+            dateMillisSinceEpoch = 0,
+            infectiousness = 0,
+            reportType = 0,
+            emptyList(),
+        )
+        val object2 = ExposureWindow(
+            calibrationConfidence = 0,
+            dateMillisSinceEpoch = 0,
+            infectiousness = 0,
+            reportType = 0,
+            emptyList(),
+        )
+
+        val result = object1.compareTo(object2)
+        Assert.assertEquals(-1, result)
+        val sorted = listOf(object1, object2).sorted()
+
+        Assert.assertEquals(1, sorted[0].calibrationConfidence)
+        Assert.assertEquals(0, sorted[1].calibrationConfidence)
+    }
+
+    @Test
+    fun compareTest3() {
+        val object1 = ExposureWindow(
+            calibrationConfidence = 0,
+            dateMillisSinceEpoch = 1,
+            infectiousness = 0,
+            reportType = 0,
+            emptyList(),
+        )
+        val object2 = ExposureWindow(
+            calibrationConfidence = 0,
+            dateMillisSinceEpoch = 0,
+            infectiousness = 0,
+            reportType = 0,
+            emptyList(),
+        )
+
+        val result = object1.compareTo(object2)
+        Assert.assertEquals(1, result)
+        val sorted = listOf(object1, object2).sorted()
+
+        Assert.assertEquals(0, sorted[0].dateMillisSinceEpoch)
+        Assert.assertEquals(1, sorted[1].dateMillisSinceEpoch)
+    }
+
+    @Test
+    fun compareTest4() {
+        val object1 = ExposureWindow(
+            calibrationConfidence = 0,
+            dateMillisSinceEpoch = 0,
+            infectiousness = 1,
+            reportType = 0,
+            emptyList(),
+        )
+        val object2 = ExposureWindow(
+            calibrationConfidence = 0,
+            dateMillisSinceEpoch = 0,
+            infectiousness = 0,
+            reportType = 0,
+            emptyList(),
+        )
+
+        val result = object1.compareTo(object2)
+        Assert.assertEquals(-1, result)
+        val sorted = listOf(object1, object2).sorted()
+
+        Assert.assertEquals(1, sorted[0].infectiousness)
+        Assert.assertEquals(0, sorted[1].infectiousness)
+    }
+
+    @Test
+    fun compareTest5() {
+        val object1 = ExposureWindow(
+            calibrationConfidence = 0,
+            dateMillisSinceEpoch = 0,
+            infectiousness = 0,
+            reportType = ReportType.SELF_REPORT.ordinal,
+            emptyList(),
+        )
+        val object2 = ExposureWindow(
+            calibrationConfidence = 0,
+            dateMillisSinceEpoch = 0,
+            infectiousness = 0,
+            reportType = ReportType.CONFIRMED_TEST.ordinal,
+            emptyList(),
+        )
+
+        val result = object1.compareTo(object2)
+        Assert.assertEquals(1, result)
+        val sorted = listOf(object1, object2).sorted()
+
+        Assert.assertEquals(ReportType.CONFIRMED_TEST.ordinal, sorted[0].reportType)
+        Assert.assertEquals(ReportType.SELF_REPORT.ordinal, sorted[1].reportType)
+    }
 }

@@ -15,6 +15,7 @@ import dev.keiji.cocoa.android.exposure_notification.exposure_detection.reposito
 import dev.keiji.cocoa.android.exposure_notification.model.DiagnosisKeysFileModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataBaseModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureDataModel
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowAndScanInstancesModel
 import dev.keiji.cocoa.android.exposure_notification.repository.ExposureDataRepository
 import dev.keiji.cocoa.android.exposure_notification.source.ConfigurationSource
 import timber.log.Timber
@@ -156,6 +157,13 @@ class ExposureDetectionServiceImpl(
         val enVersion = exposureNotificationWrapper.getVersion().toString()
         Timber.d("EN Version: $enVersion")
 
+        val exposureWindowList = exposureNotificationWrapper.getExposureWindow()
+        exposureWindowList.forEach { exposureWindow ->
+            val exposureWindowModel = ExposureWindowAndScanInstancesModel(exposureWindow)
+            Timber.d(exposureWindowModel.exposureWindowModel.uniqueKey)
+            Timber.d(exposureWindowModel.exposureWindowModel.toString())
+        }
+
         val diagnosisKeysFileList = reloadFileList()
         planExposureDetection(enVersion, diagnosisKeysFileList)
 
@@ -200,6 +208,8 @@ class ExposureDetectionServiceImpl(
         }
 
         try {
+            trySetLatestDiagnosisKeysDataMapping()
+
             if (configurationSource.isEnabledExposureWindowMode()) {
                 detectExposureExposureWindowMode(diagnosisKeysFileContainerList)
             } else {
@@ -225,6 +235,25 @@ class ExposureDetectionServiceImpl(
         }
 
         Timber.d("finish: startExposure")
+    }
+
+    private suspend fun trySetLatestDiagnosisKeysDataMapping() {
+        try {
+            val exposureConfiguration = exposureConfigurationRepository.getExposureConfiguration()
+
+            val latestDiagnosisKeysDataMapping =
+                exposureConfiguration.diagnosisKeysDataMappingConfig
+            val existDiagnosisKeysDataMapping =
+                exposureNotificationWrapper.getDiagnosisKeysDataMapping()
+
+            if (latestDiagnosisKeysDataMapping != existDiagnosisKeysDataMapping) {
+                exposureNotificationWrapper.setDiagnosisKeysDataMapping(
+                    latestDiagnosisKeysDataMapping
+                )
+            }
+        } catch (exception: Exception) {
+            Timber.d(exception, exception.message)
+        }
     }
 
     private suspend fun downloadDiagnosisKeys(
