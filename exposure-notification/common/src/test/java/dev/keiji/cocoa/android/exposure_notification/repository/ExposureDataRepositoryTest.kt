@@ -196,7 +196,7 @@ class ExposureDataRepositoryTest {
             }
         val mockExposureWindowDao =
             mock<ExposureWindowDao> {
-                onBlocking { findBy(any()) } doReturn exposureWindowAndScanInstancesList
+                onBlocking { findByAfter(any()) } doReturn exposureWindowAndScanInstancesList
             }
 
         val repository = ExposureDataRepositoryImpl(
@@ -343,7 +343,7 @@ class ExposureDataRepositoryTest {
             }
         val mockExposureWindowDao =
             mock<ExposureWindowDao> {
-                onBlocking { findBy(any()) } doReturn exposureWindowAndScanInstancesList
+                onBlocking { findByAfter(any()) } doReturn exposureWindowAndScanInstancesList
             }
 
         val repository = ExposureDataRepositoryImpl(
@@ -412,7 +412,7 @@ class ExposureDataRepositoryTest {
             }
         val mockExposureWindowDao =
             mock<ExposureWindowDao> {
-                onBlocking { findBy(any()) } doReturn exposureWindowAndScanInstancesList
+                onBlocking { findByAfter(any()) } doReturn exposureWindowAndScanInstancesList
             }
 
         val repository = ExposureDataRepositoryImpl(
