@@ -135,6 +135,8 @@ object RiskEventRepositoryModule {
     ): RiskEventRepository {
         return RiskEventRepositoryImpl(
             applicationContext,
+            databaseSource.dbInstance().exposureSummaryDao(),
+            databaseSource.dbInstance().exposureInformationDao(),
             databaseSource.dbInstance().dailySummaryDao(),
             databaseSource.dbInstance().exposureWindowDao(),
         )

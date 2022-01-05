@@ -144,11 +144,25 @@ class RiskDetailFragment : Fragment(R.layout.fragment_risk_detail) {
                     text = riskEvent.dateTime.toRFC3339Format()
                 )
                 Spacer(Modifier.width(4.dp))
-                Text(
-                    modifier = Modifier,
-                    text = "${riskEvent.count}件",
-                    style = MaterialTheme.typography.caption
-                )
+                Row() {
+                    if (riskEvent.exposureInSeconds > 0) {
+                        Text(
+                            modifier = Modifier,
+                            text = "${riskEvent.exposureInSeconds / 60}分",
+                            style = MaterialTheme.typography.caption
+                        )
+                    }
+                    if (riskEvent.exposureInSeconds > 0 && riskEvent.legacyV1Count > 0) {
+                        Spacer(Modifier.width(4.dp))
+                    }
+                    if (riskEvent.legacyV1Count > 0) {
+                        Text(
+                            modifier = Modifier,
+                            text = "${riskEvent.legacyV1Count}件",
+                            style = MaterialTheme.typography.caption
+                        )
+                    }
+                }
             }
         }
     }

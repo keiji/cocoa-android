@@ -12,6 +12,9 @@ interface ExposureSummaryDao {
     @Query("SELECT * FROM exposure_summaries")
     suspend fun getAll(): List<ExposureSummaryModel>
 
+    @Query("SELECT * FROM exposure_summaries WHERE exposure_data_id = :exposureDataId")
+    fun findByExposureDataId(exposureDataId: Long): List<ExposureSummaryModel>
+
     @Insert
     suspend fun insert(exposureInformation: ExposureSummaryModel): Long
 
