@@ -83,8 +83,8 @@ class LocalNotificationManagerImpl(
         )
             .setStyle(NotificationCompat.BigTextStyle())
             .setSmallIcon(smallIcon)
-            .setContentTitle("レポートが作成されました") // "陽性登録者との接触の可能性があります"
-            .setContentText("この通知は1週間に一度程度の間隔で表示されます。レポートを確認してください")
+            .setContentTitle("接触確認レポートが作成されました") // "陽性登録者との接触の可能性があります"
+            .setContentText("この通知は1週間に一度程度の間隔で表示されます")
             .setVisibility(VISIBILITY_SECRET)
             .setContentIntent(createPendingIntent())
             .setLocalOnly(true)

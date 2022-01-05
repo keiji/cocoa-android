@@ -143,7 +143,7 @@ class RiskDetailFragment : Fragment(R.layout.fragment_risk_detail) {
             ) {
                 Text(
                     modifier = Modifier,
-                    text = dateFormatter.format(riskEvent.date)
+                    text = dateFormatter.format(riskEvent.dateTime)
                 )
                 Spacer(Modifier.width(4.dp))
                 Text(

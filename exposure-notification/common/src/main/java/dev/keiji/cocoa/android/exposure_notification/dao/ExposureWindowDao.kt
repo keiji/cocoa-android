@@ -19,7 +19,12 @@ abstract class ExposureWindowDao {
 
     @Transaction
     @Query("SELECT * FROM exposure_windows WHERE date_millis_since_epoch > :fromDateMillisSinceEpoch")
-    abstract fun findBy(fromDateMillisSinceEpoch: Long): List<ExposureWindowAndScanInstancesModel>
+    abstract fun findByAfter(fromDateMillisSinceEpoch: Long): List<ExposureWindowAndScanInstancesModel>
+
+    @Transaction
+    @Query("SELECT * FROM exposure_windows WHERE date_millis_since_epoch = :dateTimeMillisSinceEpoch")
+    abstract fun findByExact(dateTimeMillisSinceEpoch: Long): List<ExposureWindowAndScanInstancesModel>
+
 
     @Query("SELECT EXISTS(SELECT id FROM exposure_windows WHERE unique_key = :uniqueKey)")
     abstract suspend fun exist(uniqueKey: String): Boolean

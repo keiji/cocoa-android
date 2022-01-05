@@ -1,12 +1,24 @@
 package dev.keiji.cocoa.android.exposure_notification.cappuccino.entity
 
-import java.util.*
+import org.joda.time.DateTime
 
 data class RiskEvent(
-    val date: Date,
+    val dateTime: DateTime,
     val riskLevel: RiskLevel,
     val count: Int
-)
+) : Comparable<RiskEvent> {
+    override fun compareTo(other: RiskEvent): Int {
+        val dateTimeCompared = dateTime.compareTo(other.dateTime)
+        return when {
+            dateTimeCompared != 0 -> dateTimeCompared
+            riskLevel > other.riskLevel -> 1
+            riskLevel < other.riskLevel -> -1
+            count > other.count -> 1
+            count < other.count -> -1
+            else -> 0
+        }
+    }
+}
 
 enum class RiskLevel {
     RISK_LEVEL_INVALID,
