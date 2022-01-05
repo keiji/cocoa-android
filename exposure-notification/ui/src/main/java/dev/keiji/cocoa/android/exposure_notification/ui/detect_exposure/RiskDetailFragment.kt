@@ -41,9 +41,9 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.RiskEvent
+import dev.keiji.cocoa.android.exposure_notification.toRFC3339Format
 import dev.keiji.cocoa.android.exposure_notification.ui.R
 import dev.keiji.cocoa.android.exposure_notification.ui.databinding.FragmentRiskDetailBinding
-import java.text.DateFormat
 
 @AndroidEntryPoint
 class RiskDetailFragment : Fragment(R.layout.fragment_risk_detail) {
@@ -116,8 +116,6 @@ class RiskDetailFragment : Fragment(R.layout.fragment_risk_detail) {
         }
     }
 
-    private val dateFormatter = DateFormat.getDateInstance()
-
     private @Composable
     fun RiskLevelRow(riskEvent: RiskEvent) {
         Row(
@@ -143,7 +141,7 @@ class RiskDetailFragment : Fragment(R.layout.fragment_risk_detail) {
             ) {
                 Text(
                     modifier = Modifier,
-                    text = dateFormatter.format(riskEvent.dateTime)
+                    text = riskEvent.dateTime.toRFC3339Format()
                 )
                 Spacer(Modifier.width(4.dp))
                 Text(
