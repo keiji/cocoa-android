@@ -4,17 +4,24 @@ import org.joda.time.DateTime
 
 data class RiskEvent(
     val dateTime: DateTime,
-    val riskLevel: RiskLevel,
-    val count: Int
+    var legacyV1RiskLevel: RiskLevel = RiskLevel.RISK_LEVEL_INVALID,
+    var legacyV1Count: Int = 0,
+    var exposureWIndowRiskLevel: RiskLevel = RiskLevel.RISK_LEVEL_INVALID,
+    var exposureInSeconds: Int = 0,
 ) : Comparable<RiskEvent> {
+
     override fun compareTo(other: RiskEvent): Int {
         val dateTimeCompared = dateTime.compareTo(other.dateTime)
         return when {
             dateTimeCompared != 0 -> dateTimeCompared
-            riskLevel > other.riskLevel -> 1
-            riskLevel < other.riskLevel -> -1
-            count > other.count -> 1
-            count < other.count -> -1
+            exposureWIndowRiskLevel > other.exposureWIndowRiskLevel -> 1
+            exposureWIndowRiskLevel < other.exposureWIndowRiskLevel -> -1
+            legacyV1RiskLevel > other.legacyV1RiskLevel -> 1
+            legacyV1RiskLevel < other.legacyV1RiskLevel -> -1
+            exposureInSeconds > other.exposureInSeconds -> 1
+            exposureInSeconds < other.exposureInSeconds -> -1
+            legacyV1Count > other.legacyV1Count -> 1
+            legacyV1Count < other.legacyV1Count -> -1
             else -> 0
         }
     }

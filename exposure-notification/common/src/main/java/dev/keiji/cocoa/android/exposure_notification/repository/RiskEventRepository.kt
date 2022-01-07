@@ -4,9 +4,13 @@ import android.content.Context
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.RiskEvent
 import dev.keiji.cocoa.android.exposure_notification.cappuccino.entity.RiskLevel
 import dev.keiji.cocoa.android.exposure_notification.dao.DailySummaryDao
+import dev.keiji.cocoa.android.exposure_notification.dao.ExposureInformationDao
+import dev.keiji.cocoa.android.exposure_notification.dao.ExposureSummaryDao
 import dev.keiji.cocoa.android.exposure_notification.dao.ExposureWindowDao
 import dev.keiji.cocoa.android.exposure_notification.model.DailySummaryModel
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureInformationModel
 import dev.keiji.cocoa.android.exposure_notification.model.ExposureSummaryDataModel
+import dev.keiji.cocoa.android.exposure_notification.model.ExposureWindowAndScanInstancesModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
@@ -17,10 +21,13 @@ import java.util.*
 interface RiskEventRepository {
     suspend fun findAll(): List<RiskEvent>
     fun calculateRiskLevel(dailySummaryModel: DailySummaryModel): RiskLevel
+    fun calculateRiskLevel(exposureInformation: ExposureInformationModel): RiskLevel
 }
 
 class RiskEventRepositoryImpl(
     applicationContext: Context,
+    private val exposureSummaryDao: ExposureSummaryDao,
+    private val exposureInformationDao: ExposureInformationDao,
     private val dailySummaryDao: DailySummaryDao,
     private val exposureWindowDao: ExposureWindowDao,
 ) : RiskEventRepository {
@@ -29,21 +36,70 @@ class RiskEventRepositoryImpl(
         val riskEventList: MutableList<RiskEvent> = mutableListOf()
 
         val dailySummaryList = dailySummaryDao.getAll()
+        val exposureInformationList = exposureInformationDao.getAll()
 
-        dailySummaryList.forEach { dailySummaryModel ->
-            val exposureWindowList =
-                exposureWindowDao.findByExact(dailySummaryModel.dateMillisSinceEpoch)
+        val dailySummaryMap =
+            dailySummaryList.groupBy { dailySummaryModel -> dailySummaryModel.dateMillisSinceEpoch }
+        val exposureInformationMap =
+            exposureInformationList.groupBy { exposureInformation -> exposureInformation.dateMillisSinceEpoch }
 
-            val riskLevel = calculateRiskLevel(dailySummaryModel)
+        val dateMillisSinceEpochList = dailySummaryMap.keys.union(exposureInformationMap.keys)
+
+        dateMillisSinceEpochList.forEach { dateMillisSinceEpoch ->
+
             val riskEvent = RiskEvent(
-                dailySummaryModel.dateTime.toDateTime(DateTimeZone.getDefault()),
-                riskLevel,
-                exposureWindowList.size
+                dateTime = DateTime(dateMillisSinceEpoch, DateTimeZone.UTC),
             )
+            dailySummaryMap[dateMillisSinceEpoch]?.also { dailySummaryModelList ->
+                dailySummaryModelList.forEach { dailySummaryModel ->
+                    val exposureWindowList = exposureWindowDao.findByExact(dailySummaryModel.dateMillisSinceEpoch)
+                    val exposureInSeconds = calculateExposureSeconds(exposureWindowList)
+
+                    val riskLevel = calculateRiskLevel(dailySummaryModel)
+                    riskEvent.also {
+                        it.exposureWIndowRiskLevel = riskLevel
+                        it.exposureInSeconds = exposureInSeconds
+                    }
+                }
+            }
+
+            exposureInformationMap[dateMillisSinceEpoch]?.also { exposureInformationList ->
+                val highRiskExposureInformationList =
+                    exposureInformationList.filter { exposureInformation ->
+                        calculateRiskLevel(exposureInformation) > RiskLevel.RISK_LEVEL_MEDIUM
+                    }
+                val riskLevel =
+                    highRiskExposureInformationList.maxOfOrNull { calculateRiskLevel(it) }
+                        ?: return@forEach
+
+                riskEvent.also {
+                    it.exposureWIndowRiskLevel = riskLevel
+                    it.legacyV1Count = highRiskExposureInformationList.size
+                }
+            }
+
             riskEventList.add(riskEvent)
         }
 
         return@withContext riskEventList.sortedDescending()
+    }
+
+    private fun calculateExposureSeconds(exposureWindowList: List<ExposureWindowAndScanInstancesModel>): Int {
+        return exposureWindowList.sumOf { it.scanInstances.sumOf { it.secondsSinceLastScan } }
+    }
+
+    override fun calculateRiskLevel(exposureInformation: ExposureInformationModel): RiskLevel {
+        val totalRiskScore = exposureInformation.totalRiskScore
+        return when {
+            totalRiskScore > 40 -> RiskLevel.RISK_LEVEL_HIGHEST
+            totalRiskScore > 35 -> RiskLevel.RISK_LEVEL_HIGH
+            totalRiskScore > 30 -> RiskLevel.RISK_LEVEL_MEDIUM_HIGH
+            totalRiskScore > 25 -> RiskLevel.RISK_LEVEL_MEDIUM
+            totalRiskScore > 20 -> RiskLevel.RISK_LEVEL_LOW_MEDIUM
+            totalRiskScore > 10 -> RiskLevel.RISK_LEVEL_LOW
+            totalRiskScore > 5 -> RiskLevel.RISK_LEVEL_LOWEST
+            else -> RiskLevel.RISK_LEVEL_INVALID
+        }
     }
 
     override fun calculateRiskLevel(dailySummaryModel: DailySummaryModel): RiskLevel {
