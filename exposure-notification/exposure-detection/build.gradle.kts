@@ -57,11 +57,11 @@ dependencies {
     implementation(project(mapOf("path" to ":exposure-notification:chino")))
 
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.work:work-runtime-ktx:2.7.1")
 
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
+    implementation("com.google.android.material:material:1.5.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
@@ -78,11 +78,11 @@ dependencies {
     testImplementation("androidx.room:room-testing:$roomVersion")
 
     testImplementation("junit:junit:4.+")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.5")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.1.0")
 }
